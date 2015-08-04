@@ -1,12 +1,12 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} NewName 
-   Caption         =   "Ввод новых реквизитов"
-   ClientHeight    =   4695
+   Caption         =   "Реквизиты получателя"
+   ClientHeight    =   3585
    ClientLeft      =   45
    ClientTop       =   330
-   ClientWidth     =   5415
+   ClientWidth     =   5505
    OleObjectBlob   =   "NewName.frx":0000
-   StartUpPosition =   2  'CenterScreen
+   StartUpPosition =   1  'CenterOwner
 End
 Attribute VB_Name = "NewName"
 Attribute VB_GlobalNameSpace = False
@@ -14,58 +14,28 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
+
+
+
 Option Explicit
 Option Compare Text
 Option Base 1
 DefLng A-Z
 
-Public AddNewOk As Boolean
-
-Private Sub cboBIC_Exit(ByVal Cancel As MSForms.ReturnBoolean)
-    cboBIC = AutoFillBIC(cboBIC)
-End Sub
+Public Mode As String 'New,Edit,Pay,BIC,LS
 
 Private Sub cmdBank_Click()
-    Dim s As String, k
-    With txtLS
-        If .TextLength <> 20 Then
-            MsgBox "Длина лицевого счета не 20 знаков!", vbExclamation, AppTitle
-            Exit Sub
-        End If
-        k = InStr(1, .Text, "К")
-        If k = 9 Then
-            s = .Text
-            Mid(s, k, 1) = CStr(CalcBankKey(cboBIC, txtLS))
-            .Text = s
-            MsgBox BPrintF("Ключ счета откорректирован:\nПроверьте лицевой счет!"), vbExclamation, AppTitle
-            .SetFocus
-            Exit Sub
-        ElseIf k > 0 Then
-            MsgBox BPrintF("Ключ счета не на месте:\nПроверьте лицевой счет!"), vbCritical, AppTitle
-            .SetFocus
-            Exit Sub
-        End If
-    End With
-    If cboBIC.TextLength <> 9 Then
-        MsgBox "Длина БИК не 9 знаков!", vbExclamation, AppTitle
-        Exit Sub
-    End If
-    If Not BankKeyValid(cboBIC, txtLS) Then
-        s = "Такие реквизиты не соответствуют ключу счета в КО"
-        If RkcKeyValid(cboBIC, txtLS) Then
-            s = BPrintF("%s,\nно соответствуют ключу счета в РКЦ!", s)
+    Dim s As String
+    AutoCheck
+    With BnkSeek2
+        If .Valid Then
+            s = AutoFillBIC(txtBIC)
+            txtBIC = s
+            DoEvents 'Some problems with updating TextBox before next...
+            .MsgInfo s
         Else
-            s = BPrintF("%s\nи не соответствуют ключу счета в РКЦ!", s)
-            MsgBox s, vbCritical, AppTitle
-            lblBank.Caption = "Указанные реквизиты не соответствуют друг другу!"
-            txtLS.SetFocus
-            Exit Sub
+            MsgBox .None, vbExclamation, App.Title
         End If
-    End If
-    cmdBank.Enabled = False
-    With Bank
-        .BIC = cboBIC
-        lblBank.Caption = .FullInfo
     End With
 End Sub
 
@@ -73,80 +43,216 @@ Private Sub cmdCancel_Click()
     Unload Me
 End Sub
 
-Private Sub cmdNick_Click()
-    Dim s As String
-    If txtNick.TextLength = 0 Then
-        MsgBox "Не указано краткое имя", vbExclamation, AppTitle
-        txtNick.SetFocus
-        Exit Sub
-    End If
-    If txtINN.TextLength <> 10 Then
-        MsgBox "ИНН должен содержать 10 знаков", vbExclamation, AppTitle
-        txtINN.SetFocus
-        Exit Sub
-    End If
-    s = Payment.GetNickUnique(txtNick)
-    If s <> txtNick Then
-        txtNick = s
-        MsgBox BPrintF("Предлагается другой вариант:\n~%s~\nИсправьте, если не удовлетворяет", s), vbExclamation, AppTitle
-        txtNick.SetFocus
-    End If
-    cmdNick.Enabled = False
-End Sub
-
 Private Sub cmdOk_Click()
-    Dim arr As Variant, s As String
-    If cmdNick.Enabled Then
-        MultiPage.Value = 0
-        MsgBox "Нет проверки уникальности", vbExclamation, AppTitle
-        cmdNick.SetFocus
+    On Error Resume Next
+    If txtBIC.TextLength <> 9 Then
+        MsgBox "Длина БИК Банка не 9 символов!", vbExclamation, App.Title
+        txtBIC.SetFocus
         Exit Sub
     End If
-    If cmdBank.Enabled Then
-        MultiPage.Value = 1
-        MsgBox "Нет проверки Банка", vbExclamation, AppTitle
-        cmdBank.SetFocus
+    If txtLS.TextLength <> 20 Then
+        MsgBox "Длина Л/С не 20 символов!", vbExclamation, App.Title
+        txtLS.SetFocus
         Exit Sub
     End If
-    Payment.AddPayee txtNick, cboName, txtINN, txtLS, cboBIC, cboCustom1, cboCustom2
-    AddNewOk = True
+    If Right(txtLS, 3) = "000" And Not User.Demo Then
+        If MsgBox(BPrintF("Л/С подозрительно кончается на нули!\n\nИсправить?"), _
+            vbQuestion + vbYesNo, App.Title) = vbYes Then
+            txtLS.SetFocus
+            Exit Sub
+        End If
+    End If
+    If txtINN.TextLength < 10 Then
+        If MsgBox(BPrintF("Длина ИНН меньше 10 символов!\n\nИсправить?"), _
+            vbQuestion + vbYesNo, App.Title) = vbYes Then
+            txtINN.SetFocus
+            Exit Sub
+        End If
+    End If
+    If txtName.TextLength = 0 Then
+        MsgBox "Не введено название организации!", vbExclamation, App.Title
+        txtName.SetFocus
+        Exit Sub
+    End If
+    Hide
+    If Mode = "Pay" Then
+        With Payment
+            .Name = txtName
+            .INN = txtINN
+            .BIC = txtBIC
+            .LS = txtLS
+        End With
+    ElseIf Mode = "New" Then
+        With User
+            .ID = Right(txtLS, 3)
+            If .ID = Right(txtLS, 3) Then
+                .Name = txtName
+                .INN = txtINN
+                .LS = txtLS
+                .BIC = txtBIC
+                 UserPrivateShow
+            End If
+        End With
+    ElseIf Mode = "Edit" Then
+        With User
+            .INN = txtINN
+            .Name = txtName
+            .LS = txtLS
+            .BIC = txtBIC
+            'MsgBox "Данные исправлены", vbInformation, App.Title
+        End With
+        UserPrivateShow
+    Else 'Error?
+        MsgBox "А что, собственно, Вы здесь набрали?", vbCritical, App.Title
+    End If
     Unload Me
 End Sub
 
-Private Sub cboBIC_Change()
-    lblLenBIC = CStr(cboBIC.TextLength)
-    cmdBank.Enabled = True
-End Sub
-
-Private Sub txtINN_Change()
-    lblLenINN = CStr(txtINN.TextLength)
-End Sub
-
-Private Sub txtLS_Change()
-    lblLenLS = CStr(txtLS.TextLength)
-    cmdBank.Enabled = True
-End Sub
-
-Private Sub txtLS_Exit(ByVal Cancel As MSForms.ReturnBoolean)
-    txtLS = AutoFillLS(txtLS)
-End Sub
-
-Private Sub txtNick_Change()
-    cmdNick.Enabled = True
-End Sub
-
-Private Sub txtNick_Enter()
-    If txtNick.TextLength = 0 Then
-        txtNick.Text = NickByName(cboName.Text)
+Private Sub optBank_Click()
+    Dim s As String
+    If txtLS.TextLength > 0 Then
+        s = AutoFillBIC(txtBIC)
+        txtBIC = s
+        txtLS = AutoFillLS(s, txtLS, optRKC.Value)
+        DoEvents
     End If
 End Sub
 
+Private Sub optRKC_Click()
+    Dim s As String
+    If txtLS.TextLength > 0 Then
+        s = AutoFillBIC(txtBIC)
+        txtBIC = s
+        txtLS = AutoFillLS(s, txtLS, optRKC.Value)
+        DoEvents
+    End If
+End Sub
+
+Private Sub txtBIC_Change()
+    With txtBIC
+        lblLenBIC = BPrintF("%d/%d", .TextLength, .MaxLength)
+    End With
+End Sub
+
+Private Sub txtBIC_Exit(ByVal Cancel As MSForms.ReturnBoolean)
+    txtBIC = AutoFillBIC(txtBIC)
+    DoEvents
+    If Val(Right(txtBIC, 3)) < 3 Then
+        If Not optRKC Then
+            MsgBox "Похоже, что счет в РКЦ - автопереключение!", vbExclamation, App.Title
+            optRKC = True
+        End If
+    Else
+        If Not optBank Then
+            MsgBox "Похоже, что счет в банке - автопереключение!", vbExclamation, App.Title
+            optBank = True
+        End If
+    End If
+End Sub
+
+Private Sub txtINN_Change()
+    With txtINN
+        lblLenINN = BPrintF("%d/%d", .TextLength, .MaxLength)
+    End With
+End Sub
+
+Private Sub txtLS_Change()
+    With txtLS
+        lblLenLS = BPrintF("%d/%d", .TextLength, .MaxLength)
+    End With
+End Sub
+
+Private Sub txtLS_Exit(ByVal Cancel As MSForms.ReturnBoolean)
+    Dim s As String
+    s = AutoFillBIC(txtBIC)
+    txtBIC = s
+    txtLS = AutoFillLS(s, txtLS, optRKC.Value)
+    DoEvents
+End Sub
+
+Private Sub txtName_Change()
+    With txtName
+        lblLenName = BPrintF("%d/%d", .TextLength, .MaxLength)
+    End With
+End Sub
+
+Private Sub UserForm_Activate()
+    Select Case Mode
+        Case "Pay":
+            With Payment
+                If .Valid Then
+                    txtBIC = .BIC
+                    txtLS = .LS
+                End If
+                txtINN = .INN
+                txtName = .Name
+            End With
+        Case "BIC":
+            Caption = "Справочник банков РФ"
+            lblLS.Enabled = False
+            txtLS.Enabled = False
+            txtLS.BackStyle = fmBackStyleTransparent
+            lblLenLS.Enabled = False
+            lblINN.Enabled = False
+            txtINN.Enabled = False
+            txtINN.BackStyle = fmBackStyleTransparent
+            lblLenINN.Enabled = False
+            lblName.Enabled = False
+            txtName.Enabled = False
+            txtName.BackStyle = fmBackStyleTransparent
+            lblLenName.Enabled = False
+            cmdOk.Enabled = False
+        Case "LS":
+            Caption = "Справочник банков РФ и проверка реквизитов"
+            lblINN.Enabled = False
+            txtINN.Enabled = False
+            lblLenINN.Enabled = False
+            txtINN.BackStyle = fmBackStyleTransparent
+            lblName.Enabled = False
+            txtName.Enabled = False
+            txtName.BackStyle = fmBackStyleTransparent
+            lblLenName.Enabled = False
+            cmdOk.Enabled = False
+        Case "New"
+            Caption = "Реквизиты нового плательщика (исправьте отличия)"
+            With User
+                txtBIC = .BIC
+                txtLS = .LS
+                txtINN = .INN
+                txtName = .Name
+            End With
+            cmdOk.Caption = "Дальше..."
+        Case "Edit"
+            Caption = "Исправление реквизитов плательщика"
+            lblBIC.Enabled = False
+            txtBIC.Enabled = False
+            txtBIC.BackStyle = fmBackStyleTransparent
+            lblLenBIC.Enabled = False
+            lblLS.Enabled = False
+            txtLS.Enabled = False
+            txtLS.BackStyle = fmBackStyleTransparent
+            lblLenLS.Enabled = False
+            fraKey.Enabled = False
+            optBank.Enabled = False
+            optRKC.Enabled = False
+            With User
+                txtBIC = .BIC
+                txtLS = .LS
+                txtINN = .INN
+                txtName = .Name
+            End With
+            cmdOk.Caption = "Дальше..."
+        Case Else
+            'Alert Undefined Mode!
+    End Select
+End Sub
+
 Private Sub UserForm_Initialize()
-    Dim arr As Variant
-    MultiPage.Value = 0
-    cboName.List = Payment.ListNames10
-    cboCustom1.List = Payment.CustomList(1)
-    cboCustom1.List = Payment.CustomList(2)
-    cboBIC.List = Payment.ListBIC10
-    lblBnkSeek.Caption = FileVerInfo(Range("BnkSeek").Text, , True)
+    'If Not BnkSeek2.Valid Then
+    '    lblBIC = lblBIC & " (" & BnkSeek2.None & ")"
+    '    cmdBank.Enabled = False
+    'End If
+    Mode = "Edit"
+    txtBIC.ControlTipText = App.DefBIC
+    txtLS.ControlTipText = App.DefLS
 End Sub
