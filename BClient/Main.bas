@@ -5,8 +5,16 @@ Option Base 1
 DefLng A-Z
 
 Public Const OptionsSection = "Options"
+'Public Const FilesSection = "Files"
+'Public Const PGPSection = "PGP"
+'Public Const SMailSection = "SMail"
 
 Public App As New CApp
+'Public BnkSeek2 As New CBnkSeek2
+'Public User As New CUser
+'Public Payment As New CPayment
+'Public Crypto As New CCrypto
+'Public SMail As New CSMail
 
 Public Sub AutoOpen()
     'Dim s As String

@@ -10,14 +10,14 @@ Public Function CWin(Dos As String) As String
     For i = LBound(C) To UBound(C)
         x = C(i)
         If x > 127 Then
-            If x <= 175 Then 'Р..пр..я
+            If x <= 175 Then 'А..Яа..п
                 C(i) = x + 64
-            ElseIf x >= 224 And x <= 239 Then '№..
+            ElseIf x >= 224 And x <= 239 Then 'р..я
                 C(i) = x + 16
             
-            ElseIf x = 240 Then '
+            ElseIf x = 240 Then 'Ё
                 C(i) = 168
-            ElseIf x = 241 Then '
+            ElseIf x = 241 Then 'ё
                 C(i) = 184
             
             ElseIf x = 193 Or x = 194 Or x = 196 Then
@@ -40,17 +40,17 @@ Public Function CDos(Win As String) As String
     For i = LBound(C) To UBound(C)
         x = C(i)
         If x > 127 Then
-            If x >= 192 And x <= 239 Then 'Р..пр..я
+            If x >= 192 And x <= 239 Then 'А..яа..п
                 C(i) = x - 64
-            ElseIf x >= 240 And x <= 255 Then '№..џ
+            ElseIf x >= 240 And x <= 255 Then 'р..я
                 C(i) = x - 16
             
-            ElseIf x = 168 Then 'Ј240, Х133
+            ElseIf x = 168 Then 'Ё240, Е133
                 C(i) = 133
-            ElseIf x = 184 Then 'И241, х165
+            ElseIf x = 184 Then 'ё241, е165
                 C(i) = 165
             
-            ElseIf x = 185 Then 'Й->N
+            ElseIf x = 185 Then '№->N
                 C(i) = 78
             ElseIf x = 150 Or x = 151 Then '--
                 C(i) = 45
@@ -60,45 +60,3 @@ Public Function CDos(Win As String) As String
     Next
     CDos = BytesToStr(C)
 End Function
-
-'Public Function CWin(Dos As String) As String
-'    Dim i As long, x As long
-'
-'    CWin = Dos
-'    For i = 1 To Len(Dos)
-'        x = Asc(Mid(Dos, i, 1))
-'        If x > 127 Then
-'            If x <= 175 Then 'Р..пр..я
-'                Mid(CWin, i, 1) = Chr(x + 64)
-'            ElseIf x >= 224 And x <= 239 Then '№..џ
-'                Mid(CWin, i, 1) = Chr(x + 16)
-'            ElseIf x = 240 Then 'Ј
-'                Mid(CWin, i, 1) = Chr(168)
-'            ElseIf x = 241 Then 'И
-'                Mid(CWin, i, 1) = Chr(184)
-'            End If
-'        End If
-'    Next
-'End Function
-
-'Public Function CDos(Win As String) As String
-'    Dim i As long, x As long
-'
-'    CDos = Win
-'    For i = 1 To Len(Win)
-'        x = Asc(Mid(Win, i, 1))
-'        If x > 127 Then
-'            If x >= 192 And x <= 239 Then 'Р..пр..я
-'                Mid(CDos, i, 1) = Chr(x - 64)
-'            ElseIf x >= 240 And x <= 255 Then '№..џ
-'                Mid(CDos, i, 1) = Chr(x - 16)
-'            ElseIf x = 168 Then 'Ј
-'                Mid(CDos, i, 1) = Chr(240)
-'            ElseIf x = 184 Then 'И
-'                Mid(CDos, i, 1) = Chr(241)
-'            ElseIf x = 185 Then 'Й
-'                Mid(CDos, i, 1) = Chr(78)
-'            End If
-'        End If
-'    Next
-'End Function

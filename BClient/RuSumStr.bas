@@ -148,27 +148,3 @@ End Function
 Public Function Sum2Tax(TotalRubles As Currency, TaxPercent As Double) As Currency
     Sum2Tax = TotalRubles * TaxPercent / (100 + TaxPercent)
 End Function
-
-'Читает дату в любом формате
-Public Function RDate(v As Variant) As Date 'instead CDate()
-    Dim s As String, n As Long
-    On Error Resume Next
-    If IsDate(v) Then
-        RDate = CDate(v)
-    ElseIf Val(v) > 19000101 Then 'from 01.01.1900
-        RDate = StoD(CStr(v))
-    Else
-        s = CStr(v)
-        n = InStr(10, s, "г", vbTextCompare)
-        If n > 10 Then 'skip Авг.
-            s = Left(s, n - 1)
-        End If
-        RDate = DateValue(s)
-    End If
-End Function
-
-'Проверяет, дата ли это - в любом формате
-Public Function RIsDate(v As Variant) As Boolean 'instead IsDate()
-    On Error Resume Next
-    RIsDate = RDate(v) > 0
-End Function
