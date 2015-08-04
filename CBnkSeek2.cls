@@ -7,6 +7,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+
 Option Explicit
 Option Compare Text
 Option Base 1
@@ -16,7 +17,7 @@ DefLng A-Z
 Private Type BnkSeek2Type
     Deleted As String * 1 'DBF flag
     BIC As String * 9
-    BANK As String * 45
+    Bank As String * 45
     Place As String * 31
     KS As String * 20
     POST As String * 1
@@ -37,7 +38,6 @@ Dim mFound As Boolean
 Private Sub Class_Initialize()
     mFile = App.Setting(BnkSeek2Section, "File")
     If Not IsFile(mFile) Then Me.File = PathDirectories(vbNullString, "BnkSeek2.dbf")
-    'Me.BIC = app.defbic
 End Sub
 
 Public Property Get BIC() As String
@@ -51,7 +51,7 @@ Public Property Let BIC(ByVal NewValue As String)
 End Property
 
 Public Property Get Name() As String
-    Name = CWin(Trim(mRecord.BANK))
+    Name = CWin(Trim(mRecord.Bank))
 End Property
 
 Public Property Get Place() As String
@@ -69,6 +69,8 @@ End Property
 Public Property Get Delivery() As String
     If mRecord.POST = "C" Then
         Delivery = "Электронно"
+    ElseIf Left(mRecord.BIC, 6) = Left(App.DefBIC, 6) Then  '044030...
+        Delivery = vbNullString
     Else
         Delivery = "Почтой"
     End If
@@ -76,7 +78,7 @@ End Property
 
 Public Property Get Info() As String
     With Me
-        Info = BPrintF("%s, %s\nБИК %s, К/С %s", .Name, .Place, .BIC, .KS)
+        Info = Bsprintf("%s, %s\nБИК %s, К/С %s", .Name, .Place, .BIC, .KS)
     End With
 End Property
 
@@ -84,9 +86,17 @@ Public Sub MsgInfo(Optional BIC As String)
     If IsMissing(BIC) Then BIC = mRecord.BIC
     Me.BIC = BIC
     If mFound Then
-        MsgBox BPrintF("Справочник банков РФ:\n\n") & Info, vbInformation, App.Title
+        InfoBox "Справочник БИК для системы Банк-Клиент:\n(состояние на %n)\n\n%s", _
+            mUpdated, Info
     Else
-        MsgBox BPrintF("Банк c БИК %s в файле \'%s\' не найден!", BIC, mFile), vbExclamation, App.Title
+        If OkCancelBox("Банк c БИК %s в файле\n%s (обновлялся %n) не найден!\n\n" & _
+            "Сейчас будет запрошено обновление справочника.\n" & _
+            "Свяжитесь дважды с банком с небольшим интервалом\n" & _
+            "(2-3 минуты) и Вы его получите.", _
+            BIC, mFile, mUpdated) Then
+            OutputFile SMail.Send & "bnkseek2.ask", _
+                Bsprintf("ID:%s %s\n%s %n\n", User.ID, Now, mFile, mUpdated)
+        End If
     End If
 End Sub
 
@@ -97,15 +107,7 @@ Private Function SearchFile(s As String) As Boolean
     On Error GoTo ErrFile
     nFile = FreeFile
     Open mFile For Binary Access Read Shared As nFile
-        'Seek nFile, mDataOffset
-        'Do While Not EOF(nFile)
-        '    'RecNo = (Seek(nFile) - mDataOffset) \ mRecSize
-        '    Get nFile, , mRecord
-        '    If mRecord.NEWNUM = s Then
-        '        SearchFile = True
-        '        Exit Do
-        '    End If
-        'Loop
+        ReInitHeader nFile
         p = mDataOffset + mBICOffset
         Application.Cursor = xlWait
         For n = 1 To mRecCount
@@ -123,7 +125,7 @@ Private Function SearchFile(s As String) As Boolean
     
 ErrFile:
     Application.Cursor = xlDefault
-    ErrorBox Err
+    WarnBox "Ошибка поиска %s в файле %s", s, mFile
     Close nFile
 End Function
 
@@ -135,31 +137,26 @@ Public Property Let File(NewValue As String)
     mFile = NewValue
     If Not IsFile(mFile) Then LocateFile
     If Not LoadFile Then mFile = vbNullString
+    App.Setting("BnkSeek2", "File") = mFile
 End Property
 
 Private Function LoadFile() As Boolean
-    Dim nFile As Long, buf As String * 32, b() As Byte
+    Dim nFile As Long
     LoadFile = False
     On Error GoTo ErrFile
     nFile = FreeFile
     Open mFile For Binary Access Read Shared As nFile
-        Get nFile, , buf
+        ReInitHeader nFile
         On Error GoTo 0
     Close nFile
-    StrToBytes buf, b
-    If b(2) < 90 Then b(2) = b(2) + 100 'Y2K!
-    mUpdated = DateSerial(1900 + b(2), b(3), b(4))
-    mRecCount = BytesToValue(b, 5, 4)
-    mDataOffset = BytesToValue(b, 9, 2) + 1
-    mRecSize = BytesToValue(b, 11, 2)
     LoadFile = mRecSize = ValidRecSize
     If Not LoadFile Then
-        MsgBox "Справочник банков РФ не версии 2!", vbExclamation, App.Title
+        WarnBox "Справочник в файле %s неизвестной версии!", mFile
     End If
     Exit Function
 
 ErrFile:
-    ErrorBox Err, "Ошибка загрузки BnkSeek2"
+    WarnBox "Ошибка загрузки Справочника из файла %s", mFile
     Close nFile
 End Function
 
@@ -176,14 +173,25 @@ Public Property Get Updated() As Variant
 End Property
 
 Public Function LocateFile() As Boolean
-    mFile = App.Path
-    If BrowseForFile(mFile, "Справочники (*.dbf),*.dbf", "Справочник банков РФ (BnkSeek2.dbf)", True) Then
-        App.Setting(BnkSeek2Section, "File") = FullFile(mFile)
+    mFile = App.Path & "BnkSeek2.dbf"
+    If BrowseForFile(mFile, "Справочники (*.dbf),*.dbf", _
+        Bsprintf("Справочник БИК (обычно %s)", mFile), True) Then
+        App.Setting(BnkSeek2Section, "File") = mFile
     End If
     LocateFile = IsFile(mFile)
 End Function
 
 Public Property Get None() As String
-    None = "Справочник банков РФ не установлен!"
+    None = "Справочник БИК не установлен!"
 End Property
 
+Private Sub ReInitHeader(nFile As Long)
+    Dim buf As String * 32, b() As Byte
+    Get nFile, 1, buf
+    StrToBytes buf, b
+    If b(2) < 90 Then b(2) = b(2) + 100 'Y2K!
+    mUpdated = DateSerial(1900 + b(2), b(3), b(4))
+    mRecCount = BytesToValue(b, 5, 4)
+    mDataOffset = BytesToValue(b, 9, 2) + 1
+    mRecSize = BytesToValue(b, 11, 2)
+End Sub

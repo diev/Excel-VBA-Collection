@@ -6,7 +6,8 @@ DefLng A-Z
 
 Public Function BrowseForFile(ByRef File As String, Mask As String, _
     Optional Capt As String = "файл", Optional Force As Boolean = False) As Boolean
-    Dim f As Variant
+    Dim f As Variant, s1 As String, s2 As String
+    s1 = FileNameExt(File)
     If Not Force Then
         If IsFile(File) Then
             BrowseForFile = True
@@ -14,23 +15,34 @@ Public Function BrowseForFile(ByRef File As String, Mask As String, _
         End If
     End If
     On Error Resume Next
-    'ChDrive File
-    'If IsDir(File) Then
-    '    ChDir File
-    'Else
-    '    ChDir FilePath(File)
-    'End If
     With Application
+        'set by default
+        .DefaultFilePath = App.Path
+        ChDrive .DefaultFilePath
+        ChDir .DefaultFilePath
+    
         .DefaultFilePath = FilePath(File) 'Some problems on some computers
         ChDrive .DefaultFilePath
         ChDir .DefaultFilePath
-        f = .GetOpenFilename(Mask & _
-            ",Текстовые файлы (*.txt),*.txt,Все файлы (*.*),*.*", 1, _
-            "Укажите " & Capt)
     End With
-    If f <> False Then 'don't change this!
-        File = CStr(f)
-    End If
+    Do
+        f = Application.GetOpenFilename(Mask & _
+            ",Все файлы (*.*),*.*", 1, _
+            "Укажите " & Capt)
+        If f <> False Then 'don't change this!
+            File = CStr(f)
+        Else
+            BrowseForFile = False
+            Exit Function
+        End If
+        s2 = FileNameExt(File)
+        
+        If Not Force Then Exit Do
+        If UCase(s1) = UCase(s2) Then Exit Do
+        If YesNoBox("ВНИМАНИЕ! Возможно, Вы указали не тот файл,\n" & _
+            "который ждет от Вас программа:\n\n%s\n(вместо ожидаемого %s)\n\n" & _
+            "Все равно использовать этот файл?", File, s1) Then Exit Do
+    Loop
     BrowseForFile = IsFile(File)
 End Function
 
@@ -43,7 +55,7 @@ Public Function BrowseForFiles(ByRef Files As Variant, Mask As String, _
         ChDrive .DefaultFilePath
         ChDir .DefaultFilePath
         f = .GetOpenFilename(Mask & _
-            ",Текстовые файлы (*.txt),*.txt,Все файлы (*.*),*.*", 1, _
+            ",Все файлы (*.*),*.*", 1, _
             "Укажите " & Capt, , True)
     End With
     If f <> False Then 'don't change this!
@@ -64,7 +76,7 @@ Public Function BrowseForSave(ByRef File As String, Mask As String, _
         ChDrive .DefaultFilePath
         ChDir .DefaultFilePath
         f = .GetSaveAsFilename(File, Mask & _
-            ",Текстовые файлы (*.txt),*.txt,Все файлы (*.*),*.*", 1, _
+            ",Все файлы (*.*),*.*", 1, _
             "Укажите " & Capt)
     End With
     If f = False Then Exit Function
@@ -75,9 +87,6 @@ End Function
 Public Function IsFile(File As String) As Boolean
     IsFile = False
     On Error GoTo ErrDir
-    'If Len(File) = 0 Then Exit Function
-    'If Len(Dir(File)) = 0 Then Exit Function
-    'IsFile = True
     IsFile = GetAttr(File)
     IsFile = Not IsDir(File)
 ErrDir:

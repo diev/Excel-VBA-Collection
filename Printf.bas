@@ -1,54 +1,58 @@
 Attribute VB_Name = "Printf"
 Option Explicit
 Option Compare Binary 'BINARY!!!
-Option Base 1
+Option Base 0 'ParamArray!!!
 DefLng A-Z
 
 Dim simple As Boolean, realign As Boolean
 Dim width As String, part As String, before As Boolean, argc As Long
 
-Public Function BPrintF(FormatStr As String, ParamArray Args() As Variant) As String
-    'like the C function sprintf()
+Public Function Bsprintf(FormatStr As String, ParamArray Args() As Variant) As String
+    Bsprintf = Bvsprintf(FormatStr, CVar(Args))
+End Function
+
+Public Function Bvsprintf(FormatStr As String, Args As Variant) As String
+    'like the C function vsprintf()
     'required to investigate user32.wvsprintfA()!
     Dim n1 As Long, n2 As Long, c As String, s As String
-    BPrintF = vbNullString
+    Bvsprintf = vbNullString
     n1 = 1
     Do
         n2 = InStr(n1, FormatStr, "\")
         If n2 = 0 Then
-            BPrintF = BPrintF & Mid(FormatStr, n1)
+            Bvsprintf = Bvsprintf & Mid(FormatStr, n1)
             Exit Do
         Else
-            BPrintF = BPrintF & Mid(FormatStr, n1, n2 - n1)
+            Bvsprintf = Bvsprintf & Mid(FormatStr, n1, n2 - n1)
         End If
         c = Mid(FormatStr, n2 + 1, 1)
         Select Case c
             Case "\":
-                BPrintF = BPrintF & "\"
+                Bvsprintf = Bvsprintf & "\"
             Case "'":
-                BPrintF = BPrintF & """" 'like C \"
+                Bvsprintf = Bvsprintf & """" 'like C \"
             Case "a":
                 Beep
             Case "b":
-                BPrintF = Left(BPrintF, Len(BPrintF) - 1) '''''''''''''''''need to be last
+                Bvsprintf = Left(Bvsprintf, Len(Bvsprintf) - 1) '''''''''''''''''need to be last
             Case "n":
-                BPrintF = BPrintF & vbCrLf
+                Bvsprintf = Bvsprintf & vbCrLf
             'Case "r":
-            '    BPrintF = BPrintF & vbLf 'UNIX
+            '    Bvsprintf = Bvsprintf & vbLf 'UNIX
             Case "t":
-                BPrintF = BPrintF & vbTab
+                Bvsprintf = Bvsprintf & vbTab
             Case "0":
-                BPrintF = BPrintF & vbNullChar
+                Bvsprintf = Bvsprintf & vbNullChar
             Case Else
-                BPrintF = BPrintF & c
+                Bvsprintf = Bvsprintf & c
         End Select
         n1 = n2 + 2: n2 = n1
     Loop
     
     argc = LBound(Args)
     n1 = 1
-    FormatStr = BPrintF
-    BPrintF = vbNullString
+    FormatStr = Bvsprintf
+    Bvsprintf = vbNullString
     Do
         simple = True
         realign = False
@@ -57,64 +61,64 @@ Public Function BPrintF(FormatStr As String, ParamArray Args() As Variant) As St
         before = True
         n2 = InStr(n1, FormatStr, "%")
         If n2 = 0 Then
-            BPrintF = BPrintF & Mid(FormatStr, n1)
+            Bvsprintf = Bvsprintf & Mid(FormatStr, n1)
             Exit Do
         Else
-            BPrintF = BPrintF & Mid(FormatStr, n1, n2 - n1)
+            Bvsprintf = Bvsprintf & Mid(FormatStr, n1, n2 - n1)
         End If
         Do
             n2 = n2 + 1
             c = Mid(FormatStr, n2, 1)
             Select Case c
                 Case "%":
-                    BPrintF = BPrintF & "%"
+                    Bvsprintf = Bvsprintf & "%"
                     Exit Do
                 Case "c":
-                    BPrintF = BPrintF & Chr(Args(argc))
+                    Bvsprintf = Bvsprintf & Chr(Args(argc))
                     argc = argc + 1
                     Exit Do
                 Case "d":
-                    BPrintF = BPrintF & DFormat(Args(argc))
+                    Bvsprintf = Bvsprintf & DFormat(Args(argc))
                     argc = argc + 1
                     Exit Do
                 Case "s":
-                    BPrintF = BPrintF & SFormat(Args(argc))
+                    Bvsprintf = Bvsprintf & SFormat(Args(argc))
                     argc = argc + 1
                     Exit Do
                     
                 'Changed behavior!
                 Case "f":
-                    BPrintF = BPrintF & FFormat(Args(argc))
+                    Bvsprintf = Bvsprintf & FFormat(Args(argc))
                     argc = argc + 1
                     Exit Do
                 Case "F":
-                    BPrintF = BPrintF & PFormat(Args(argc))
+                    Bvsprintf = Bvsprintf & PFormat(Args(argc))
                     argc = argc + 1
                     Exit Do
                 Case "x":
-                    BPrintF = BPrintF & DFormat(LCase(To36(Args(argc))))
+                    Bvsprintf = Bvsprintf & DFormat(LCase(To36(Args(argc))))
                     argc = argc + 1
                     Exit Do
                 Case "X":
-                    BPrintF = BPrintF & DFormat(UCase(To36(Args(argc))))
+                    Bvsprintf = Bvsprintf & DFormat(UCase(To36(Args(argc))))
                     argc = argc + 1
                     Exit Do
                     
                 'Extra formats!!!
                 Case "n":
-                    BPrintF = BPrintF & Format(Args(argc), "dd.MM.yyyy")
+                    Bvsprintf = Bvsprintf & Format(Args(argc), "dd.MM.yyyy") 'DtoC
                     argc = argc + 1
                     Exit Do
                 Case "N":
-                    BPrintF = BPrintF & DtoS(Args(argc))
+                    Bvsprintf = Bvsprintf & DtoS(Args(argc)) 'yyyymmdd DtoS
                     argc = argc + 1
                     Exit Do
                 Case "t":
-                    BPrintF = BPrintF & Format(Args(argc), "HH:mm")
+                    Bvsprintf = Bvsprintf & Format(Args(argc), "HH:mm")
                     argc = argc + 1
                     Exit Do
                 Case "T":
-                    BPrintF = BPrintF & Format(Args(argc), "dd.MM.yyyy HH:mm")
+                    Bvsprintf = Bvsprintf & Format(Args(argc), "dd.MM.yyyy HH:mm")
                     argc = argc + 1
                     Exit Do
                 
@@ -154,7 +158,7 @@ Public Function BPrintF(FormatStr As String, ParamArray Args() As Variant) As St
                 
                 'Something goes wrong...
                 Case Else
-                    BPrintF = BPrintF & c
+                    Bvsprintf = Bvsprintf & c
                     Exit Do
             End Select
         Loop

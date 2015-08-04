@@ -14,28 +14,28 @@ Public Function BytesToStr(Bytes() As Byte) As String
     CopyMemory ByVal BytesToStr, Bytes(LB), Length
 End Function
 
-Public Function BytesToValue(Bytes() As Byte, Optional Start As Long = 1, Optional Length As Long = 1) As Long
+Public Function BytesToValue(Bytes() As Byte, Optional start As Long = 1, Optional Length As Long = 1) As Long
     Select Case Length
         Case 1: 'byte
-            BytesToValue = Bytes(Start)
+            BytesToValue = Bytes(start)
         Case 2 To 4: 'word/dword
-            CopyMemory BytesToValue, Bytes(Start), Length
+            CopyMemory BytesToValue, Bytes(start), Length
     End Select
 End Function
 
-Public Sub ValueToBytes(NewValue As Long, Bytes() As Byte, Optional Start As Long = 1, Optional Length As Long = 1)
+Public Sub ValueToBytes(NewValue As Long, Bytes() As Byte, Optional start As Long = 1, Optional Length As Long = 1)
     Select Case Length
         Case 1: 'byte
-            Bytes(Start) = NewValue
+            Bytes(start) = NewValue
         Case 2 To 4: 'word/dword
-            CopyMemory Bytes(Start), NewValue, Length
+            CopyMemory Bytes(start), NewValue, Length
     End Select
 End Sub
 
-Public Function TrimNullChar(Bytes() As Byte, Optional Start As Long = 1) As String
+Public Function TrimNullChar(Bytes() As Byte, Optional start As Long = 1) As String
     Dim Length As Long: Length = UBound(Bytes)
     Dim s As String: s = String(Length, vbNullChar)
-    CopyMemory ByVal s, Bytes(Start), Length
+    CopyMemory ByVal s, Bytes(start), Length
     TrimNullChar = Left(s, InStr(s & vbNullChar, vbNullChar) - 1)
 End Function
 

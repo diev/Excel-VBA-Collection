@@ -7,19 +7,19 @@ DefLng A-Z
 Const MenuSection = "Menu"
 
 Dim mMenu As Variant
-Dim mRMenu As Variant
+'Dim mRMenu As Variant
 Dim mBar As Variant
-Dim mBar1 As Variant
+'Dim mBar1 As Variant
 
 Public Sub InitMenuBars()
     On Error Resume Next
     Application.StatusBar = "Загрузка меню..."
-    If App.Setting(MenuSection, "Caption") = vbNullString Then WriteMenuINI
+    If App.NoSetting(MenuSection, "Caption") Then WriteMenuINI
     Application.ScreenUpdating = False
     AddMenu
-    AddRClick
+    'AddRClick
     AddBar
-    AddBar1
+    'AddBar1
     Application.ScreenUpdating = True
     Application.StatusBar = False
 End Sub
@@ -35,14 +35,14 @@ Public Sub CloseMenuBars()
         End With
     'End If
     'If mBar1 <> Nothing Then
-        With mBar1
-            App.Setting(MenuSection, "Bar1Position") = .Position
-            App.Setting(MenuSection, "Bar1Visible") = BoolToStr(.Visible)
-            .Delete
-        End With
+        'With mBar1
+        '    App.Setting(MenuSection, "Bar1Position") = .Position
+        '    App.Setting(MenuSection, "Bar1Visible") = BoolToStr(.Visible)
+        '    .Delete
+        'End With
     'End If
     CommandBars.ActiveMenuBar.Reset
-    CommandBars("cell").Reset
+    'CommandBars("cell").Reset 'RClick
     Application.ScreenUpdating = True
 End Sub
 
@@ -64,17 +64,17 @@ Private Sub AddMenu()
     End With
 End Sub
     
-Private Sub AddRClick()
-    On Error Resume Next
-    'mRMenu.Delete
-    CommandBars("cell").Reset 'internal name!
-    If StrToBool(App.Setting(MenuSection, "RClick")) Then
-        Set mRMenu = CommandBars("cell").Controls.Add(Type:=msoControlPopup, _
-            before:=1, temporary:=True)
-        AddSubMenu mRMenu, App.Setting(MenuSection, "Caption") & "\\" & MenuSection
-        CommandBars("cell").Controls(2).BeginGroup = True
-    End If
-End Sub
+'Private Sub AddRClick()
+'    On Error Resume Next
+'    'mRMenu.Delete
+'    CommandBars("cell").Reset 'internal name!
+'    If StrToBool(App.Setting(MenuSection, "RClick")) Then
+'        Set mRMenu = CommandBars("cell").Controls.Add(Type:=msoControlPopup, _
+'            before:=1, temporary:=True)
+'        AddSubMenu mRMenu, App.Setting(MenuSection, "Caption") & "\\" & MenuSection
+'        CommandBars("cell").Controls(2).BeginGroup = True
+'    End If
+'End Sub
     
 Private Sub AddBar()
     Dim A As Variant, i As Long, n As Long, s As String, Item As Variant
@@ -113,18 +113,18 @@ Private Sub AddBar()
     End If
 End Sub
 
-Private Sub AddBar1()
-    Dim A As Variant, i As Long, n As Long, Item As Variant
-    On Error Resume Next
-    mBar1.Delete
-    If StrToBool(App.Setting(MenuSection, "Bar1Add")) Then
-        Set mBar1 = CommandBars.Add(Name:=CWin(App.Setting(MenuSection, "Bar1")), _
-            Position:=App.Setting(MenuSection, "Bar1Position"), temporary:=True)
-        Set Item = mBar1.Controls.Add(Type:=msoControlPopup, temporary:=True)
-        AddSubMenu Item, App.Setting(MenuSection, "Bar1Menu") & "\\" & MenuSection
-        mBar1.Visible = StrToBool(App.Setting(MenuSection, "Bar1Visible"))
-    End If
-End Sub
+'Private Sub AddBar1()
+'    Dim A As Variant, i As Long, n As Long, Item As Variant
+'    On Error Resume Next
+'    mBar1.Delete
+'    If StrToBool(App.Setting(MenuSection, "Bar1Add")) Then
+'        Set mBar1 = CommandBars.Add(Name:=CWin(App.Setting(MenuSection, "Bar1")), _
+'            Position:=App.Setting(MenuSection, "Bar1Position"), temporary:=True)
+'        Set Item = mBar1.Controls.Add(Type:=msoControlPopup, temporary:=True)
+'        AddSubMenu Item, App.Setting(MenuSection, "Bar1Menu") & "\\" & MenuSection
+'        mBar1.Visible = StrToBool(App.Setting(MenuSection, "Bar1Visible"))
+'    End If
+'End Sub
 
 Private Sub AddSubMenu(subMenu As Variant, s As String)
     Dim A As Variant, i As Long, n As Long, ss As String, Sec As String, Item As Variant
@@ -142,7 +142,7 @@ Private Sub AddSubMenu(subMenu As Variant, s As String)
         Else
             .Caption = CWin(ss)
         End If
-        .Enabled = .Enabled And CheckEnabled(CStr(A(4)))
+        '.Enabled = .Enabled And CheckEnabled(CStr(A(4)))
         '.Tag = CStr(A(4))
     End With
     With subMenu.CommandBar.Controls
@@ -181,7 +181,7 @@ Private Sub AddMenuItem(newItem As Variant, s As String)
         End If
         .OnAction = CStr(A(2))
         .FaceId = CLng(A(3))
-        .Enabled = .Enabled And CheckEnabled(CStr(A(4)))
+        '.Enabled = .Enabled And CheckEnabled(CStr(A(4)))
         '.Tag = CStr(A(4))
         '.Style = msoButtonCaption
         .Style = msoButtonIconAndCaption
@@ -207,17 +207,17 @@ Private Sub AddBarItem(newItem As Variant, s As String)
         '.Caption = Left(.TooltipText, 3)
         .OnAction = CStr(A(2))
         .FaceId = CLng(A(3))
-        .Enabled = .Enabled And CheckEnabled(CStr(A(4)))
+        '.Enabled = .Enabled And CheckEnabled(CStr(A(4)))
         '.Tag = CStr(A(4))
         .Style = msoButtonIcon
         '.Style = msoButtonIconAndCaption
     End With
 End Sub
 
-Private Function CheckEnabled(Tag As String) As Boolean
-    CheckEnabled = True
-    If Tag = vbNullString Then Exit Function
-    If InStr(Tag, "B") Then CheckEnabled = CheckEnabled And BnkSeek2.Valid
-    If InStr(Tag, "P") Then CheckEnabled = CheckEnabled And PGP.Valid
-    If InStr(Tag, "S") Then CheckEnabled = CheckEnabled And SMail.Valid
-End Function
+'Private Function CheckEnabled(Tag As String) As Boolean
+'    CheckEnabled = True
+'    If Tag = vbNullString Then Exit Function
+'    If InStr(Tag, "B") Then CheckEnabled = CheckEnabled And BnkSeek2.Valid
+'    If InStr(Tag, "P") Then CheckEnabled = CheckEnabled And PGP.Valid
+'    If InStr(Tag, "S") Then CheckEnabled = CheckEnabled And SMail.Valid
+'End Function

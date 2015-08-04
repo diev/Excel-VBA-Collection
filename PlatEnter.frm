@@ -5,14 +5,18 @@ Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} PlatEnter
    ClientLeft      =   30
    ClientTop       =   270
    ClientWidth     =   5505
+   HelpContextID   =   440000
    OleObjectBlob   =   "PlatEnter.frx":0000
    StartUpPosition =   1  'CenterOwner
+   WhatsThisButton =   -1  'True
+   WhatsThisHelp   =   -1  'True
 End
 Attribute VB_Name = "PlatEnter"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 
 Option Explicit
 Option Compare Text
@@ -32,21 +36,20 @@ Private Sub CalcTax()
             cboTax.Text = cboTax.Text & "%"
         End If
         n = PlatFormat(Sum2Tax(RVal(txtSum), n))
-        t = BPrintF("В том числе НДС %s: %s.", cboTax.Text, n)
+        t = Bsprintf("В том числе НДС %s: %s.", cboTax.Text, n)
     End If
     cmdTaxAdd.Caption = n
     cmdTaxAdd.ControlTipText = t
 End Sub
 
 Private Sub CalcTaxAdd()
-    'If Len(txtDetails) = 0 Then
-    '    txtDetails = cmdTaxAdd.ControlTipText
-    'ElseIf Right(txtDetails, 1) = " " Then
-    '    txtDetails = txtDetails & cmdTaxAdd.ControlTipText
-    'Else
-    '    txtDetails = txtDetails & " " & cmdTaxAdd.ControlTipText
-    'End If
-    txtDetails.SelText = cmdTaxAdd.ControlTipText
+    Dim i As Long
+    i = InStr(txtDetails, "!")
+    If i > 0 Then
+        txtDetails = Left(txtDetails, i) & cmdTaxAdd.ControlTipText
+    Else
+        txtDetails = txtDetails & "!" & cmdTaxAdd.ControlTipText
+    End If
 End Sub
 
 Private Sub cboTax_Change()
@@ -70,7 +73,7 @@ End Sub
 
 Private Sub sbrRows_Change()
     With sbrRows
-        .ControlTipText = BPrintF("Строка %d", .Value)
+        .ControlTipText = Bsprintf("Строка %d", .Value)
     End With
     If mLoading Then Exit Sub
     With Payment
@@ -87,8 +90,8 @@ Private Sub sbrRows_Change()
             Caption = "Получатель: " & .Name
             cmdPayee.Font.Bold = False
             cmdPayee.ControlTipText = .Name
-            lblNo = BPrintF("Номер %d:", .DocNo)
-            lblDate = BPrintF("Дата %n:", .DocDate)
+            lblNo = Bsprintf("Номер %d:", .DocNo)
+            lblDate = Bsprintf("Дата %n:", .DocDate)
             cboQueue = CStr(.Queue)
             txtSum = PlatFormat(.Sum)
             txtDetails = .Details
@@ -108,11 +111,7 @@ End Sub
 
 Private Sub txtDetails_Change()
     With txtDetails
-        lblLenDetails = BPrintF("%d/%d", .TextLength, .MaxLength)
-        'If InStr(1, .Text, "  ") > 0 Then
-        '    MsgBox "Не надо вводить лишние пробелы!", vbExclamation, App.Title
-        '    .SetFocus
-        'End If
+        lblLenDetails = Bsprintf("%d/%d", .TextLength, .MaxLength)
     End With
 End Sub
 
@@ -124,68 +123,61 @@ Private Sub txtSum_Change()
 End Sub
 
 Private Sub cmdCancel_Click()
-    Hide
-    'ReadArchive 'restore back
     Unload Me
 End Sub
 
 Private Sub cmdOk_Click()
     Dim s As String
     If Val(txtNo) = 0 Then
-        MsgBox "Не введен номер поручения!", vbExclamation, App.Title
+        WarnBox "Не введен номер поручения!"
         txtNo.SetFocus
         Exit Sub
     End If
     If Val(txtNo) > User.NoMax Then
-        MsgBox "Номер поручения превышает допустимый предел!", vbExclamation, App.Title
+        WarnBox "Номер поручения превышает допустимый предел!"
         txtNo.SetFocus
         Exit Sub
     End If
     If Val(txtNo) < User.NoMin Then
-        MsgBox "Номер поручения ниже допустимого предела!", vbExclamation, App.Title
+        WarnBox "Номер поручения ниже допустимого предела!"
         txtNo.SetFocus
         Exit Sub
     End If
     If RVal(txtSum) = 0 Then
-        MsgBox "Не введена сумма платежа!", vbExclamation, App.Title
+        WarnBox "Не введена сумма платежа!"
         txtSum.SetFocus
         Exit Sub
     End If
     s = txtDetails
     If InStr(1, txtDetails, "^") > 0 Then
-        MsgBox BPrintF("Нельзя вводить символ \'^\'!"), vbExclamation, App.Title
+        WarnBox "Нельзя вводить символ \'^\'!"
         txtDetails.SetFocus
         Exit Sub
     End If
     With txtDetails
         If InStr(1, .Text, "  ") > 0 Then
-            MsgBox "Не надо вводить лишние пробелы!", vbExclamation, App.Title
+            WarnBox "Не надо вводить лишние пробелы!"
             .Text = StrSpaces1(s)
         End If
         If txtDetails.TextLength = 0 Then
-            MsgBox "Не введено назначение платежа!", vbExclamation, App.Title
+            WarnBox "Не введено назначение платежа!"
             txtDetails.SetFocus
             Exit Sub
         End If
     End With
     With Payment
         If Len(.Name) = 0 Then
-            MsgBox "Не введен получатель платежа!", vbExclamation, App.Title
+            WarnBox "Не введен получатель платежа!"
             cmdPayee_Click
             Exit Sub
         End If
         If Len(.BIC) = 0 Then
-            MsgBox "Не введен банк получателя платежа!", vbExclamation, App.Title
+            WarnBox "Не введен банк получателя платежа!"
             cmdPayee_Click
             Exit Sub
         End If
         If Len(.LS) = 0 Then
-            MsgBox "Не введен л/с получателя платежа!", vbExclamation, App.Title
-            cmdPayee_Click
-            Exit Sub
-        End If
-        If Len(.INN) = 0 Then
-            MsgBox "Не введен ИНН получателя платежа!", vbExclamation, App.Title
+            WarnBox "Не введен л/с получателя платежа!"
             cmdPayee_Click
             Exit Sub
         End If
@@ -221,6 +213,7 @@ End Sub
 
 Private Sub UserForm_Initialize()
     Dim n As Long
+    On Error Resume Next
     mLoading = True
     With Payment
         .ReadRow 0
@@ -229,13 +222,14 @@ Private Sub UserForm_Initialize()
         Else
             Caption = "Получатель: " & .Name
             cmdPayee.ControlTipText = .Name
-            lblNo = BPrintF("Номер %d:", .DocNo)
-            lblDate = BPrintF("Дата %n:", .DocDate)
+            lblNo = Bsprintf("Номер %d:", .DocNo)
+            lblDate = Bsprintf("Дата %n:", .DocDate)
             cboQueue = CStr(.Queue)
             txtSum = PlatFormat(.Sum)
             txtDetails = .Details
         End If
         n = .RowsCount + 1
+        If n < 2 Then n = 2
         sbrRows.Max = n
         If .Row > n Then .Row = n
         sbrRows.Value = .Row

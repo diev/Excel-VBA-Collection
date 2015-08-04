@@ -4,7 +4,7 @@ Option Compare Text
 Option Base 1
 DefLng A-Z
 
-'Private Declare Function GetPrivateProfileInt Lib "kernel32" Alias "GetPrivateProfileIntA" (ByVal lpSectionName As String, ByVal lpKeyName As String, ByVal nDefault As Long, ByVal lpFileName As String) As Long
+Private Declare Function GetPrivateProfileInt Lib "kernel32" Alias "GetPrivateProfileIntA" (ByVal lpSectionName As String, ByVal lpKeyName As String, ByVal nDefault As Long, ByVal lpFileName As String) As Long
 Private Declare Function GetPrivateProfileString Lib "kernel32" Alias "GetPrivateProfileStringA" (ByVal lpSectionName As String, ByVal lpKeyName As Any, ByVal lpDefault As String, ByVal lpReturnedString As String, ByVal nSize As Long, ByVal lpFileName As String) As Long
 Private Declare Function WritePrivateProfileString Lib "kernel32" Alias "WritePrivateProfileStringA" (ByVal lpSectionName As String, ByVal lpKeyName As Any, ByVal lpString As Any, ByVal lpFileName As String) As Long
 'Private Declare Function GetPrivateProfileSection Lib "kernel32" Alias "GetPrivateProfileSectionA" (ByVal lpSectionName As String, ByVal lpReturnedString As String, ByVal nSize As Long, ByVal lpFileName As String) As Long
@@ -13,11 +13,22 @@ Private Declare Function WritePrivateProfileString Lib "kernel32" Alias "WritePr
 'Private Declare Function GetPrivateProfileStruct Lib "kernel32" Alias "GetPrivateProfileStructA" (ByVal lpSectionName As String, ByVal lpKeyName As Any, ByVal lpReturnedString As String, ByVal nSize As Long, ByVal lpFileName As String) As Boolean
 'Private Declare Function WritePrivateProfileStruct Lib "kernel32" Alias "WritePrivateProfileStructA" (ByVal lpSectionName As String, ByVal lpKeyName As Any, ByVal lpString As String, ByVal nSize As Long, ByVal lpFileName As String) As Boolean
 
+Public Function NumIniFile(File As String, Section As String, Key As String, Optional Default As String = 0) As Long
+    NumIniFile = GetPrivateProfileInt(Section, Key, Default, File)
+End Function
+
 Public Function ReadIniFile(File As String, Section As String, Key As String, Optional Default As String = vbNullString) As String
     Dim buf As String, i As Long
     buf = Space(255)
     i = GetPrivateProfileString(Section, Key, Default, buf, 255, File)
     ReadIniFile = Left(buf, i)
+End Function
+
+Public Function EmptyIniFile(File As String, Section As String, Key As String) As Boolean
+    Dim buf As String, i As Long
+    buf = Space(255)
+    i = GetPrivateProfileString(Section, Key, vbNullString, buf, 255, File)
+    EmptyIniFile = i = 0
 End Function
 
 Public Sub WriteIniFile(File As String, Section As String, Key As String, Optional vNewValue As String = vbNullString)

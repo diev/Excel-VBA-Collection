@@ -5,8 +5,11 @@ Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} Logon
    ClientLeft      =   45
    ClientTop       =   330
    ClientWidth     =   5505
+   HelpContextID   =   410000
    OleObjectBlob   =   "Logon.frx":0000
    StartUpPosition =   1  'CenterOwner
+   WhatsThisButton =   -1  'True
+   WhatsThisHelp   =   -1  'True
 End
 Attribute VB_Name = "Logon"
 Attribute VB_GlobalNameSpace = False
@@ -15,24 +18,18 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
 
-
-
 Option Explicit
 Option Compare Text
 Option Base 1
 DefLng A-Z
 
 Private Sub chkChar_Click()
-    If chkChar Then
-        txtPass.PasswordChar = vbNullString
-        App.Setting("PGP", "ShowPass") = "1"
-    Else
-        txtPass.PasswordChar = "*"
-        App.Setting("PGP", "ShowPass") = "0"
-    End If
+    txtPass.PasswordChar = IIf(chkChar, vbNullString, "*")
+    PGP.ShowPass = chkChar
 End Sub
 
 Private Sub cmdCancel_Click()
+    User.Demo = True
     Unload Me
 End Sub
 
@@ -40,6 +37,7 @@ Private Sub cmdOk_Click()
     Hide
     If Val(txtID) = 0 Then txtID = User.DemoID
     User.ID = txtID
+    PGP.ID = txtID
     If txtPass.TextLength > 0 Then
         PGP.Password = CDos(txtPass)
     Else
@@ -53,16 +51,20 @@ Private Sub cmdPGPPass_Click()
 End Sub
 
 Private Sub txtID_Change()
-    cmdOk.Enabled = txtID.TextLength = 0 Or txtID.TextLength = 3
     cmdPGPPass.Enabled = fraPGP.Enabled And txtID = User.ID
 End Sub
 
 Private Sub UserForm_Initialize()
+    On Error Resume Next
     With App
-        txtID = User.ID
+        With txtID
+            .Text = User.ID
+            .SelStart = 0
+            .SelLength = .TextLength
+        End With
         If PGP.Valid Then
             'txtPass = PGP.Password
-            chkChar = StrToBool(.Setting("PGP", "ShowPass"))
+            chkChar = PGP.ShowPass
             cmdPGPPass.Enabled = txtID = User.ID
         Else
             fraPGP.Caption = PGP.None

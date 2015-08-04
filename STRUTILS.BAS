@@ -5,43 +5,27 @@ Option Base 1
 DefLng A-Z
 
 Public Function DtoS(YYYYMMDD As Variant) As String
-    If RIsDate(YYYYMMDD) Then
-        DtoS = Format(YYYYMMDD, "yyyymmdd")
-    Else
-        DtoS = Space(8)
-    End If
+    On Error Resume Next
+    DtoS = vbNullString
+    DtoS = Format(YYYYMMDD, "yyyymmdd")
 End Function
 
-Public Function DtoC(DDMMYY As Variant, Optional Century As Boolean = False) As String
-    If RIsDate(DDMMYY) Then
-        DtoC = Format(DDMMYY, IIf(Century, "dd.MM.yyyy", "dd.MM.yy"))
-    Else
-        DtoC = IIf(Century, "  .  .    ", "  .  .  ")
-    End If
-End Function
-
-Public Function DtoSC(DDMMYY As Variant) As String
-    If RIsDate(DDMMYY) Then
-        DtoSC = Format(DDMMYY, "dd.MM.yyyy")
-    Else
-        DtoSC = vbNullString
-    End If
+Public Function DtoC(DDMMYY As Variant, Optional Century As Boolean = True) As String
+    On Error Resume Next
+    DtoC = vbNullString
+    DtoC = Format(DDMMYY, IIf(Century, "dd.MM.yyyy", "dd.MM.yy"))
 End Function
 
 Public Function StoD(YYYYMMDD As String) As Date
-    On Error GoTo ErrDate
+    On Error Resume Next
+    StoD = DateValue("01.01.1970")
     StoD = DateValue(Left(YYYYMMDD, 4) & "-" & Mid(YYYYMMDD, 5, 2) & "-" & Right(YYYYMMDD, 2))
-    Exit Function
-ErrDate:
-    StoD = RDate("01.01.1950")
 End Function
 
 Public Function CTime(HHMM As Variant) As String
-    If IsDate(HHMM) Then
-        CTime = Format(CDate(HHMM), "HH:mm")
-    Else
-        CTime = "00:00"
-    End If
+    On Error Resume Next
+    CTime = "00:00"
+    CTime = Format(CDate(HHMM), "HH:mm")
 End Function
 
 'Only one space between must survive!
@@ -108,27 +92,27 @@ Public Function StrToBool(s As String) As Boolean 'Default = False
 End Function
 
 Public Sub StrToLines(s As String, A() As String)
-    Dim Start As Long, pos As Long, Row As Long
+    Dim start As Long, pos As Long, Row As Long
     Dim buf As String
     ReDim A(InStrCount(s, vbLf) + 1)
-    Start = 1: Row = 0
-    If InStr(Start, s, vbCrLf) > 0 Then 'DOS
+    start = 1: Row = 0
+    If InStr(start, s, vbCrLf) > 0 Then 'DOS
         s = s & vbCrLf
         Do
-            pos = InStr(Start, s, vbCrLf)
+            pos = InStr(start, s, vbCrLf)
             If pos = 0 Then Exit Do 'no eoln is eof
-            buf = Mid(s, Start, pos - Start)
-            Start = pos + 2
+            buf = Mid(s, start, pos - start)
+            start = pos + 2
             Row = Row + 1
             A(Row) = RTrim(buf)
         Loop
     Else 'UNIX
         s = s & vbLf
         Do
-            pos = InStr(Start, s, vbLf)
+            pos = InStr(start, s, vbLf)
             If pos = 0 Then Exit Do 'no eoln is eof
-            buf = Mid(s, Start, pos - Start)
-            Start = pos + 1
+            buf = Mid(s, start, pos - start)
+            start = pos + 1
             Row = Row + 1
             A(Row) = RTrim(buf)
         Loop
@@ -174,3 +158,23 @@ Public Sub WrapStrToArr(What As String, Arr() As String, Length As Long)
     Next
 End Sub
 
+Public Function FindTerm(s As String) As String
+    Dim i As Long, b() As Byte
+    StrToBytes s, b
+    For i = 1 To Len(s)
+        Select Case b(i)
+            Case 59, 94, 124 ';^|
+                FindTerm = Chr(b(i))
+                Exit Function
+                
+            'Case 9, 32, 46 '.
+            'Case 48 To 57 '0..9
+            'Case 65 To 90 'A..Z
+            'Case 97 To 122 'a..z
+            'Case Else
+            '    FindTerm = Chr(b(i))
+            '    Exit Function
+        End Select
+    Next
+    FindTerm = vbNullString
+End Function

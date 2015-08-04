@@ -5,16 +5,17 @@ Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} SaveAsPass
    ClientLeft      =   45
    ClientTop       =   330
    ClientWidth     =   5505
+   HelpContextID   =   450000
    OleObjectBlob   =   "SaveAsPass.frx":0000
    StartUpPosition =   1  'CenterOwner
+   WhatsThisButton =   -1  'True
+   WhatsThisHelp   =   -1  'True
 End
 Attribute VB_Name = "SaveAsPass"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-
-
 
 
 Option Explicit
@@ -27,14 +28,14 @@ Private Sub chkChar_Click()
 End Sub
 
 Private Sub cmdCancel_Click()
-    ActiveWorkbook.Saved = False
+    Workbooks(App.BookName).Saved = False
     App.CloseAllowed = False
     Unload Me
 End Sub
 
 Private Sub cmdOk_Click()
     On Error Resume Next
-    With ActiveWorkbook
+    With Workbooks(App.BookName)
         If optNoPass Then
             If .HasPassword Then
                 Kill .FullName
@@ -46,12 +47,12 @@ Private Sub cmdOk_Click()
             .Save
         ElseIf optNewPass Then
             If txtPass1.TextLength = 0 Or txtPass2.TextLength = 0 Then
-                MsgBox "Пароль не введен!", vbExclamation, App.Title
+                WarnBox "Пароль не введен!"
                 txtPass1.SetFocus
                 Exit Sub
             End If
             If txtPass1 <> txtPass2 Then
-                MsgBox "Пароли не совпадают!", vbExclamation, App.Title
+                WarnBox "Пароли не совпадают!"
                 txtPass2.SetFocus
                 Exit Sub
             End If
@@ -88,9 +89,10 @@ Private Sub optPrevPass_Click()
 End Sub
 
 Private Sub UserForm_Initialize()
-    'chkChar = StrToBool(App.Setting("PGP", "ShowPass"))
+    On Error Resume Next
+    'chkChar = PGP.ShowPass
     EnableBoxes
-    If ActiveWorkbook.HasPassword Then
+    If Workbooks(App.BookName).HasPassword Then
         optPrevPass.Enabled = True
         optPrevPass = True
     End If

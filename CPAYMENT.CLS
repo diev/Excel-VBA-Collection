@@ -15,6 +15,7 @@ DefLng A-Z
 Const PaySheet = "Платежка"
 Const BaseRange = "$A$1"
 Const TERM = "^"
+Const WRAP = "!"
 
 Dim mRow As Long
 Dim mError As String
@@ -48,28 +49,28 @@ Const ColQueue = 10
 Const ColDetails = 11
 
 'Диапазон печати бланка на листе
-Const CellRange = "$A$1:$AK$37"
+Const CellRange = "$A$1:$AI$38"
 
 'Подгон печатного листа под квадратные ячейки 5мм
-Const CellWidth = 1.71
-Const CellHeight = 15#
+Const CellWidth = 1.8
+Const CellHeight = 14.5
 
 'Ячейки данных на бланке платежки
-Const CellNo = "L4"
+Const CellNo = "M4"
 Const CellDate = "R4"
 Const CellDelivery = "Z4"
 Const CellAmount = "E6"
 Const CellSum = "X9"
 Const CellUserINN = "C9"
 Const CellUserName = "A10"
-Const CellUserLS = "Y12"
+Const CellUserLS = "X12"
 Const CellUserBank = "A15"
 Const CellUserBIC = "X15"
-Const CellUserPlace = "A16"
+Const CellUserPlace = "G17"
 Const CellUserKS = "X16"
 Const CellBank = "A18"
 Const CellBIC = "X18"
-Const CellPlace = "A19"
+Const CellPlace = "G20"
 Const CellKS = "X19"
 Const CellLS = "X21"
 Const CellINN = "C21"
@@ -84,10 +85,6 @@ Private Sub Class_Initialize()
     mError = vbNullString
     Me.Row = 2
     FillBlank
-End Sub
-
-Private Sub Class_Terminate()
-    
 End Sub
 
 Public Property Get DocNo() As Variant
@@ -146,9 +143,9 @@ Public Property Let BIC(ByVal vNewValue As String)
     mBIC = vNewValue
 End Property
 
-Public Property Get BANK() As String
+Public Property Get Bank() As String
     BnkSeek2.BIC = Me.BIC
-    BANK = BnkSeek2.Name
+    Bank = BnkSeek2.Name
 End Property
 
 Public Property Get Place() As String
@@ -184,7 +181,9 @@ End Property
 
 Public Property Get FileName() As String
     BnkSeek2.BIC = mBIC
-    FileName = BPrintF("%s%X%X%02d%03d", BnkSeek2.NamePost, _
+    'FileName = Bsprintf("%s%X%X%02d%03d", BnkSeek2.NamePost, _
+    '    Year(mDocDate) - 2000, Month(mDocDate), Day(mDocDate), mDocNo)
+    FileName = Bsprintf("A%X%X%02d%03d", _
         Year(mDocDate) - 2000, Month(mDocDate), Day(mDocDate), mDocNo)
     If Len(mFileName) = 0 Then mFileName = FileName
 End Property
@@ -205,7 +204,7 @@ Public Property Get Valid() As Boolean
     mError = vbNullString
     If mDocNo <= 0 Then
         mError = "Номер документа не указан"
-    ElseIf Year(mDocDate) < 2000 Then
+    ElseIf Year(mDocDate) < 1999 Then
         mError = "Дата документа не действительна"
     ElseIf mSum <= 0 Then
         mError = "Сумма документа не указана"
@@ -217,100 +216,101 @@ Public Property Get Valid() As Boolean
         mError = "Не указан л/с получателя"
     ElseIf Len(mBIC) = 0 Then
         mError = "Не указан БИК банка получателя"
-    ElseIf Len(Me.BANK) = 0 Then
+    ElseIf Len(Me.Bank) = 0 Then
         mError = "Не найден банк получателя"
-    ElseIf Right(mFileName, 3) = "000" Then
+    ElseIf Right(mFileName, 3) = "000" Then 'нет номера платежки
         mError = "Сформировано неправильное имя файла"
-    ElseIf Right(User.LS, 3) <> User.ID Then
-        mError = "Попытка отправить с чужого л/с"
+    ElseIf Right(User.LS, Len(User.ID)) <> User.ID Then
+        mError = Bsprintf("Попытка отправить от клиента %s\nсо счета %s", User.ID, User.LS)
     End If
     Valid = Len(mError) = 0
 End Property
 
 Public Sub FillBlank()
-    Dim R As Range
+    Dim r As Range
     On Error Resume Next
     Application.ScreenUpdating = False
-    Set R = Worksheets(PaySheet).Range(BaseRange)
-    R.Range(CellUserName) = User.Name
-    R.Range(CellUserINN) = User.INN
-    R.Range(CellUserLS) = User.LS
-    R.Range(CellUserBIC) = User.BIC
-    R.Range(CellUserBank) = User.BANK
-    R.Range(CellUserPlace) = User.Place
-    R.Range(CellUserKS) = User.KS
-    R.Range(CellSign1) = User.Sign(1)
-    R.Range(CellSign2) = User.Sign(2)
+    Set r = Worksheets(PaySheet).Range(BaseRange)
+    r.Range(CellUserName) = StrTran(User.Name, WRAP, vbLf)
+    r.Range(CellUserINN) = User.INN
+    r.Range(CellUserLS) = User.LS
+    r.Range(CellUserBIC) = User.BIC
+    r.Range(CellUserBank) = User.Bank
+    r.Range(CellUserPlace) = User.Place
+    r.Range(CellUserKS) = User.KS
+    r.Range(CellSign1) = User.Sign(1)
+    r.Range(CellSign2) = User.Sign(2)
         
-    R.Range(CellNo) = vbNullString
-    R.Range(CellDate) = PlatDate(Now)
-    R.Range(CellDelivery) = vbNullString
-    R.Range(CellAmount) = vbNullString
-    R.Range(CellSum) = vbNullString
-    R.Range(CellName) = vbNullString
-    R.Range(CellINN) = vbNullString
-    R.Range(CellBIC) = vbNullString
-    R.Range(CellLS) = vbNullString
-    R.Range(CellBank) = vbNullString
-    R.Range(CellPlace) = vbNullString
-    R.Range(CellKS) = vbNullString
-    R.Range(CellQueue) = vbNullString
-    R.Range(CellDetails) = vbNullString
+    r.Range(CellNo) = vbNullString
+    r.Range(CellDate) = PlatDate(Now)
+    r.Range(CellDelivery) = vbNullString
+    r.Range(CellAmount) = vbNullString
+    r.Range(CellSum) = vbNullString
+    r.Range(CellName) = vbNullString
+    r.Range(CellINN) = vbNullString
+    r.Range(CellBIC) = vbNullString
+    r.Range(CellLS) = vbNullString
+    r.Range(CellBank) = vbNullString
+    r.Range(CellPlace) = vbNullString
+    r.Range(CellKS) = vbNullString
+    r.Range(CellQueue) = vbNullString
+    r.Range(CellDetails) = vbNullString
     'R.Range(CellAction) = vbNullString
-    Set R = Worksheets(PaySheet).Range(CellRange)
-    R.ColumnWidth = CellWidth
-    R.RowHeight = CellHeight
+    Set r = Worksheets(PaySheet).Range(CellRange)
+    r.ColumnWidth = CellWidth
+    r.RowHeight = CellHeight
     Application.ScreenUpdating = True
 End Sub
 
 Public Sub FillData()
-    Dim R As Range
+    Dim r As Range, i As Long
     On Error Resume Next
     Application.ScreenUpdating = False
-    Set R = Worksheets(PaySheet).Range(BaseRange)
+    Set r = Worksheets(PaySheet).Range(BaseRange)
     With User
-        R.Range(CellUserName) = .Name
-        R.Range(CellUserINN) = .INN
-        R.Range(CellUserLS) = .LS
-        R.Range(CellUserBIC) = .BIC
-        R.Range(CellUserBank) = .BANK
-        R.Range(CellUserPlace) = .Place
-        R.Range(CellUserKS) = .KS
-        R.Range(CellSign1) = .Sign(1)
-        R.Range(CellSign2) = .Sign(2)
+        r.Range(CellUserName) = StrTran(.Name, WRAP, vbLf)
+        r.Range(CellUserINN) = .INN
+        r.Range(CellUserLS) = .LS
+        r.Range(CellUserBIC) = .BIC
+        r.Range(CellUserBank) = .Bank
+        r.Range(CellUserPlace) = .Place
+        r.Range(CellUserKS) = .KS
+        r.Range(CellSign1) = .Sign(1)
+        r.Range(CellSign2) = .Sign(2)
     End With
-    R.Range(CellNo) = mDocNo
-    R.Range(CellDate) = PlatDate(mDocDate)
-    R.Range(CellAmount) = RSumStr(mSum)
-    R.Range(CellSum) = PlatFormat(mSum)
-    R.Range(CellName) = mName
-    R.Range(CellINN) = mINN
-    R.Range(CellBIC) = mBIC
-    R.Range(CellLS) = mLS
-    R.Range(CellQueue) = mQueue
-    R.Range(CellDetails) = mDetails
+    r.Range(CellNo) = mDocNo
+    r.Range(CellDate) = PlatDate(mDocDate)
+    r.Range(CellAmount) = RSumStr(mSum)
+    r.Range(CellSum) = PlatFormat(mSum)
+    r.Range(CellName) = StrTran(mName, WRAP, vbLf)
+    r.Range(CellINN) = mINN
+    r.Range(CellBIC) = mBIC
+    r.Range(CellLS) = mLS
+    r.Range(CellQueue) = mQueue
+    r.Range(CellDetails) = StrTran(mDetails, WRAP, vbLf)
+    
     With Me
-        R.Range(CellDelivery) = .Delivery
-        R.Range(CellBank) = .BANK
-        R.Range(CellPlace) = .Place
-        R.Range(CellKS) = .KS
+        'r.Range(CellDelivery) = .Delivery
+        r.Range(CellBank) = .Bank
+        r.Range(CellPlace) = .Place
+        r.Range(CellKS) = .KS
     End With
-    Set R = Worksheets(PaySheet).Range(CellRange)
-    R.ColumnWidth = CellWidth
-    R.RowHeight = CellHeight
+    Set r = Worksheets(PaySheet).Range(CellRange)
+    r.ColumnWidth = CellWidth
+    r.RowHeight = CellHeight
     Application.ScreenUpdating = True
 End Sub
 
-Public Function MarkByFile(FileName As String, Mark As String, Optional Color As Long = 0)
-    Dim R As Range, s As String
+Public Function MarkByFile(FileName As String, Mark As String, Optional Color As Long = 0) As Boolean
+    Dim r As Range, s As String
     s = Mid(FileName, 2)
     MarkByFile = False
     On Error Resume Next
-    Set R = Worksheets(User.ID).Range(BaseRange)
+    Set r = Worksheets(User.ID).Range(BaseRange)
     mRow = Me.RowsCount
     Do While mRow > 1
-        If InStr(2, R.Cells(mRow, ColFileName).Text, s) = 2 Then 'a bit faster!
-            With R.Cells(mRow, ColMark)
+        If InStr(2, r.Cells(mRow, ColFileName).Text, s) = 2 Then 'a bit faster!
+            With r.Cells(mRow, ColMark)
                 .Value = Mark
                 If Color > 0 Then .Font.Color = QBColor(Color)
             End With
@@ -332,14 +332,15 @@ Public Property Let Row(ByVal vNewValue As Long)
 End Property
 
 Public Property Get RowsCount() As Long
-    Dim R As Range, Rw As Long
-    Set R = Worksheets(User.ID).Range(BaseRange)
-    Rw = 1
-    Do 'looking for the last used row
-        Rw = Rw + 1
-    Loop Until Len(R.Cells(Rw, ColDocNo).Text) = 0
-    Set R = Nothing
-    RowsCount = Rw - 1
+    Dim r As Range
+    On Error Resume Next
+    Set r = Worksheets(User.ID).Range(BaseRange)
+    RowsCount = 1
+    Do While Len(r.Cells(RowsCount, ColDocNo).Text) > 0 'looking for the last used row
+        RowsCount = RowsCount + 1
+    Loop
+    Set r = Nothing
+    RowsCount = RowsCount - 1
 End Property
 
 Public Sub PrintPreview()
@@ -353,56 +354,56 @@ Public Sub PrintPreview()
 End Sub
 
 Public Function AskAllRows(Optional Ask As String = "Обработать все?") As Boolean
-    Dim A As Range, R As Range, s As String
+    Dim A As Range, r As Range, s As String
     mCountLastSelected = 0
     mMoneyLastSelected = 0
     With Worksheets(User.ID)
         For Each A In Selection.Areas
-            For Each R In A.Rows
-                If Len(.Cells(R.Row, ColDocNo).Text) > 0 Then
-                    If R.Row > 1 Then
+            For Each r In A.Rows
+                If Len(.Cells(r.Row, ColDocNo).Text) > 0 Then
+                    If r.Row > 1 Then
                         mCountLastSelected = mCountLastSelected + 1
-                        mMoneyLastSelected = mMoneyLastSelected + .Cells(R.Row, ColSum)
+                        mMoneyLastSelected = mMoneyLastSelected + .Cells(r.Row, ColSum)
                     End If
                 End If
-            Next R
+            Next r
         Next A
     End With
     If mCountLastSelected = 1 Then
-        'Ask = BPrintF("Помечен 1 документ\nна сумму %f", mMoneyLastSelected)
+        'Ask = BSPrintF("Помечен 1 документ\nна сумму %f", mMoneyLastSelected)
         AskAllRows = True
         Exit Function
     ElseIf mMoneyLastSelected = 0 Then
-        Ask = BPrintF("Помечено документов: %d\nНО ОБЩАЯ СУММА НУЛЕВАЯ!\n\n%s", mCountLastSelected, Ask)
+        Ask = Bsprintf("Помечено документов: %d\nНО ОБЩАЯ СУММА НУЛЕВАЯ!\n\n%s", mCountLastSelected, Ask)
     Else
-        Ask = BPrintF("Помечено документов: %d\nНа общую сумму: %f\n\n%s", mCountLastSelected, mMoneyLastSelected, Ask)
+        Ask = Bsprintf("Помечено документов: %d\nНа общую сумму: %f\n\n%s", mCountLastSelected, mMoneyLastSelected, Ask)
     End If
-    AskAllRows = MsgBox(Ask, vbQuestion + vbYesNo, App.Title) = vbYes
+    AskAllRows = OkCancelBox(Ask)
 End Function
 
 Public Function EachSelected(Action As String, Optional Ask As String = "Обработать все?") As Boolean
-    Dim A As Range, R As Range
+    Dim A As Range, r As Range
     EachSelected = False
     If Not AskAllRows(Ask) Then Exit Function
     If Action = "Delete" Then
-        If MsgBox("Безвозвратно удалить?!", vbExclamation + vbYesNo, App.Title) = vbNo Then
+        If Not OkCancelBox("Безвозвратно удалить?!") Then
             Exit Function
         End If
     End If
     For Each A In Selection.Areas
         If Action = "Delete" Then
-            For Each R In A.Rows
-                If R.Row = 1 Then
-                    MsgBox "Нельзя удалять заголовок таблицы!", vbCritical, App.Title
+            For Each r In A.Rows
+                If r.Row = 1 Then
+                    StopBox "Нельзя удалять заголовок таблицы!"
                     Exit Function
                 End If
-            Next R
+            Next r
             A.Rows.EntireRow.Delete
         Else
-            For Each R In A.Rows
-                If R.Row > 1 Then
+            For Each r In A.Rows
+                If r.Row > 1 Then
                     With Me
-                        .ReadRow R.Row
+                        .ReadRow r.Row
                         If .Valid Then
                             Select Case Action
                                 Case "Preview":
@@ -415,12 +416,12 @@ Public Function EachSelected(Action As String, Optional Ask As String = "Обработ
                                     '?
                             End Select
                         Else
-                            If MsgBox(BPrintF("Документ в строке %d\nне может быть обработан!\n(%s)\n\nПрервать процесс?", _
-                                .Row, .ValidationError), vbExclamation + vbYesNo, App.Title) = vbYes Then Exit Function
+                            If YesNoBox("Документ в строке %d\nне может быть обработан!\n(%s)\n\nПрервать процесс?", _
+                                .Row, .ValidationError) Then Exit Function
                         End If
                     End With
                 End If
-            Next R
+            Next r
         End If
     Next A
     EachSelected = True
@@ -430,7 +431,7 @@ Public Property Get AsString() As String
     AsString = mFileName & TERM & _
         mMark & TERM & _
         mDocNo & TERM & _
-        DtoS(mDocDate) & TERM & _
+        DtoC(mDocDate) & TERM & _
         PlatFormat(mSum) & TERM & _
         mName & TERM & _
         mINN & TERM & _
@@ -442,12 +443,14 @@ End Property
 
 Public Property Let AsString(ByVal vNewValue As String)
     Dim Arr As Variant
+    On Error Resume Next
     If vNewValue = vbNullString Then Exit Property
-    Arr = StrToArr(vNewValue, TERM)
+    'If Len(vNewValue) < ColDetails Then Exit Property
+    Arr = StrToArr(vNewValue, FindTerm(vNewValue)) 'autoTERM from ;^|
     mFileName = Arr(ColFileName)
     mMark = Arr(ColMark)
     mDocNo = Arr(ColDocNo)
-    mDocDate = StoD(CStr(Arr(ColDocDate)))
+    mDocDate = RDate(Arr(ColDocDate)) 'StoD(CStr(Arr(ColDocDate)))
     mSum = RVal(Arr(ColSum))
     mName = Arr(ColName)
     mINN = Arr(ColINN)
@@ -460,41 +463,41 @@ End Property
 Public Property Get AsPlatINI() As String
     Dim s As String, ss(4) As String
     On Error Resume Next
-    s = BPrintF("; %s\n[File]\n", App.Title)
-    s = s & BPrintF("File=%s.%s\nNow=%T\nForm=2\nVer=8\nCP=866\nVersion=%s\n", _
-        mFileName, User.ID, Now, App.Version)
+    s = Bsprintf("; %s\n[File]\n", App.Title)
+    s = s & Bsprintf("File=%s.%s\nNow=%T\nForm=2\nVer=10\nCP=866\nVersion=%s\nPath=%s\n", _
+        mFileName, User.ID, Now, App.Version, App.Path)
     
-    s = s & BPrintF("\n[Payment]\n")
-    s = s & BPrintF("No=%d\n", mDocNo)
-    s = s & BPrintF("Date=%N\n", mDocDate)
-    s = s & BPrintF("Sum=%F\n", mSum)
+    s = s & Bsprintf("\n[Payment]\n")
+    s = s & Bsprintf("No=%d\n", mDocNo)
+    s = s & Bsprintf("Date=%n\n", mDocDate) 'dd.mm.yyyy
+    s = s & Bsprintf("Sum=%F\n", mSum) '0-00
     
-    s = s & BPrintF("Queue=%d\n", mQueue)
+    s = s & Bsprintf("Queue=%d\n", mQueue)
     
     WrapStrToArr mDetails, ss, 64
-    s = s & BPrintF("Text1=%s\n", ss(1))
-    s = s & BPrintF("Text2=%s\n", ss(2))
-    s = s & BPrintF("Text3=%s\n", ss(3))
-    s = s & BPrintF("Text4=%s\n", ss(4))
+    s = s & Bsprintf("Text1=%s\n", ss(1))
+    s = s & Bsprintf("Text2=%s\n", ss(2))
+    s = s & Bsprintf("Text3=%s\n", ss(3))
+    s = s & Bsprintf("Text4=%s\n", ss(4))
     
-    s = s & BPrintF("\n[From]\n")
-    s = s & BPrintF("Name=%s\n", User.Name)
-    s = s & BPrintF("INN=%s\n", User.INN)
-    s = s & BPrintF("LS=%s\n", User.LS)
-    s = s & BPrintF("Sign1=%s\n", User.Sign(1))
-    s = s & BPrintF("Sign2=%s\n", User.Sign(2))
-    s = s & BPrintF("Tel=%s\n", User.Tel)
+    s = s & Bsprintf("\n[From]\n")
+    s = s & Bsprintf("Name=%s\n", StrSpaces1(User.Name))
+    s = s & Bsprintf("INN=%s\n", User.INN)
+    s = s & Bsprintf("LS=%s\n", User.LS)
+'    s = s & Bsprintf("Sign1=%s\n", User.Sign(1))
+'    s = s & Bsprintf("Sign2=%s\n", User.Sign(2))
+'    s = s & Bsprintf("Tel=%s\n", User.Tel)
     
-    s = s & BPrintF("\n[To]\n")
-    s = s & BPrintF("Name2=%s\n", mName)
-    s = s & BPrintF("INN2=%s\n", mINN)
-    s = s & BPrintF("LS2=%s\n", mLS)
-    s = s & BPrintF("BIC2=%s\n", mBIC)
+    s = s & Bsprintf("\n[To]\n")
+    s = s & Bsprintf("Name2=%s\n", StrSpaces1(mName))
+    s = s & Bsprintf("INN2=%s\n", mINN)
+    s = s & Bsprintf("LS2=%s\n", mLS)
+    s = s & Bsprintf("BIC2=%s\n", mBIC)
     
-    s = s & BPrintF("Bank2=%s\n", Me.BANK)
-    s = s & BPrintF("Place2=%s\n", Me.Place)
-    s = s & BPrintF("KS2=%s\n", Me.KS)
-    AsPlatINI = s & BPrintF("\n; eof\n")
+    s = s & Bsprintf("Bank2=%s\n", Me.Bank)
+    s = s & Bsprintf("Place2=%s\n", Me.Place)
+    s = s & Bsprintf("KS2=%s\n", Me.KS)
+    AsPlatINI = s & Bsprintf("\n; eof\n")
 End Property
 
 Public Property Get ValidationError() As String
@@ -502,7 +505,7 @@ Public Property Get ValidationError() As String
 End Property
 
 Public Function ExportToFile(Optional File As String = vbNullString) As Boolean
-    Dim A As Range, R As Range, s As String, x As Integer
+    Dim A As Range, r As Range, s As String, x As Integer
     On Error Resume Next
     ExportToFile = False
     If Not AskAllRows() Then Exit Function
@@ -510,7 +513,9 @@ Public Function ExportToFile(Optional File As String = vbNullString) As Boolean
     Application.DefaultFilePath = FilePath(File)
     'If Not IsFile(File) Then
         'If IsDir(File) Then '/////////////////////wrong if nested unexisting dirs/
-            File = RightPathName(File, User.ID & To36(Day(Now)) & Format(Now, "hhmm") & ".plt")
+            's = User.ID & To36(Day(Now)) & Format(Now, "hhmm") & ".plt" '8.3
+            s = User.ID & Format(Now, "-dd-hhmm") & ".plt" 'LFN
+            File = RightPathName(File, s)
             If Not BrowseForSave(File, "Файлы выгрузки (*.plt),*.plt", _
                 "файл для выгрузки") Then Exit Function
             User.ExportList = FilePath(File)
@@ -519,34 +524,34 @@ Public Function ExportToFile(Optional File As String = vbNullString) As Boolean
     s = vbNullString
     mCountLastSelected = 0
     For Each A In Selection.Areas
-        For Each R In A.Rows
+        For Each r In A.Rows
             With Me
-                .ReadRow R.Row
+                .ReadRow r.Row
                 If .Valid Then
-                    .MarkByRow R.Row, "Disk", 1 'Blue
+                    .MarkByRow r.Row, "Disk", 1 'Blue
                     s = s & Me.AsString & vbCrLf
                     mCountLastSelected = mCountLastSelected + 1
-                    Application.StatusBar = BPrintF("Подготовлено: %d", mCountLastSelected)
+                    Application.StatusBar = Bsprintf("Подготовлено: %d", mCountLastSelected)
                 Else
-                    .MarkByRow R.Row, "Bad", 4 'Red qbcolor
-                    If MsgBox(BPrintF("Документ в строке %d\nне может быть обработан!\n(%s)\n\nПрервать процесс?", _
-                        .Row, .ValidationError), vbExclamation + vbYesNo, App.Title) = vbYes Then
+                    .MarkByRow r.Row, "Bad", 4 'Red qbcolor
+                    If YesNoBox("Документ в строке %d\nне может быть обработан!\n(%s)\n\nПрервать процесс?", _
+                        .Row, .ValidationError) = vbYes Then
                         Application.StatusBar = False
                         Exit Function
                     End If
                 End If
             End With
-        Next R
+        Next r
     Next A
     Application.StatusBar = False
     If Len(s) = 0 Then
-        MsgBox "Нечего выгружать!", vbExclamation, App.Title
+        WarnBox "Нечего выгружать!"
         Exit Function
     Else
         If Not StrToBool(App.Options("DontExportDos")) Then s = CDos(s)
     End If
     If IsFile(File) Then
-        x = MsgBox(BPrintF("Файл \'%s\'уже существует!\nЧтобы добавить, нажмите \'Да\'\nПерезаписать - \'Нет\'", File), _
+        x = MsgBox(Bsprintf("Файл %s уже существует!\nЧтобы добавить, нажмите \'Да\'\nПерезаписать - \'Нет\'", File), _
             vbQuestion + vbYesNoCancel, App.Title)
         Select Case x
             Case vbYes:
@@ -561,11 +566,11 @@ Public Function ExportToFile(Optional File As String = vbNullString) As Boolean
         OutputFile File, s
     End If
     If IsFile(File) Then
-        MsgBox BPrintF("Выгрузка выполнена в файл\n\'%s\'\nРазмер файла: %d байт", _
-            File, FileLen(File)), vbInformation, App.Title
+        InfoBox "Выгрузка выполнена в файл\n%s\n\nРазмер файла: %d байт", _
+            File, FileLen(File)
         ExportToFile = True
     Else
-        MsgBox "Ошибка выгрузки!", vbCritical, App.Title
+        StopBox "Ошибка выгрузки!"
         ExportToFile = False
     End If
 End Function
@@ -577,7 +582,8 @@ Public Function ImportFromFile(Optional File As String = vbNullString) As Boolea
         ImportFromFile = ImportFrom1File(File)
     Else
         Files = User.ImportList
-        If BrowseForFiles(Files, "Файлы загрузки (*.plt),*.plt", "файл(ы) для загрузки") Then
+        If BrowseForFiles(Files, "Файлы загрузки (*.plt),*.plt,Файлы бухгалтерии (*.dbf),*.dbf,Файлы 1C:Windows (*.txt),*.txt", _
+            "файл(ы) для загрузки") Then
             User.ImportList = FilePath(CStr(Files(1)))
             'MultiSelect
             For i = LBound(Files) To UBound(Files)
@@ -590,41 +596,54 @@ Public Function ImportFromFile(Optional File As String = vbNullString) As Boolea
 End Function
 
 Public Function ImportFrom1File(File As String) As Boolean
+    Dim s As String, i As Long, ss() As String
     On Error Resume Next
-    Dim s As String, i As Long, ss As Variant, xReply As Long
+    Select Case LCase(FileExt(File))
+        Case "plt"
+            ImportFrom1File = ImportFrom1PLTFile(File)
+        Case "dbf"
+            ImportFrom1File = ImportFrom1DBFFile(File)
+        Case "txt"
+            ImportFrom1File = ImportFrom1CFile(File)
+    End Select
+End Function
+
+Public Function ImportFrom1PLTFile(File As String) As Boolean
+    Dim s As String, i As Long, ss() As String
+    Dim xReply As Variant 'VbMsgBoxResult 'comp. for Office97
+    On Error Resume Next
     s = InputFile(File)
     If Len(s) > 0 Then
         If Not StrToBool(App.Options("DontExportDos")) Then s = CWin(s)
-        s = StrTran(s, vbCrLf, vbLf) 'DOS/UNIX ready
-        ss = StrToArr(s, vbLf)
+        StrToLines s, ss
         'Application.ScreenUpdating = False
         mCountLastSelected = 0
         mMoneyLastSelected = 0
         mRow = Me.RowsCount
         For i = 1 To UBound(ss)
             s = ss(i)
-            If Len(s) > 0 Then
+            If InStrCount(s, TERM) = ColDetails Then
                 mCountLastSelected = mCountLastSelected + 1
                 Me.AsString = ss(mCountLastSelected)
                 mRow = mRow + 1
                 WriteRow mRow
                 mMoneyLastSelected = mMoneyLastSelected + Me.Sum
-                Application.StatusBar = BPrintF("Загружено: %d", mCountLastSelected)
+                Application.StatusBar = Bsprintf("Загружено: %d", mCountLastSelected)
             End If
         Next
         'Application.ScreenUpdating = True
         Application.StatusBar = False
     
-        xReply = MsgBox(BPrintF("Завершена загрузка из файла\n\'%s\'\n\nДокументов: %d\nОбщая сумма: %f\n\nУдалить его?", _
+        xReply = MsgBox(Bsprintf("Завершена загрузка из файла\n%s\n\nДокументов: %d\nОбщая сумма: %f\n\nУдалить его?", _
             File, mCountLastSelected, mMoneyLastSelected), vbQuestion + vbYesNoCancel, App.Title)
         Select Case xReply
             Case vbYes: Kill File
-            Case vbNo
+            Case vbNo:
             Case Else
                 Exit Function
         End Select
     Else
-        xReply = MsgBox(BPrintF("Ошибка загрузки из файла\n\'%s\'\n\nУдалить его?", File), vbQuestion + vbYesNoCancel + vbDefaultButton2, App.Title)
+        xReply = MsgBox(Bsprintf("Ошибка загрузки из файла\n%s\n\nУдалить его?", File), vbQuestion + vbYesNoCancel + vbDefaultButton2, App.Title)
         Select Case xReply
             Case vbYes: Kill File
             Case vbNo:
@@ -632,6 +651,109 @@ Public Function ImportFrom1File(File As String) As Boolean
                 Exit Function
         End Select
     End If
+End Function
+
+Public Function ImportFrom1DBFFile(File As String) As Boolean
+    Dim xReply As Variant 'VbMsgBoxResult 'comp. for Office97
+    On Error Resume Next
+    
+    ReadDbfFile File, Me.RowsCount + 1
+    ImportFrom1DBFFile = True
+
+    'xReply = MsgBox(Bsprintf("Завершена загрузка из файла\n%s\n\nДокументов: %d\nОбщая сумма: %f\n\nУдалить его?", _
+    '    File, mCountLastSelected, mMoneyLastSelected), vbQuestion + vbYesNoCancel, App.Title)
+    xReply = MsgBox(Bsprintf("Завершена загрузка из файла\n%s\n\nУдалить его?", _
+        File), vbQuestion + vbYesNoCancel, App.Title)
+    Select Case xReply
+        Case vbYes: Kill File
+        Case vbNo:
+        Case Else
+            Exit Function
+    End Select
+End Function
+
+Public Function ImportFrom1CFile(File As String) As Boolean
+    Dim s As String, File2 As String, i As Long, v As String ', ss() As String
+    Dim xReply As Variant 'VbMsgBoxResult 'comp. for Office97
+    On Error Resume Next
+    
+    Const Format1C = "1CClientBankExchange"
+    Const SecBegin = "СекцияДокумент=Платежное поручение"
+    Const SecEnd = "КонецДокумента"
+    Const Sec1C = "TMP1C"
+    
+    ImportFrom1CFile = False
+    s = InputFile(File)
+    'If Len(s) > 0 Then
+    '    If Not StrToBool(App.Options("DontExportDos")) Then s = CWin(s)
+    '    StrToLines s, ss
+    '    'Application.ScreenUpdating = False
+    If Left(s, Len(Format1C)) = Format1C Then
+        's = "[" & Format1C & "]" & Mid(s, Len(Format1C) + 1)
+        mCountLastSelected = 0
+        mMoneyLastSelected = 0
+        mRow = Me.RowsCount
+        Do
+            i = InStr(s, SecBegin)
+            If i = 0 Then Exit Do
+            s = "[" & Sec1C & "]" & Mid(s, i + Len(SecBegin))
+            
+            File2 = GetWinTempFile(Sec1C)
+            'Kill File2
+            OutputFile File2, s
+            v = ReadIniFile(File2, Sec1C, "ПлательщикСчет")
+            If v <> User.LS Then
+                If Not YesNoBox("Это не Ваш счет %s!\nПродолжать?", v) Then
+                    Kill File2
+                    Exit Function
+                End If
+            End If
+        
+        '    For i = 1 To UBound(ss)
+        '        s = ss(i)
+        '        If InStrCount(s, TERM) = ColDetails Then
+                    mCountLastSelected = mCountLastSelected + 1
+        '            Me.AsString = ss(mCountLastSelected)
+                    With Me
+                        .DocNo = NumIniFile(File2, Sec1C, "Номер", 1)
+                        .DocDate = RDate(ReadIniFile(File2, Sec1C, "Дата", Now))
+                        .Sum = RVal(ReadIniFile(File2, Sec1C, "Сумма"))
+                        .Name = ReadIniFile(File2, Sec1C, "Получатель1")
+                        .INN = ReadIniFile(File2, Sec1C, "ПолучательИНН", "нет")
+                        .BIC = ReadIniFile(File2, Sec1C, "ПолучательБИК")
+                        .LS = ReadIniFile(File2, Sec1C, "ПолучательРасчСчет")
+                        .Queue = NumIniFile(File2, Sec1C, "Очередность", 6)
+                        .Details = ReadIniFile(File2, Sec1C, "НазначениеПлатежа")
+                        Kill File2
+                    End With
+                    mRow = mRow + 1
+                    WriteRow mRow
+                    mMoneyLastSelected = mMoneyLastSelected + Me.Sum
+                    Application.StatusBar = Bsprintf("Загружено: %d", mCountLastSelected)
+    '        End If
+    '    Next
+        Loop
+    '    'Application.ScreenUpdating = True
+    '    Application.StatusBar = False
+    '
+        xReply = MsgBox(Bsprintf("Завершена загрузка из файла\n%s\n\nДокументов: %d\nОбщая сумма: %f\n\nУдалить его?", _
+            File, mCountLastSelected, mMoneyLastSelected), vbQuestion + vbYesNoCancel, App.Title)
+        Select Case xReply
+            Case vbYes: Kill File
+            Case vbNo:
+            Case Else
+                Exit Function
+        End Select
+    Else
+        xReply = MsgBox(Bsprintf("Ошибка загрузки из файла\n%s\n\nУдалить его?", File), vbQuestion + vbYesNoCancel + vbDefaultButton2, App.Title)
+        Select Case xReply
+            Case vbYes: Kill File
+            Case vbNo:
+            Case Else
+                Exit Function
+        End Select
+    End If
+    ImportFrom1CFile = True
 End Function
 
 Public Function SavePlat(File As String) As Boolean
@@ -643,25 +765,22 @@ Public Function SavePlat(File As String) As Boolean
 End Function
 
 Public Function LoadPlat(File As String) As Boolean
-    Dim Plat As New CIniFile
+    Const Section1 = "Payment"
+    Const Section2 = "To"
     On Error Resume Next
     mFileName = FileNameOnly(File)
-    With Plat
-        .ReadOnly = True
-        .DefaultSection = "Payment"
-        mDocNo = .KeyValue("No")
-        mDocDate = RDate(.KeyValue("Date"))
-        mSum = RVal(.Key("Sum"))
-        mQueue = .KeyValue("Queue")
-        mDetails = Trim(.Key("Text1") & " " & _
-            .Key("Text2") & " " & .Key("Text3") & " " & .Key("Text4"))
-        
-        .DefaultSection = "To"
-        mName = .Key("Name2")
-        mINN = .Key("INN2")
-        mLS = .Key("LS2")
-        mBIC = .Key("BIC2")
-    End With
+    mDocNo = NumIniFile(mFileName, Section1, "No", 1)
+    mDocDate = RDate(ReadIniFile(mFileName, Section1, "Date", Now))
+    mSum = RVal(ReadIniFile(mFileName, Section1, "Sum", "0-00"))
+    mQueue = NumIniFile(mFileName, Section1, "Queue", 6)
+    mDetails = Trim(ReadIniFile(mFileName, Section1, "Text1") & " " & _
+        ReadIniFile(mFileName, Section1, "Text2") & " " & _
+        ReadIniFile(mFileName, Section1, "Text3") & " " & _
+        ReadIniFile(mFileName, Section1, "Text4"))
+    mName = ReadIniFile(mFileName, Section2, "Name2")
+    mINN = ReadIniFile(mFileName, Section2, "INN2")
+    mLS = ReadIniFile(mFileName, Section2, "LS2")
+    mBIC = ReadIniFile(mFileName, Section2, "BIC2")
     WriteRow
     LoadPlat = Me.Valid
 End Function
@@ -673,16 +792,17 @@ Public Function SavePlatPGP() As Boolean
     File1 = RightPathName(GetWinTempDir, File)
     File2 = SMail.Send & File
     If SavePlat(File1) Then
+        PGP.ID = User.ID
         If PGP.Encode(File1, File2) Then
             If Not StrToBool(App.Options("DontMarkArchive")) Then _
                 MarkByFile mFileName, "Mail", 1  'Blue
-            MsgBox BPrintF("Файл \'%s\' готов", File), vbInformation, App.Title
+            InfoBox "Файл %s готов", File
         Else
-            MsgBox "Шифрованный файл НЕ создан!", vbCritical, App.Title
+            StopBox "Шифрованный файл НЕ создан!"
         End If
         Kill File1
     Else
-        MsgBox "Файл для шифрования НЕ создан!", vbCritical, App.Title
+        StopBox "Файл для шифрования НЕ создан!"
     End If
     SavePlatPGP = IsFile(File2)
 End Function
@@ -716,7 +836,7 @@ Public Sub ReadRow(Optional Row As Long)
         mSum = .Cells(mRow, ColSum)
         mName = .Cells(mRow, ColName)
         mINN = .Cells(mRow, ColINN)
-        mBIC = .Cells(mRow, ColBIC)
+        mBIC = PadL(.Cells(mRow, ColBIC), 9, "0")
         mLS = .Cells(mRow, ColLS)
         mQueue = .Cells(mRow, ColQueue)
         mDetails = .Cells(mRow, ColDetails)
@@ -775,9 +895,9 @@ Public Sub FindText()
     On Error Resume Next
     s = InputBox("Введите часть строки для поиска:", App.Title, s)
     If s = vbNullString Then Exit Sub
-    Worksheets(User.ID).Cells.Find(What:=s, after:=ActiveCell, LookIn:=xlFormulas, LookAt _
-        :=xlPart, SearchOrder:=xlByRows, SearchDirection:=xlNext, MatchCase:= _
-        False).Activate
+    Worksheets(User.ID).Cells.Find(What:=s, after:=ActiveCell, _
+        LookIn:=xlFormulas, LookAt:=xlPart, SearchOrder:=xlByRows, _
+        SearchDirection:=xlNext, MatchCase:=False).Activate
 End Sub
 
 'Public Sub FindNext()

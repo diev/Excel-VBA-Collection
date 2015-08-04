@@ -6,17 +6,16 @@ DefLng A-Z
 
 Public Sub WorkbookBeforeClose(Cancel As Boolean)
     On Error Resume Next
-    'If Not StrToBool(App.Options("DontConfirmExit")) Then
-    '    If Not ActiveWorkbook.Saved Then _
-    '        Cancel = MsgBox("Закрыть программу?", vbQuestion + vbOKCancel, App.Title) = vbCancel
-    'End If
-    'If Not Cancel Then AutoClose
     If App.CloseAllowed Then
         Cancel = False
         AutoClose
     Else
         Cancel = True
         SavePassShow
+        If App.CloseAllowed Then
+            Cancel = False
+            AutoClose
+        End If
     End If
 End Sub
 
@@ -31,20 +30,8 @@ Public Sub WorkbookSheetActivate(ByVal Sh As Object)
         'Exit Sub
     ElseIf Sh.Name = User.DemoID Then
         User.Demo = True
-    ElseIf Len(Sh.Name) = 3 Then
+    ElseIf Val(Sh.Name) > 0 Then
         User.ID = Sh.Name
-        LogonShow
-        'Load Logon
-        'With Logon
-        '    .txtID = User.ID
-        '    .txtPass.SetFocus
-        '    .Show
-        'End With
+        'LogonShow
     End If
-    'ActiveWindow.Caption = Sh.Name
 End Sub
-
-Public Sub WorksheetBeforeRightClick(ByVal Target As Range, Cancel As Boolean)
-    '
-End Sub
-

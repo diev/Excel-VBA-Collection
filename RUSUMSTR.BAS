@@ -4,42 +4,6 @@ Option Compare Text
 Option Base 1
 DefLng A-Z
 
-'„итает всю строку с цифрами и возвращает дробное целое число,
-'независимо от наличи€ пробелов и букв в этой строке,
-'но дробна€ часть отдел€етс€ после последней точки,
-'зап€той, знака равенства или минуса (или указанного списка разделителей).
-Public Function RVal(Value As Variant, Optional Delim As String = ".,=-") As Currency
-    Dim i, b() As Byte, s As String, n, p
-    RVal = 0: n = 0: p = 0: s = Trim(CStr(Value))
-    If Len(s) = 0 Then Exit Function
-    StrToBytes s, b
-    For i = 1 To Len(s)
-        Select Case b(i)
-            Case 48 To 57 '"0" To "9"
-                RVal = RVal * 10 + b(i) - 48
-                n = n + 1
-            Case Else
-                If InStr(Delim, Chr(b(i))) > 0 Then p = n
-        End Select
-    Next
-    If b(1) = 45 Then RVal = -RVal
-    If p > 0 Then RVal = RVal * 10 ^ (p - n)
-End Function
-
-'Public Function RVal(Value As String, Optional Delim As String = ".,=-") As Currency
-'    Dim i As long, b As String * 1, ss As String: ss = vbNullString
-'    For i = 1 To Len(Value)
-'        b = Mid$(Value, i, 1)
-'        Select Case b
-'        Case "0" To "9"
-'            ss = ss & b
-'        Case Else
-'            If InStr(Delim, b) > 0 Then ss = ss & "."
-'        End Select
-'    Next
-'    RVal = Val(ss)
-'End Function
-
 '¬озвращает сумму прописью из дроби (например, полученной из RVal()
 Public Function RSumStr(Rubles As Variant, Optional Delim As String = " ") As String
 Attribute RSumStr.VB_ProcData.VB_Invoke_Func = " \n14"

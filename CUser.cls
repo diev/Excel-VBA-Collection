@@ -7,12 +7,15 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+
+
 Option Explicit
 Option Compare Text
 Option Base 1
 DefLng A-Z
 
 Const UserDemoID = "000"
+Const UserIDExt = ".ID"
 
 Dim mUserID As String
 Dim mUserIDFile As String
@@ -20,12 +23,12 @@ Dim mLocateCanceled As Boolean
 
 Private Sub Class_Initialize()
     mLocateCanceled = False
-    If App.Setting(UserDemoID, "Name") = vbNullString Then WriteINI
+    If App.NoSetting(UserDemoID, "Name") Then WriteINI
     Me.ID = UserDemoID
 End Sub
 
 Private Sub Class_Terminate()
-
+    '
 End Sub
 
 Public Property Get ID() As String
@@ -33,41 +36,45 @@ Public Property Get ID() As String
 End Property
 
 Public Property Let ID(ByVal vNewValue As String)
-    Dim s As String
+    Dim s As String, v As Long, File As String
     On Error Resume Next
-    mUserID = vNewValue
+    s = Right(vNewValue, 7)
+    v = Val(s)
+    If v = 0 Then
+        mUserID = UserDemoID
+    Else
+        mUserID = CStr(v)
+    End If
+    File = mUserID & UserIDExt
     mLocateCanceled = False
     If Me.Demo Then
         mUserIDFile = App.Ini
     Else
-        mUserIDFile = App.Path & mUserID & ".ID"
+        mUserIDFile = App.Path & File
         If Not IsFile(mUserIDFile) Then
-            If MsgBox(BPrintF("Файл реквизитов этого клиента не найден!\nПоискать на дискете?"), _
-                vbQuestion + vbOKCancel, App.Title) = vbOK Then
-                If IsFile("A:\" & mUserID & ".ID") Then
-                    FileCopy "A:\" & mUserID & ".ID", mUserIDFile
-                Else
-                    MsgBox "На дискете нет файла реквизитов", vbExclamation, App.Title
-                End If
+            File = mUserIDFile
+            If BrowseForFile(File, "Файл реквизитов (*.id),*.id", "файл реквизитов") Then
+                FileCopy File, mUserIDFile
             End If
         End If
-        If ReadIniFile(mUserIDFile, mUserID, "Name") = vbNullString Then
-            If MsgBox(BPrintF("Клиент не зарегистрирован!\nДобавить его?"), _
-                vbQuestion + vbYesNo, App.Title) = vbYes Then
-                mUserIDFile = App.Path & mUserID & ".ID"
-                WriteIniFile mUserIDFile, mUserID, "Name" = "Новый клиент"
+        If EmptyIniFile(mUserIDFile, mUserID, "Name") Then
+            If YesNoBox("Клиент %s не зарегистрирован!\nДобавить его?", mUserID) Then
+                WriteIniFile mUserIDFile, mUserID, "Name", CDos("Новый клиент")
+                NewUserShow
+                Exit Property
             Else
-                Me.Demo = True
+                mUserID = UserDemoID
                 mUserIDFile = App.Ini
             End If
         Else
-            mUserIDFile = App.Path & mUserID & ".ID"
+            mUserIDFile = App.Path & File
         End If
     End If
     ResetCaption
     SetUserSheet
-    Payment.FillBlank
-    MailClear
+    'Commented due to an abnormous screen flashing!...
+    'Payment.FillBlank
+    'MailClear
 End Property
 
 Public Property Get Name() As String
@@ -78,12 +85,20 @@ Public Property Let Name(ByVal vNewValue As String)
     WriteIniFile mUserIDFile, mUserID, "Name", CDos(vNewValue)
 End Property
 
+Public Property Get NameN(n As Long) As String
+    NameN = CWin(ReadIniFile(mUserIDFile, mUserID, "Name" & CStr(n)))
+End Property
+
+Public Property Let NameN(n As Long, ByVal vNewValue As String)
+    WriteIniFile mUserIDFile, mUserID, "Name" & CStr(n), CDos(vNewValue)
+End Property
+
 Public Property Get INN() As String
-    INN = ReadIniFile(mUserIDFile, mUserID, "INN")
+    INN = CWin(ReadIniFile(mUserIDFile, mUserID, "INN"))
 End Property
 
 Public Property Let INN(ByVal vNewValue As String)
-    WriteIniFile mUserIDFile, mUserID, "INN", vNewValue
+    WriteIniFile mUserIDFile, mUserID, "INN", CDos(vNewValue)
 End Property
 
 Public Property Get LS() As String
@@ -110,20 +125,20 @@ Public Property Let BIC(ByVal vNewValue As String)
     End If
 End Property
 
-Public Property Get BANK() As String
-    BANK = CWin(ReadIniFile(mUserIDFile, mUserID, "Bank"))
-    If BANK = vbNullString Then
+Public Property Get Bank() As String
+    Bank = CWin(ReadIniFile(mUserIDFile, mUserID, "Bank"))
+    If Bank = vbNullString Then
         With BnkSeek2
             .BIC = Me.BIC
-            BANK = .Name
-            Me.BANK = .Name
+            Bank = .Name
+            Me.Bank = .Name
             Me.Place = .Place
             Me.KS = .KS
         End With
     End If
 End Property
 
-Public Property Let BANK(ByVal vNewValue As String)
+Public Property Let Bank(ByVal vNewValue As String)
     WriteIniFile mUserIDFile, mUserID, "Bank", CDos(vNewValue)
 End Property
 
@@ -144,7 +159,7 @@ Public Property Let KS(ByVal vNewValue As String)
 End Property
 
 Public Property Get No() As Long
-    No = CLng(ReadIniFile(mUserIDFile, mUserID, "No", "1"))
+    No = NumIniFile(mUserIDFile, mUserID, "No", 1)
 End Property
 
 Public Property Let No(ByVal vNewValue As Long)
@@ -158,7 +173,7 @@ Public Property Let No(ByVal vNewValue As Long)
 End Property
 
 Public Property Get NoMin() As Long
-    NoMin = CLng(ReadIniFile(mUserIDFile, mUserID, "NoMin", "1"))
+    NoMin = NumIniFile(mUserIDFile, mUserID, "NoMin", 1)
 End Property
 
 Public Property Let NoMin(ByVal vNewValue As Long)
@@ -167,7 +182,7 @@ Public Property Let NoMin(ByVal vNewValue As Long)
 End Property
 
 Public Property Get NoMax() As Long
-    NoMax = CLng(ReadIniFile(mUserIDFile, mUserID, "NoMax", "999"))
+    NoMax = NumIniFile(mUserIDFile, mUserID, "NoMax", 999)
 End Property
 
 Public Property Let NoMax(ByVal vNewValue As Long)
@@ -175,27 +190,25 @@ Public Property Let NoMax(ByVal vNewValue As Long)
     If Me.No > vNewValue Then Me.No = vNewValue
 End Property
 
-Public Property Get SecRing() As String
-    SecRing = Me.KeysPath & "SECR" & mUserID & ".PGP"
-    If Not IsFile(SecRing) Then
-        If LocateKeys Then
-            SecRing = Me.KeysPath & "SECR" & mUserID & ".PGP"
-        Else
-            SecRing = vbNullString
-        End If
+Public Function SecRing(anID As String) As String
+    Dim s As String
+    If anID = UserDemoID Then
+        s = App.Ini
+    Else
+        s = App.Path & anID & UserIDExt
     End If
-End Property
+    SecRing = RightPathName(ReadIniFile(s, anID, "KeysPath"), "SECR" & anID & ".PGP")
+End Function
 
-Public Property Get PubRing() As String
-    PubRing = Me.KeysPath & "PUBR" & mUserID & ".PGP"
-    If Not IsFile(PubRing) Then
-        If LocateKeys Then
-            PubRing = Me.KeysPath & "PUBR" & mUserID & ".PGP"
-        Else
-            PubRing = vbNullString
-        End If
+Public Function PubRing(anID As String) As String
+    Dim s As String
+    If anID = UserDemoID Then
+        s = App.Ini
+    Else
+        s = App.Path & anID & UserIDExt
     End If
-End Property
+    PubRing = RightPathName(ReadIniFile(s, anID, "KeysPath"), "PUBR" & anID & ".PGP")
+End Function
 
 Public Property Get KeysPath() As String
     KeysPath = RightSlash(ReadIniFile(mUserIDFile, mUserID, "KeysPath"))
@@ -246,8 +259,7 @@ Public Property Let Demo(ByVal vNewValue As Boolean)
 End Property
 
 Public Property Get Valid() As Boolean
-    Valid = IsFile(mFile)
-    If Valid Then Valid = ReadIniFile(mUserIDFile, mUserID, "Name") <> vbNullString
+    Valid = IsFile(mUserIDFile) And Not EmptyIniFile(mUserIDFile, mUserID, "Name")
 End Property
 
 Public Property Get DemoID() As String
@@ -271,10 +283,10 @@ Public Sub WriteINI()
         .Setting(UserDemoID, "Sign1") = CDos("Директор")
         .Setting(UserDemoID, "Sign2") = CDos("Бухгалтер")
         .Setting(UserDemoID, "Tel") = "?"
-        .Setting(UserDemoID, "No") = "1"
-        .Setting(UserDemoID, "NoMin") = "1"
-        .Setting(UserDemoID, "NoMax") = "999"
-        .Setting(UserDemoID, "Amount") = "1000000.00"
+        .Setting(UserDemoID, "No") = 1
+        .Setting(UserDemoID, "NoMin") = 1
+        .Setting(UserDemoID, "NoMax") = 999
+        .Setting(UserDemoID, "Amount") = "0.00"
         .Setting(UserDemoID, "KeysPath") = App.Path & "PGP\"
         .Setting(UserDemoID, "ExportList") = App.Path
         .Setting(UserDemoID, "ImportList") = App.Path
@@ -286,25 +298,25 @@ Public Function LocateKeys() As Boolean
     LocateKeys = False
     If mLocateCanceled Then Exit Function
     File1 = "SECR" & mUserID & ".PGP"
-    File = PathDirectories("PGP;Keys;\Keys;\PGP", File1)
+    File = PathDirectories("Keys;PGP;PGP\Keys", File1)
     'If Not mLocateCanceled Then
         
     If Not IsFile(File) Then
-        If MsgBox(BPrintF("Ключи PGP не найдены!\nПоискать ключи на дискете?"), _
-            vbQuestion + vbOKCancel, App.Title) = vbOK Then
-            File = PathDirectories("A:\Keys;A:\PGP;A:\", File1)
+        If YesNoBox("Ключи PGP не найдены!\nПоискать ключи на дискете?") Then
+            File = PathDirectories("A:\Keys;A:\PGP;A:\PGP\Keys", File1)
         End If
     End If
     Do
-        File = App.Path
-        If BrowseForFile(File, "Ключи PGP (*.pgp),(*.pgp)", _
-            BPrintF("файл из Вашей пары ключей (с номером \'%s\'!)", mUserID), True) Then
-            If Right(File, 7) = mUserID & ".PGP" Then
+        File = App.Path & File1
+        If BrowseForFile(File, "Все ключи PGP (*.pgp),(*.pgp)", _
+            Bsprintf("файл Secr%s.pgp из Вашей пары ключей!", mUserID), True) Then
+            File1 = mUserID & ".pgp"
+            If LCase(Right(File, Len(File1))) = File1 Then
                 Me.KeysPath = FilePath(File)
                 LocateKeys = True
                 Exit Function
             Else
-                MsgBox "Указан чужой комплект ключей!", vbCritical, App.Title
+                StopBox "Указан чужой комплект ключей!"
             End If
         Else
             mLocateCanceled = True
@@ -330,7 +342,7 @@ Public Sub SetUserSheet()
             Exit Sub
         End If
     Next
-    MsgBox "Какая-то ошибка установки листа!", vbExclamation, App.Title
+    WarnBox "Какая-то ошибка установки листа!"
 End Sub
 
 Public Sub Delete()
@@ -339,20 +351,20 @@ Public Sub Delete()
     With Me
         DelUserID = .ID
         DelUserFile = .File
-        DelSecRing = .SecRing
-        DelPubRing = .PubRing
+        DelSecRing = .SecRing(.ID)
+        DelPubRing = .PubRing(.ID)
         .Demo = True
     End With
     Worksheets(DelUserID).Delete
     Kill DelUserFile
     If IsFile(DelUserFile) Then _
-        MsgBox BPrintF("Файл настроек \'%s\' остался!", DelUserFile), vbExclamation, App.Title
+        WarnBox "Файл настроек %s остался!", DelUserFile
     Kill DelSecRing
     If IsFile(DelSecRing) Then _
-        MsgBox BPrintF("Файл ключей \'%s\' остался!", DelSecRing), vbExclamation, App.Title
+        WarnBox "Файл ключей %s остался!", DelSecRing
     Kill DelPubRing
     If IsFile(DelPubRing) Then _
-        MsgBox BPrintF("Файл ключей \'%s\' остался!", DelPubRing), vbExclamation, App.Title
+        WarnBox "Файл ключей %s остался!", DelPubRing
 End Sub
 
 Public Property Get Amount() As Currency
@@ -372,13 +384,20 @@ Public Sub AmountMinus(ByVal vMinusValue As Currency)
 End Sub
 
 Public Sub ResetCaption()
-    Dim s As String
     With Me
-        If .Amount > 0 Then
-            s = BPrintF("Банк-Клиент \'%s\' - %s (%f)", .ID, .Name, .Amount)
-        Else
-            s = BPrintF("Банк-Клиент \'%s\' - %s (минус %f)", .ID, .Name, Abs(.Amount))
-        End If
+        Application.Caption = Bsprintf("Банк-Клиент %s - %s (%f)", .ID, .Name, .Amount)
     End With
-    Application.Caption = s
 End Sub
+
+Public Function LocateID(Optional Path As String = vbNullString) As Boolean
+    On Error Resume Next
+    LocateID = False
+    If Len(Path) = 0 Then Path = App.Path
+    If BrowseForFile(Path, "Файлы реквизитов (*.id),*.id", _
+        "файл ID с реквизитами, если он есть", True) Then
+        FileCopy Path, App.Path & FileNameExt(Path)
+        ID = FileNameOnly(Path)
+    End If
+    LocateID = IsFile(mUserIDFile)
+End Function
+

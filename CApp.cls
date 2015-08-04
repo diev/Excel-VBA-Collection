@@ -13,21 +13,27 @@ Option Base 1
 DefLng A-Z
 
 Const AppTitle = "Банк-Клиент ЗАО ""Сити Инвест Банк"""
-Const AppVersion = "2000-10-16"
+Const AppVersion = "14.03.2002"
 
 Const CIBLS = "40702810100000000000"
 Const CIBBIC = "044030702"
 
+Dim mBookName As String
 Dim mAppPath As String
 Dim mAppIni As String
+Dim mAppHelp As String
 Dim mCloseAllowed As Boolean
 
 Public Property Get File() As String
     File = ThisWorkbook.FullName
 End Property
 
-Public Property Get UserData() As String
-    UserData = ActiveWorkbook.FullName
+Public Property Get BookFile() As String
+    BookFile = Workbooks(mBookName).FullName
+End Property
+
+Public Property Get BookName() As String
+    BookName = mBookName
 End Property
 
 Public Property Get Path() As String
@@ -36,6 +42,10 @@ End Property
 
 Public Property Get Ini() As String
     Ini = mAppIni
+End Property
+
+Public Property Get HelpFile() As String
+    HelpFile = mAppHelp
 End Property
 
 Public Property Get Title() As String
@@ -56,97 +66,95 @@ End Property
 
 Public Sub Info()
     Dim s As String, fmt As String
-    s = BPrintF("PLT2000a - Программа ввода платежных поручений\n" & _
-        "с интегрированной шифрацией и цифровой подписью PGP\nи почтовым обменом по системе SMail\n\n")
     If User.Demo Then
-        s = s & BPrintF("ДЕМОНСТРАЦИОННАЯ ВЕРСИЯ!\n\n")
+        s = Bsprintf("ДЕМОНСТРАЦИОННАЯ ВЕРСИЯ!\n")
     Else
-        s = s & BPrintF("Номер клиента: %s\n%s\n\n", User.ID, User.Name)
+        s = Bsprintf("Номер клиента: %s\n%s\n", User.ID, User.Name)
     End If
     
-    fmt = Chr(169) & "1995-2000 Дмитрий Евдокимов\n" & _
-        "Экспертная оценка: Игорь Соляр\n" & _
-        "Тестирование: Ирина Равжаева\nВерсия: %s\n\n"
-    s = s & BPrintF(fmt, App.Version)
-
-    With Application
-        fmt = "Microsoft Excel версии %s (%d)\n%s\n\n"
-        s = s & BPrintF(fmt, .Version, .Build, .OperatingSystem)
-    End With
-
-    fmt = "Данные пользователя: \'%s\'\n" & _
-        "Программа Банк-Клиент: \'%s\'\n\n"
-    s = s & BPrintF(fmt, ActiveWorkbook.FullName, ThisWorkbook.FullName)
-    
-    If BnkSeek2.Valid Then
-        fmt = "Справочник банков РФ версии 2: \'%s\'\n(последнее обновление: %s)\n\n"
-        s = s & BPrintF(fmt, BnkSeek2.File, DtoSC(BnkSeek2.Updated))
-    Else
-        s = s & BPrintF(BnkSeek2.None & "\n")
-    End If
+    fmt = "\nРабочая книга Excel: %s\n"
+    s = s & Bsprintf(fmt, Workbooks(mBookName).FullName)
     
     If PGP.Valid Then
-        fmt = "Программа PGP: \'%s\'\n"
-        s = s & BPrintF(fmt, PGP.File)
-        
-        'fmt = "Секр. ключи: \'%s\'\n" & _
-        '    "Публ. ключи: \'%s\'\n"
-        's = s & BPrintF(fmt, User.SecRing, User.PubRing)
-    Else
-        s = s & BPrintF(PGP.None & "\n")
+        fmt = "Ключи PGP клиента: %s\n"
+        s = s & Bsprintf(fmt, User.KeysPath)
     End If
     
-    If SMail.Valid Then
-        fmt = "Программа SMail: \'%s\'\n"
-        s = s & BPrintF(fmt, SMail.File)
-    Else
-        s = s & BPrintF(SMail.None & "\n")
-    End If
+    fmt = "\nПрограмма Банк-Клиент: %s\nДата выпуска: %s\n"
+    s = s & Bsprintf(fmt, ThisWorkbook.FullName, App.Version)
     
-    fmt = "Прием: \'%s\'\nОтпр.: \'%s\'\n\n"
-    s = s & BPrintF(fmt, SMail.Recv, SMail.Send)
+    With BnkSeek2
+        If .Valid Then
+            .File = .File 'ReInitHeader for .Updated
+            fmt = "\nСправочник БИК: %s\nПоследнее обновление: %s\n"
+            s = s & Bsprintf(fmt, .File, DtoC(.Updated))
+        Else
+            s = s & Bsprintf("\n%s\n", .None)
+        End If
+    End With
     
-    'fmt = "\nЗагрузка с диска: \'%s\'\nЗапись на диск: \'%s\'\n"
-    's = s & BPrintF(fmt, User.ImportList, User.ExportList)
+    With PGP
+        If .Valid Then
+            fmt = "\nПрограмма PGP: %s\n"
+            s = s & Bsprintf(fmt, .File)
+        Else
+            s = s & Bsprintf("\n%s\n", .None)
+        End If
+    End With
     
-    MsgBox s, vbInformation, App.Title
+    With SMail
+        If .Valid Then
+            fmt = "Программа SMail: %s\n"
+            s = s & Bsprintf(fmt, .File)
+        Else
+            s = s & Bsprintf("%s\n", .None)
+        End If
+    End With
+    
+    fmt = "\nПрием: %s\nОтправка: %s\n"
+    s = s & Bsprintf(fmt, SMail.Recv, SMail.Send)
+    
+    fmt = "\nЗагрузка: %s\nВыгрузка: %s"
+    s = s & Bsprintf(fmt, User.ImportList, User.ExportList)
+    
+    InfoHelpBox "%s", s, 1
+    
+    SendInfo
 End Sub
 
 Private Sub Class_Initialize()
     With ActiveWorkbook
-        mAppPath = Left(.FullName, InStrR(.FullName, "\"))
-        mAppIni = mAppPath & Left(.Name, InStr(.Name, ".")) & "INI"
+        mBookName = .Name
+        mAppPath = FilePath(.FullName)
+        mAppIni = ChangeFileExt(.FullName, "ini")
+        If Options("WorkPath") = vbNullString Then
+            Options("WorkPath") = mAppPath
+        End If
+    End With
+    With ThisWorkbook
+        mAppHelp = ChangeFileExt(.FullName, "hlp")
+        'Application.Help = mAppHelp
     End With
 End Sub
 
-Public Property Get Options(Key As String) As Variant
-    Options = ReadIniFile(mAppIni, "Options", Key)
+Public Property Get Options(Key As String) As String
+    Options = ReadIniFile(mAppIni, BClient2Section, Key)
 End Property
 
-Public Property Let Options(Key As String, ByVal vNewValue As Variant)
-    'Select Case VarType(vNewValue)
-    '    Case vbBoolean:
-    '        WriteIniFile mAppIni, "Options", Key, BoolToStr(vNewValue)
-    '    Case vbString:
-    '        WriteIniFile mAppIni, "Options", Key, vNewValue
-    '    Case Else
-            WriteIniFile mAppIni, "Options", Key, CStr(vNewValue)
-    'End Select
+Public Property Let Options(Key As String, ByVal vNewValue As String)
+    WriteIniFile mAppIni, BClient2Section, Key, CStr(vNewValue)
 End Property
 
 Public Property Get Setting(Section As String, Key As String) As Variant
     Setting = ReadIniFile(mAppIni, Section, Key)
 End Property
 
+Public Property Get NoSetting(Section As String, Key As String) As Boolean
+    NoSetting = EmptyIniFile(mAppIni, Section, Key)
+End Property
+
 Public Property Let Setting(Section As String, Key As String, ByVal vNewValue As Variant)
-    'Select Case VarType(vNewValue)
-    '    Case vbBoolean:
-    '        WriteIniFile mAppIni, Section, Key, BoolToStr(vNewValue)
-    '    Case vbString:
-    '        WriteIniFile mAppIni, Section, Key, vNewValue
-    '    Case Else
-            WriteIniFile mAppIni, Section, Key, CStr(vNewValue)
-    'End Select
+    WriteIniFile mAppIni, Section, Key, CStr(vNewValue)
 End Property
 
 Public Property Get CloseAllowed() As Boolean
@@ -156,3 +164,4 @@ End Property
 Public Property Let CloseAllowed(ByVal vNewValue As Boolean)
     mCloseAllowed = vNewValue
 End Property
+

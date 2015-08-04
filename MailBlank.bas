@@ -12,17 +12,13 @@ Public Sub MailIn()
     On Error Resume Next
     Do
         Files = SMail.Recv
-        s = BPrintF("Свои файлы (*.%s;*.txt),*.%s;*.txt", User.ID, User.ID) & _
-            ",Курсы валют (remart*.*),remart*.*"
+        s = Bsprintf("Свои файлы (*.%s;*.txt),*.%s;*.txt", User.ID, User.ID) & _
+            ",Курсы валют (remart*.*),remart*.*" & _
+            ",Обновления (*.exe),*.exe"
         If Not BrowseForFiles(Files, s, _
             "файл(ы) для просмотра") Then Exit Do
         For i = LBound(Files) To UBound(Files)
-            s = CStr(Files(i))
-            If FileExt(s) = User.ID Then
-                MailDump PGP.DecodeEx(s)
-            Else
-                MailDump s
-            End If
+            MailOpenFile CStr(Files(i))
         Next
     Loop
 End Sub
@@ -33,13 +29,9 @@ Public Sub MailOut()
     Do
         File1 = SMail.Send
         If Not BrowseForFile(File1, _
-            BPrintF("Свои файлы (*.%s;*.txt),*.%s;*.txt", User.ID, User.ID), _
+            Bsprintf("Свои файлы (*.%s;*.txt),*.%s;*.txt", User.ID, User.ID), _
             "файл для просмотра") Then Exit Do
-        If FileExt(File1) = User.ID Then
-            MailDump PGP.DecodeEx(File1)
-        Else
-            MailDump File1
-        End If
+        MailOpenFile File1
     Loop
 End Sub
 
@@ -49,22 +41,17 @@ Public Sub MailArch()
     On Error Resume Next
     Do
         Files = SMail.Archive
-        s = BPrintF("Свои файлы (*.%s;*.txt),*.%s;*.txt", User.ID, User.ID)
+        s = Bsprintf("Свои файлы (*.%s;*.txt),*.%s;*.txt", User.ID, User.ID)
         If Not BrowseForFiles(Files, s, _
             "файл(ы) для просмотра") Then Exit Do
         For i = LBound(Files) To UBound(Files)
-            s = CStr(Files(i))
-            If FileExt(s) = User.ID Then
-                MailDump PGP.DecodeEx(s)
-            Else
-                MailDump s
-            End If
+            MailOpenFile CStr(Files(i))
         Next
     Loop
 End Sub
 
-Public Sub MailDump(File As String)
-    Dim ss As Variant, s As String, i As Long, ws As Worksheet
+Public Sub MailDump(File As String, Optional KillAfter As Boolean = False)
+    Dim ss() As String, s As String, i As Long, ws As Worksheet
     On Error GoTo ErrSheet
     Set ws = Worksheets(MailSheet)
     Application.ScreenUpdating = False
@@ -78,13 +65,13 @@ Public Sub MailDump(File As String)
     On Error Resume Next
     s = InputFile(File)
     If Len(s) = 0 Then
-        MsgBox "Файл пуст или не читается!", vbExclamation, App.Title
-        If IsFile(File) Then Kill File
+        WarnBox "Файл пуст или не читается!"
+        If IsFile(File) And KillAfter Then Kill File
         Exit Sub
     Else
-        ss = StrToArr(CWin(s), vbCrLf)
+        StrToLines CWin(s), ss
     End If
-    Kill File
+    If KillAfter Then Kill File
     
     On Error GoTo ErrSheet
     Set ws = Worksheets(MailSheet)
@@ -99,21 +86,6 @@ Public Sub MailDump(File As String)
             .Cells(i, 1) = ss(i)
         Next
     End With
-    's = "$A$1:$A$" & Trim(Str(s.Count))
-    'With Range(s)
-    '    .Font.Name = "Courier New"
-    '    '.NumberFormat = "@"
-    '    .Interior.ColorIndex = 35
-    '    .Interior.Pattern = xlSolid
-    'End With
-    'ActiveSheet.PageSetup.PrintArea = s
-    
-    'ws.Columns("A:A").AutoFit
-    'With r.Range("A1", r.Cells(s.LineCount, 1)).Interior
-    '    .ColorIndex = 2
-    '    .Pattern = xlSolid
-    'End With
-    'r.Cells(1, 1).Select
     Application.ScreenUpdating = True
     If StrToBool(App.Options("DontPreviewMail")) Then
         Application.GoTo Worksheets(MailSheet).Range("$A$1"), True
@@ -137,4 +109,55 @@ Public Sub MailClear()
     Application.ScreenUpdating = True
 End Sub
 
-
+Public Sub MailOpenFile(File As String)
+    Dim s As String, ws As Worksheet
+    s = LCase(FileExt(File))
+    Select Case s
+        Case User.ID
+            PGP.ID = s
+            'PGP.Password = vbNullString
+            File = PGP.DecodeEx(File)
+            If Not IsFile(File) Then
+                WarnBox Bsprintf("Программа PGP не смогла расшифровать файл!\nВозможно, ошибка использования ключей"), _
+                    vbExclamation, App.Title
+                Exit Sub
+            End If
+            MailDump File, True
+        Case "exe"
+            UpdateReceived File
+        Case "txt"
+            MailDump File
+        Case "doc"
+            If OkCancelBox("Передача файла в Microsoft Word") Then
+                Shell "winword.exe " & File, vbNormalFocus
+            End If
+        Case User.DemoID
+            PGP.ID = s
+            'PGP.Password = vbNullString
+            File = PGP.DecodeEx(File)
+            If Not IsFile(File) Then
+                WarnBox Bsprintf("Программа PGP не смогла расшифровать файл!\nВозможно, ошибка использования ключей"), _
+                    vbExclamation, App.Title
+                Exit Sub
+            End If
+            MailDump File, True
+        Case Else
+            For Each ws In Worksheets
+                If ws.Name = s Then
+                    If IsFile(App.Path & s & ".id") Then
+                        PGP.ID = s
+                        'PGP.Password = vbNullString
+                        File = PGP.DecodeEx(File)
+                        If Not IsFile(File) Then
+                            WarnBox Bsprintf("Программа PGP не смогла расшифровать файл!\nВозможно, ошибка использования ключей"), _
+                                vbExclamation, App.Title
+                            Exit Sub
+                        End If
+                        MailDump File, True
+                        Exit Sub
+                    End If
+                End If
+            Next
+            MailDump File
+    End Select
+End Sub

@@ -4,15 +4,8 @@ Option Compare Text
 Option Base 1
 DefLng A-Z
 
-Public Sub ErrorBox(e As ErrObject, Optional Description As String = vbNullString)
-    'Dim s As String
-    'On Error Resume Next
-    's = BPrintF("Ошибка %d в %s\n%s", e.Number, e.Source, e.Description)
-    MsgBox Description, vbExclamation, App.Title
-End Sub
-
 Public Sub DumpFile()
-    Dim s As String, buf As String, p, d, R
+    Dim s As String, buf As String, p, d, r
     
     buf = Cells(1, 1).Text
     If Len(buf) = 0 Then _
@@ -25,19 +18,19 @@ Public Sub DumpFile()
     Columns("A:A").Clear
     Cells(1, 1) = buf
     Application.ScreenUpdating = False
-    p = 1: R = 2
+    p = 1: r = 2
     Do
         d = InStr(p, s, vbCrLf) 'DOS eoln
         If d = 0 Then d = InStr(p, s, vbLf) 'else UNIX eoln
         If d = 0 Then Exit Do 'no eoln is eof
         If d = p Then Exit Do
         buf = Mid(s, p, d - p)
-        Cells(R, 1) = "'" & buf
+        Cells(r, 1) = "'" & buf
         p = d + 2
-        R = R + 1
+        r = r + 1
     Loop
     
-    s = "$A$2:$A$" & Trim(CStr(R - 1))
+    s = "$A$2:$A$" & Trim(CStr(r - 1))
     With Range(s)
         .Font.Name = "Courier New"
         '.NumberFormat = "@"
@@ -62,7 +55,7 @@ Public Function InputFile(FName As String) As String
 ErrHandler:
     Close #FNum
     InputFile = vbNullString
-    ErrorBox Err, BPrintF("Ошибка чтения из файла\n\'%s\'", FName)
+    WarnBox "Ошибка чтения из файла\n%s", FName
 End Function
 
 Public Sub OutputFile(FName As String, s As String)
@@ -80,7 +73,7 @@ Public Sub OutputFile(FName As String, s As String)
     Exit Sub
 ErrHandler:
     Close #FNum
-    ErrorBox Err, BPrintF("Ошибка записи в файл\n\'%s\'", FName)
+    WarnBox "Ошибка записи в файл\n%s", FName
 End Sub
 
 Public Sub AppendFile(FName As String, s As String)
@@ -95,7 +88,7 @@ Public Sub AppendFile(FName As String, s As String)
     Exit Sub
 ErrHandler:
     Close #FNum
-    ErrorBox Err, BPrintF("Ошибка добавления в файл\n\'%s\'", FName)
+    WarnBox "Ошибка добавления в файл\n%s", FName
 End Sub
 
 Public Sub WipeFile(FName As String)
@@ -110,13 +103,12 @@ Public Sub WipeFile(FName As String)
     Exit Sub
 ErrHandler:
     Close #FNum
-    ErrorBox Err, BPrintF("Ошибка затирания файла\n\'%s\'", FName)
+    WarnBox "Ошибка затирания файла\n%s", FName
 End Sub
 
 Public Function OverwriteFile(FName As String) As Boolean
     If IsFile(FName) Then
-        OverwriteFile = MsgBox(BPrintF("Файл \'%s\' уже существует!\n\nПерезаписать его?", FName), _
-            vbExclamation + vbYesNo, App.Title) = vbYes
+        OverwriteFile = YesNoBox("Файл %s уже существует!\n\nПерезаписать его?", FName)
     Else
         OverwriteFile = True
     End If

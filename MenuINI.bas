@@ -16,7 +16,7 @@ Public Sub WriteMenuINI()
         .Setting(MenuSection, "Before") = 1 '0 - не вставлять
         
         'Контекстное меню по правой кнопке мыши
-        .Setting(MenuSection, "RClick") = 1
+        '.Setting(MenuSection, "RClick") = 1
         
         'Линейный тулбар
         .Setting(MenuSection, "Bar") = CDos("Сити Инвест Банк")
@@ -25,11 +25,11 @@ Public Sub WriteMenuINI()
         .Setting(MenuSection, "BarVisible") = 1
         
         'Менюобразный тулбар
-        .Setting(MenuSection, "Bar1") = CDos("Сити Инвест Банк Меню")
-        .Setting(MenuSection, "Bar1Menu") = CDos("[Пуск] Банк-Клиент")
-        .Setting(MenuSection, "Bar1Add") = 1
-        .Setting(MenuSection, "Bar1Position") = 3 '0=left, 1=top, 2=right, 3=bottom, 4=floating
-        .Setting(MenuSection, "Bar1Visible") = 0
+        '.Setting(MenuSection, "Bar1") = CDos("Сити Инвест Банк Меню")
+        '.Setting(MenuSection, "Bar1Menu") = CDos("[Пуск] Банк-Клиент")
+        '.Setting(MenuSection, "Bar1Add") = 1
+        '.Setting(MenuSection, "Bar1Position") = 3 '0=left, 1=top, 2=right, 3=bottom, 4=floating
+        '.Setting(MenuSection, "Bar1Visible") = 0
         
         i = 0
         i = i + 1: .Setting(MenuSection, CStr(i)) = CDos("&Вход в систему...") & "\LogonShow\59"
@@ -38,15 +38,15 @@ Public Sub WriteMenuINI()
         i = i + 1: .Setting(MenuSection, CStr(i)) = CDos("&Загрузить с диска...") & "\ImportList\270"
         i = i + 1: .Setting(MenuSection, CStr(i)) = CDos("-&Просмотр и печать") & "\PreviewPlat\2174"
         i = i + 1: .Setting(MenuSection, CStr(i)) = CDos("З&аписать на диск...") & "\ExportList\271"
-        i = i + 1: .Setting(MenuSection, CStr(i)) = CDos("За&шифровать к отправке") & "\ExportPlat\277\P"
-        i = i + 1: .Setting(MenuSection, CStr(i)) = CDos("-&Отправка и прием...") & "\MailBoxShow\275\P"
+        i = i + 1: .Setting(MenuSection, CStr(i)) = CDos("За&шифровать к отправке") & "\ExportPlat\277"
+        i = i + 1: .Setting(MenuSection, CStr(i)) = CDos("-&Отправка и прием...") & "\MailBoxShow\275"
         i = i + 1: .Setting(MenuSection, CStr(i)) = CDos("-С&ервис") & "\\" & ServiceMenu & "\\" & CDos("Сервис")
         i = i + 1: .Setting(MenuSection, CStr(i)) = CDos("О п&рограмме") & "\Info\1954"
         i = i + 1: .Setting(MenuSection, CStr(i)) = CDos("-В&ыход со сменой пароля") & "\SavePassShow\276"
         .Setting(MenuSection, "Count") = i
         
         i = 0
-        i = i + 1: .Setting(ServiceMenu, CStr(i)) = CDos("&Справочник банков РФ...") & "\LSShow\176"
+        i = i + 1: .Setting(ServiceMenu, CStr(i)) = CDos("&Справочник БИК...") & "\LSShow\176"
         i = i + 1: .Setting(ServiceMenu, CStr(i)) = CDos("-С&ортировка строк") & "\\" & SortMenu & "\\" & CDos("Сортировка")
         i = i + 1: .Setting(ServiceMenu, CStr(i)) = CDos("&Удалить строки") & "\DelRows\67"
         i = i + 1: .Setting(ServiceMenu, CStr(i)) = CDos("-&Текущий остаток...") & "\AmountChange\52"

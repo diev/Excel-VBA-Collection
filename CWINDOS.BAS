@@ -5,7 +5,7 @@ Option Base 1
 DefLng A-Z
 
 Public Function CWin(DOS As String) As String
-    Dim i As Long, n As Long, b() As Byte, x As Byte
+    Dim i As Long, n As Long, b() As Byte
     n = Len(DOS)
     If n = 0 Then
         CWin = DOS
@@ -13,34 +13,32 @@ Public Function CWin(DOS As String) As String
     End If
     StrToBytes DOS, b
     For i = 1 To n
-        x = b(i)
-        If x > 127 Then
-            If x < 176 Then 'Р128..пр..я175
-                b(i) = x + 64
-            ElseIf x > 223 Then '№224..џ239
-                If x < 240 Then
-                    b(i) = x + 16
-                ElseIf x = 240 Then 'Ј240
-                    b(i) = 168
-                ElseIf x = 241 Then 'И241
-                    b(i) = 184
-                End If
-            
-            ElseIf x = 193 Or x = 194 Or x = 196 Then
+        Select Case b(i)
+            Case 0 To 127
+                'US-ASCII
+            Case 128 To 175 'Р128..пр..я175
+                b(i) = b(i) + 64
+            Case 224 To 239 '№224..џ239
+                b(i) = b(i) + 16
+            Case 240 'Ј240
+                b(i) = 168
+            Case 241 'И241
+                b(i) = 184
+            Case 193, 194, 196
                 b(i) = 45 '-
-            ElseIf x = 179 Or x = 180 Or x = 195 Or x = 197 Then
+            Case 179, 180, 195, 197
                 b(i) = 124 '|
-            ElseIf x = 191 Or x = 192 Or x = 217 Or x = 218 Then
+            Case 191, 192, 217, 218
                 b(i) = 43 '+
-            
-            End If
-        End If
+            Case Else
+                b(i) = 46 '.
+        End Select
     Next
     CWin = BytesToStr(b)
 End Function
 
 Public Function CDos(Win As String) As String
-    Dim i As Long, n As Long, b() As Byte, x As Byte
+    Dim i As Long, n As Long, b() As Byte
     n = Len(Win)
     If n = 0 Then
         CDos = Win
@@ -48,25 +46,26 @@ Public Function CDos(Win As String) As String
     End If
     StrToBytes Win, b
     For i = 1 To n
-        x = b(i)
-        If x > 127 Then
-            If x > 239 Then '№240..џ255
-                b(i) = x - 16
-            ElseIf x > 191 Then 'Р191..пр..я239
-                b(i) = x - 64
-            
-            ElseIf x = 168 Then 'Ј240
+        Select Case b(i)
+            Case 0 To 127
+                'US-ASCII
+            Case 240 To 255 '№240..џ255
+                b(i) = b(i) - 16
+            Case 191 To 239 'Р191..пр..я239
+                b(i) = b(i) - 64
+            Case 168 'Ј240
                 b(i) = 133 'Х133
-            ElseIf x = 184 Then 'И241
+            Case 184 'И241
                 b(i) = 165 'х165
-            
-            ElseIf x = 185 Then 'Й->N
+            Case 185 'Й->N
                 b(i) = 78 'N
-            ElseIf x = 150 Or x = 151 Then
+            Case 150, 151
                 b(i) = 45 '--
-            
-            End If
-        End If
+            Case 174, 187, 145 To 148
+                b(i) = 34 '"
+            Case Else
+                b(i) = 46 '.
+        End Select
     Next
     CDos = BytesToStr(b)
 End Function

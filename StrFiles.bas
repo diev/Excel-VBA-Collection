@@ -54,7 +54,7 @@ Public Function FullFile(File As String) As String
         FullFile = vbNullString
         Exit Function
     End If
-    CurPath = ActiveWorkbook.FullName
+    CurPath = Workbooks(App.BookName).FullName
     CurPath = Left(CurPath, InStrR(CurPath, PathChar) - 1) 'instead CurDir!
     If Mid(File, 2, 1) = ":" Then
         Disk = Left(File, 2)
@@ -154,21 +154,13 @@ Public Function RightPathName(FilePath As String, File As String) As String
     RightPathName = RightSlash(FilePath) & File
 End Function
 
-'ActiveWorkbook
-Public Function WorkName() As String
-    WorkName = ActiveWorkbook.Name
-End Function
-
-Public Function WorkFile() As String
-    WorkFile = ActiveWorkbook.FullName
-End Function
-
-Public Function WorkPath() As String
-    WorkPath = FilePath(ActiveWorkbook.FullName)
-End Function
-
-Public Function WorkPathFile(File As String) As String
-    WorkPathFile = RightSlash(FilePath(ActiveWorkbook.FullName)) & File
+'Quote long filenames with spaces in
+Public Function QFile(File As String) As String
+    If InStr(File, " ") > 0 And Left(File, 1) <> """" Then
+        QFile = """" & File & """"
+    Else
+        QFile = File
+    End If
 End Function
 
 'Create all dirs in the path
@@ -189,7 +181,7 @@ End Sub
 Public Function PathDirectories(Path As String, File As String) As String
     Dim Arr As Variant, i As Long, s As String
     On Error Resume Next
-    s = ActiveWorkbook.FullName
+    s = Workbooks(App.BookName).FullName
     s = Left(s, InStrR(s, PathChar) - 1)
     Path = Path & SepChar & s '& SepChar & Environ("PATH")
     Arr = StrToArr(Path, SepChar)
