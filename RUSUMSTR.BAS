@@ -7,42 +7,42 @@ DefLng A-Z
 'Возвращает сумму прописью из дроби (например, полученной из RVal()
 Public Function RSumStr(Rubles As Variant, Optional Delim As String = " ") As String
 Attribute RSumStr.VB_ProcData.VB_Invoke_Func = " \n14"
-    Dim n As Long, ss As String: n = 0: ss = vbNullString
+    Dim n As Long, SS As String: n = 0: SS = vbNullString
     Dim s As String
 
     s = Format(Rubles, "000000000000000.00")
     
     n = Val(Mid(s, 1, 3))
-    If n > 0 Then ss = ss & Nums999Str(n, True) & "триллион" & EndStr(n, vbNullString, "а", "ов") & Delim
+    If n > 0 Then SS = SS & Nums999Str(n, True) & "триллион" & EndStr(n, vbNullString, "а", "ов") & Delim
     
     n = Val(Mid(s, 4, 3))
-    If n > 0 Then ss = ss & Nums999Str(n, True) & "миллиард" & EndStr(n, vbNullString, "а", "ов") & Delim
+    If n > 0 Then SS = SS & Nums999Str(n, True) & "миллиард" & EndStr(n, vbNullString, "а", "ов") & Delim
         
     n = Val(Mid(s, 7, 3))
-    If n > 0 Then ss = ss & Nums999Str(n, True) & "миллион" & EndStr(n, vbNullString, "а", "ов") & Delim
+    If n > 0 Then SS = SS & Nums999Str(n, True) & "миллион" & EndStr(n, vbNullString, "а", "ов") & Delim
         
     n = Val(Mid(s, 10, 3))
-    If n > 0 Then ss = ss & Nums999Str(n, False) & "тысяч" & EndStr(n, "а", "и", vbNullString) & Delim
+    If n > 0 Then SS = SS & Nums999Str(n, False) & "тысяч" & EndStr(n, "а", "и", vbNullString) & Delim
     
     n = Val(Mid(s, 13, 3))
-    If n > 0 Then ss = ss & Nums999Str(n, True)
+    If n > 0 Then SS = SS & Nums999Str(n, True)
     
-    If Len(ss) = 0 Then ss = "ноль "
-    ss = ss & "рубл" & EndStr(n, "ь ", "я ", "ей ")
+    If Len(SS) = 0 Then SS = "ноль "
+    SS = SS & "рубл" & EndStr(n, "ь ", "я ", "ей ")
             
     n = Val(Right(s, 2))
-    ss = ss & Right$(s, 2) & " копе" & EndStr(n, "йка.", "йки.", "ек.")
+    SS = SS & Right$(s, 2) & " копе" & EndStr(n, "йка.", "йки.", "ек.")
     
-    RSumStr = UCase$(Left$(ss, 1)) & Mid$(ss, 2)
+    RSumStr = UCase$(Left$(SS, 1)) & Mid$(SS, 2)
 End Function
 
 'Возвращает число из 3 разрядов прописью в зависимости от рода
 Private Function Nums999Str(ByVal n As Long, ByVal male As Boolean) As String
-    Dim ss As String: ss = vbNullString
+    Dim SS As String: SS = vbNullString
         
     '0..999
     If n > 99 Then
-        ss = ss & Choose(n \ 100, "сто", "двести", "триста", "четыреста", _
+        SS = SS & Choose(n \ 100, "сто", "двести", "триста", "четыреста", _
             "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот") _
             & " "
         n = n Mod 100
@@ -50,7 +50,7 @@ Private Function Nums999Str(ByVal n As Long, ByVal male As Boolean) As String
     
     '0..99
     If n > 19 Then
-        ss = ss & Choose(n \ 10 - 1, "двадцать", "тридцать", "сорок", _
+        SS = SS & Choose(n \ 10 - 1, "двадцать", "тридцать", "сорок", _
             "пятьдесят", "шестьдесят", "семьдесят", "восемьдесят", "девяносто") _
             & " "
         n = n Mod 10
@@ -58,20 +58,20 @@ Private Function Nums999Str(ByVal n As Long, ByVal male As Boolean) As String
     
     '0..19
     If n > 9 Then
-        ss = ss & Choose(n - 9, "десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать", _
+        SS = SS & Choose(n - 9, "десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать", _
             "пятнадцать", "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать") _
             & " "
     ElseIf n > 2 Then
-        ss = ss & Choose(n - 2, "три", "четыре", "пять", "шесть", "семь", "восемь", "девять") _
+        SS = SS & Choose(n - 2, "три", "четыре", "пять", "шесть", "семь", "восемь", "девять") _
             & " "
     ElseIf n = 2 Then
-        ss = ss & IIf(male, "два", "две") & " "
+        SS = SS & IIf(male, "два", "две") & " "
     ElseIf n = 1 Then
-        ss = ss & IIf(male, "один", "одна") & " "
+        SS = SS & IIf(male, "один", "одна") & " "
     'Else n = 0
     End If
     
-    Nums999Str = ss
+    Nums999Str = SS
 End Function
 
 'Возвращает одну из указанных строчек в зависимости от числа
@@ -92,10 +92,10 @@ End Function
 'Формат со знаком равенства/дефиса вместо десятичной точки
 Public Function PlatFormat(Rubles As Variant, Optional Delim As Variant = "-") As String
 Attribute PlatFormat.VB_ProcData.VB_Invoke_Func = " \n14"
-    Dim ss As String
-    ss = Format(Rubles, "0.00") '"#,##0.00"
-    Mid$(ss, Len(ss) - 2, 1) = Delim
-    PlatFormat = ss
+    Dim SS As String
+    SS = Format(Rubles, "0.00") '"#,##0.00"
+    Mid$(SS, Len(SS) - 2, 1) = Delim
+    PlatFormat = SS
 End Function
 
 'Формат Y2K

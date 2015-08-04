@@ -113,6 +113,14 @@ Public Function Bvsprintf(FormatStr As String, Args As Variant) As String
                     Bvsprintf = Bvsprintf & DtoS(Args(argc)) 'yyyymmdd DtoS
                     argc = argc + 1
                     Exit Do
+                Case "m":
+                    Bvsprintf = Bvsprintf & Format(Args(argc), "yyyy-MM-dd") 'XML
+                    argc = argc + 1
+                    Exit Do
+                Case "M":
+                    Bvsprintf = Bvsprintf & Format(Args(argc), "yyyy-MM-ddTHH:mm:ss") 'XML
+                    argc = argc + 1
+                    Exit Do
                 Case "t":
                     Bvsprintf = Bvsprintf & Format(Args(argc), "HH:mm")
                     argc = argc + 1
@@ -213,6 +221,10 @@ Public Function PFormat(v As Variant, Optional Delim As String = "-") As String
         End If
     End If
     PFormat = s
+End Function
+
+Public Function SumFormat(v As Variant) As String
+    SumFormat = Format(v, "0.00")
 End Function
 
 Public Function SFormat(v As Variant) As String

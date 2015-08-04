@@ -21,7 +21,7 @@ End Function
 'Split(s, Delim, , vbTextCompare) in Office2000
 Public Function StrToArr(s As String, Optional Delim As String = " ", _
     Optional KeepEmpty As Boolean = True) As Variant
-    Dim i, Arr As Variant, n1, n2, n, ss As String
+    Dim i, Arr As Variant, n1, n2, n, SS As String
     i = InStrCount(s, Delim)
     If Right(s, Len(Delim)) <> Delim Then i = i + 1
     ReDim Arr(i) As String
@@ -31,12 +31,12 @@ Public Function StrToArr(s As String, Optional Delim As String = " ", _
     For i = LBound(Arr) To UBound(Arr)
         n2 = InStr(n1, s, Delim)
         If n2 = 0 Then n2 = Len(s) + 1
-        ss = Trim(Mid(s, n1, n2 - n1))
+        SS = Trim(Mid(s, n1, n2 - n1))
         If KeepEmpty Then
-            Arr(n) = ss
+            Arr(n) = SS
             n = n + 1
         ElseIf Len(s) > 0 Then
-            Arr(n) = ss
+            Arr(n) = SS
             n = n + 1
         End If
         n1 = n2 + Len(Delim)

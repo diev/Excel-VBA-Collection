@@ -5,18 +5,18 @@ Option Base 1
 DefLng A-Z
 
 Public Sub DumpFile()
-    Dim s As String, buf As String, p, d, r
+    Dim s As String, Buf As String, p, d, r
     
-    buf = Cells(1, 1).Text
-    If Len(buf) = 0 Then _
-        buf = Application.GetOpenFilename("Файлы TXT (*.txt),*.txt,Все файлы (*.*),*.*", 1, "Открытие файла TXT")
+    Buf = Cells(1, 1).Text
+    If Len(Buf) = 0 Then _
+        Buf = Application.GetOpenFilename("Файлы TXT (*.txt),*.txt,Все файлы (*.*),*.*", 1, "Открытие файла TXT")
     
-    s = InputFile(buf)
+    s = InputFile(Buf)
     If Len(s) = 0 Then Exit Sub
     s = CWin(s) & vbLf
     
     Columns("A:A").Clear
-    Cells(1, 1) = buf
+    Cells(1, 1) = Buf
     Application.ScreenUpdating = False
     p = 1: r = 2
     Do
@@ -24,8 +24,8 @@ Public Sub DumpFile()
         If d = 0 Then d = InStr(p, s, vbLf) 'else UNIX eoln
         If d = 0 Then Exit Do 'no eoln is eof
         If d = p Then Exit Do
-        buf = Mid(s, p, d - p)
-        Cells(r, 1) = "'" & buf
+        Buf = Mid(s, p, d - p)
+        Cells(r, 1) = "'" & Buf
         p = d + 2
         r = r + 1
     Loop
@@ -60,12 +60,13 @@ End Function
 
 Public Sub OutputFile(FName As String, s As String)
     Dim FNum As Long
-    On Error GoTo ErrHandler
+    On Error Resume Next
     'Kill FName
     FNum = FreeFile
     Open FName For Output Access Write Lock Write As FNum
     Close #FNum
     FNum = FreeFile
+    On Error GoTo ErrHandler
     Open FName For Binary Access Write Lock Write As FNum
         Put #FNum, , s
     Close #FNum
@@ -91,6 +92,24 @@ ErrHandler:
     WarnBox "Ошибка добавления в файл\n%s", FName
 End Sub
 
+Public Sub PatchFile(FName As String, Addr As String, Codes As String)
+    Dim FNum As Long, p As Long, i As Long, n As Long
+    On Error GoTo ErrHandler
+    FNum = FreeFile
+    Open FName For Binary Access Read Write Lock Write As FNum
+        p = CLng("&H" & Addr) + 1
+        For i = 1 To Len(Codes) Step 2
+            Put #FNum, p, CByte("&H" & Mid(Codes, i, 2))
+            p = p + 1
+        Next
+    Close #FNum
+    On Error GoTo 0
+    Exit Sub
+ErrHandler:
+    Close #FNum
+    WarnBox "Ошибка замены в файле\n%s\nпо адресу %s", FName, Addr
+End Sub
+
 Public Sub WipeFile(FName As String)
     Dim FNum As Long
     On Error GoTo ErrHandler
@@ -108,7 +127,8 @@ End Sub
 
 Public Function OverwriteFile(FName As String) As Boolean
     If IsFile(FName) Then
-        OverwriteFile = YesNoBox("Файл %s уже существует!\n\nПерезаписать его?", FName)
+        OverwriteFile = YesNoBox("Файл %s\nуже существует с %T!\n\nПерезаписать его?", _
+            FName, FileDateTime(FName))
     Else
         OverwriteFile = True
     End If

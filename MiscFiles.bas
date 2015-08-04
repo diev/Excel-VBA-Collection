@@ -4,9 +4,11 @@ Option Compare Text
 Option Base 1
 DefLng A-Z
 
-Public Function BrowseForFile(ByRef File As String, Mask As String, _
+Const DefaultMask = "Все файлы (*.*),*.*"
+
+Public Function BrowseForFile(ByRef File As String, Optional Mask As String = vbNullString, _
     Optional Capt As String = "файл", Optional Force As Boolean = False) As Boolean
-    Dim f As Variant, s1 As String, s2 As String
+    Dim f As Variant, s1 As String, s2 As String, Home As String
     s1 = FileNameExt(File)
     If Not Force Then
         If IsFile(File) Then
@@ -15,6 +17,12 @@ Public Function BrowseForFile(ByRef File As String, Mask As String, _
         End If
     End If
     On Error Resume Next
+    Home = CurDir
+    If Len(Mask) = 0 Then
+        Mask = DefaultMask
+    Else
+        Mask = Mask & "," & DefaultMask
+    End If
     With Application
         'set by default
         .DefaultFilePath = App.Path
@@ -26,13 +34,13 @@ Public Function BrowseForFile(ByRef File As String, Mask As String, _
         ChDir .DefaultFilePath
     End With
     Do
-        f = Application.GetOpenFilename(Mask & _
-            ",Все файлы (*.*),*.*", 1, _
-            "Укажите " & Capt)
+        f = Application.GetOpenFilename(Mask, 1, "Укажите " & Capt)
         If f <> False Then 'don't change this!
             File = CStr(f)
         Else
             BrowseForFile = False
+            ChDrive Home
+            ChDir Home
             Exit Function
         End If
         s2 = FileNameExt(File)
@@ -44,19 +52,25 @@ Public Function BrowseForFile(ByRef File As String, Mask As String, _
             "Все равно использовать этот файл?", File, s1) Then Exit Do
     Loop
     BrowseForFile = IsFile(File)
+    ChDrive Home
+    ChDir Home
 End Function
 
-Public Function BrowseForFiles(ByRef Files As Variant, Mask As String, _
-    Optional Capt As String = "файл(ы)") As Boolean
-    Dim f As Variant
+Public Function BrowseForFiles(ByRef Files As Variant, Optional Mask As String = vbNullString, _
+    Optional Capt As String = "файл(ы)", Optional FilterIndex As Long = 1) As Boolean
+    Dim f As Variant, Home As String
     On Error Resume Next
+    Home = CurDir
+    If Len(Mask) = 0 Then
+        Mask = DefaultMask
+    Else
+        Mask = Mask & "," & DefaultMask
+    End If
     With Application
         .DefaultFilePath = FilePath(CStr(Files)) 'Some problems on some computers
         ChDrive .DefaultFilePath
         ChDir .DefaultFilePath
-        f = .GetOpenFilename(Mask & _
-            ",Все файлы (*.*),*.*", 1, _
-            "Укажите " & Capt, , True)
+        f = .GetOpenFilename(Mask, FilterIndex, "Укажите " & Capt, , True)
     End With
     If f <> False Then 'don't change this!
         BrowseForFiles = True
@@ -64,21 +78,29 @@ Public Function BrowseForFiles(ByRef Files As Variant, Mask As String, _
     Else
         BrowseForFiles = False
     End If
+    ChDrive Home
+    ChDir Home
 End Function
 
-Public Function BrowseForSave(ByRef File As String, Mask As String, _
+Public Function BrowseForSave(ByRef File As String, Optional Mask As String = vbNullString, _
     Optional Capt As String = "файл") As Boolean
-    Dim f As Variant
+    Dim f As Variant, Home As String
     BrowseForSave = False
     On Error Resume Next
+    Home = CurDir
+    If Len(Mask) = 0 Then
+        Mask = DefaultMask
+    Else
+        Mask = Mask & "," & DefaultMask
+    End If
     With Application
         .DefaultFilePath = FilePath(File) 'Some problems on some computers
         ChDrive .DefaultFilePath
         ChDir .DefaultFilePath
-        f = .GetSaveAsFilename(File, Mask & _
-            ",Все файлы (*.*),*.*", 1, _
-            "Укажите " & Capt)
+        f = .GetSaveAsFilename(File, Mask, 1, "Укажите " & Capt)
     End With
+    ChDrive Home
+    ChDir Home
     If f = False Then Exit Function
     File = CStr(f)
     BrowseForSave = True

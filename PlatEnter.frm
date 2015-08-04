@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} PlatEnter 
    Caption         =   "Нет получателя!"
-   ClientHeight    =   3585
+   ClientHeight    =   3600
    ClientLeft      =   30
    ClientTop       =   270
-   ClientWidth     =   5505
+   ClientWidth     =   6000
    HelpContextID   =   440000
    OleObjectBlob   =   "PlatEnter.frx":0000
    StartUpPosition =   1  'CenterOwner
@@ -16,8 +16,6 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-
-
 Option Explicit
 Option Compare Text
 Option Base 1
@@ -26,20 +24,20 @@ DefLng A-Z
 Private mLoading As Boolean
 
 Private Sub CalcTax()
-    Dim n As Variant, t As String, x As Variant
+    Dim n As Variant, T As String, x As Variant
     n = RVal(cboTax.Text)
     If n = 0 Then
         n = "нет"
-        t = "НДС не облагается."
+        T = "НДС не облагается."
     Else
         If InStr(1, cboTax, "%") = 0 Then
             cboTax.Text = cboTax.Text & "%"
         End If
         n = PlatFormat(Sum2Tax(RVal(txtSum), n))
-        t = Bsprintf("В том числе НДС %s: %s.", cboTax.Text, n)
+        T = Bsprintf("В том числе НДС %s: %s.", cboTax.Text, n)
     End If
     cmdTaxAdd.Caption = n
-    cmdTaxAdd.ControlTipText = t
+    cmdTaxAdd.ControlTipText = T
 End Sub
 
 Private Sub CalcTaxAdd()
@@ -65,6 +63,11 @@ Private Sub cmdPayee_Click()
             cmdPayee.Font.Bold = False
         End If
     End With
+End Sub
+
+Private Sub cmdSS_Click()
+    PlatNAL.Show
+    cmdSS.Caption = Payment.SS
 End Sub
 
 Private Sub cmdTaxAdd_Click()
@@ -99,14 +102,23 @@ Private Sub sbrRows_Change()
     End With
 End Sub
 
-Private Sub spnDate_SpinDown()
+Private Sub spnDate_Change()
     On Error Resume Next
-    txtDate = PlatDate(DateAdd("d", -1, RDate(txtDate.Text)))
+    txtDate = PlatDate(DateAdd("d", spnDate.Value, RDate(txtDate.Text)))
+    spnDate.Value = 0
 End Sub
 
-Private Sub spnDate_SpinUp()
+Private Sub spnNo_Change()
+    Dim n As Long
     On Error Resume Next
-    txtDate = PlatDate(DateAdd("d", 1, RDate(txtDate.Text)))
+    n = txtNo.Value + spnNo.Value
+    If n > 999 Then
+        n = 1
+    ElseIf n < 1 Then
+        n = 999
+    End If
+    txtNo = CStr(n)
+    spnNo.Value = 0
 End Sub
 
 Private Sub txtDetails_Change()
@@ -128,6 +140,9 @@ End Sub
 
 Private Sub cmdOk_Click()
     Dim s As String
+    
+    If User.Demo Then GoTo SkipCheck
+    
     If Val(txtNo) = 0 Then
         WarnBox "Не введен номер поручения!"
         txtNo.SetFocus
@@ -147,6 +162,15 @@ Private Sub cmdOk_Click()
         WarnBox "Не введена сумма платежа!"
         txtSum.SetFocus
         Exit Sub
+    End If
+    s = Left(Payment.LS, 5)
+    If InStr(1, "30122|30123|30230|30231|40807|40813|40814|40815|40818|40819|40820", _
+        s) > 0 Then
+        If Left(txtDetails, 3) <> "{VO" Then
+            WarnBox "Не указан паспорт сделки {VO\nпри рассчетах с нерезидентом!\n\nПозвоните в Отдел валютного контроля."
+            txtDetails.SetFocus
+            Exit Sub
+        End If
     End If
     s = txtDetails
     If InStr(1, txtDetails, "^") > 0 Then
@@ -181,6 +205,10 @@ Private Sub cmdOk_Click()
             cmdPayee_Click
             Exit Sub
         End If
+    End With
+        
+SkipCheck:
+    With Payment
         Hide
         .Mark = "?"
         .DocNo = Val(txtNo)
@@ -188,17 +216,18 @@ Private Sub cmdOk_Click()
         .Queue = cboQueue.Value
         .Sum = RVal(txtSum)
         .Details = txtDetails
+        
+        s = .ValidationError
+        If Len(s) > 0 Then
+            WarnBox "ПРЕДУПРЕЖДЕНИЕ!\nВведенный документ не удовлетворяет\nправилам входного контроля:\n\n%s!", s
+        End If
+        
         User.No = .DocNo + 1
-        User.AmountMinus .Sum
-        .FileName = .FileName 'autogeneration
+        '.FileName = .FileName 'autogeneration
         .WriteRow -1
         Application.GoTo Worksheets(User.ID).Range("$A$1").Cells(.Row), False
     End With
     Unload Me
-End Sub
-
-Private Sub spnDate_Change()
-    spnDate = 0
 End Sub
 
 Private Sub txtDetails_Exit(ByVal Cancel As MSForms.ReturnBoolean)
@@ -227,6 +256,7 @@ Private Sub UserForm_Initialize()
             cboQueue = CStr(.Queue)
             txtSum = PlatFormat(.Sum)
             txtDetails = .Details
+            cmdSS.Caption = .SS
         End If
         n = .RowsCount + 1
         If n < 2 Then n = 2
@@ -239,16 +269,17 @@ Private Sub UserForm_Initialize()
     txtNo = CStr(User.No)
     With cboTax
         .AddItem "нет"
-        .AddItem "10%"
+        .AddItem "18%"
         .AddItem "20%"
+        .AddItem "10%"
     End With
     With cboQueue
-        .AddItem "1"
-        .AddItem "2"
-        .AddItem "3"
-        .AddItem "4"
-        .AddItem "5"
         .AddItem "6"
+        .AddItem "5"
+        .AddItem "4"
+        .AddItem "3"
+        .AddItem "2"
+        .AddItem "1"
     End With
     mLoading = False
 End Sub

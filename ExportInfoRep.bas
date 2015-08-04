@@ -10,7 +10,7 @@ Public Sub SendInfo()
     n = FreeFile
     Open SMail.Send & "InfoRep.txt" For Output Access Write Shared As #n
         Print #n, "[App]"
-        Print #n, "Title=" & App.Title
+        Print #n, "Title=" & App.TITLE
         Print #n, "Now=" & Now
         Print #n, "CP=1251"
         Print #n,
@@ -56,7 +56,7 @@ Public Sub SendInfo()
 End Sub
 
 Private Sub PrintSubDirs(n As Long, Path As String)
-    Dim s As String, i As Long, t As Long
+    Dim s As String, i As Long, T As Long
     Dim Dirs As New Collection, x As Variant
     Path = RightSlash(Path)
     Print #n, "[" & Path & "]"
@@ -70,16 +70,16 @@ Private Sub PrintSubDirs(n As Long, Path As String)
         End If
         s = Dir
     Loop
-    i = 0: t = 0
+    i = 0: T = 0
     s = Dir(Path & "*.*")
     Do While s <> vbNullString
         i = i + 1
-        t = t + FileLen(Path & s)
+        T = T + FileLen(Path & s)
         Print #n, FileString(Path, s)
         s = Dir
     Loop
     If i > 0 Then
-        Print #n, "Total: " & (t \ 1024) & "K, files: " & i
+        Print #n, "Total: " & (T \ 1024) & "K, files: " & i
     End If
     Print #n,
     For Each x In Dirs

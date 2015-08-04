@@ -42,6 +42,13 @@ Public Function StrSpaces1(Where As String) As String
     Loop Until i = 0
 End Function
 
+Public Function StrXMLencode(What As String) As String
+    StrXMLencode = StrTran(What, "&", "&amp;")
+    StrXMLencode = StrTran(StrXMLencode, """", "&quot;")
+    StrXMLencode = StrTran(StrXMLencode, "<", "&lt;")
+    StrXMLencode = StrTran(StrXMLencode, ">", "&gt;")
+End Function
+
 Public Function InStrCount(Where As String, What As String) As Long
     Dim i
     i = 0
@@ -91,36 +98,36 @@ Public Function StrToBool(s As String) As Boolean 'Default = False
         "*" & UCase(s) & "*") > 0
 End Function
 
-Public Sub StrToLines(s As String, A() As String)
+Public Sub StrToLines(s As String, a() As String)
     Dim start As Long, pos As Long, Row As Long
-    Dim buf As String
-    ReDim A(InStrCount(s, vbLf) + 1)
+    Dim Buf As String
+    ReDim a(InStrCount(s, vbLf) + 1)
     start = 1: Row = 0
     If InStr(start, s, vbCrLf) > 0 Then 'DOS
         s = s & vbCrLf
         Do
             pos = InStr(start, s, vbCrLf)
             If pos = 0 Then Exit Do 'no eoln is eof
-            buf = Mid(s, start, pos - start)
+            Buf = Mid(s, start, pos - start)
             start = pos + 2
             Row = Row + 1
-            A(Row) = RTrim(buf)
+            a(Row) = RTrim(Buf)
         Loop
     Else 'UNIX
         s = s & vbLf
         Do
             pos = InStr(start, s, vbLf)
             If pos = 0 Then Exit Do 'no eoln is eof
-            buf = Mid(s, start, pos - start)
+            Buf = Mid(s, start, pos - start)
             start = pos + 1
             Row = Row + 1
-            A(Row) = RTrim(buf)
+            a(Row) = RTrim(Buf)
         Loop
     End If
-    Do While Len(A(Row)) = 0
+    Do While Len(a(Row)) = 0
         Row = Row - 1
     Loop
-    ReDim Preserve A(Row)
+    ReDim Preserve a(Row)
 End Sub
 
 Public Function StrArgs(Where As String, ParamArray Args() As Variant) As String
@@ -177,4 +184,28 @@ Public Function FindTerm(s As String) As String
         End Select
     Next
     FindTerm = vbNullString
+End Function
+
+Public Function IsDigital(s As String) As Boolean
+    'IsDigital = CStr(Val(s)) = s
+    Dim i As Long, b() As Byte
+    StrToBytes s, b
+    For i = 1 To Len(s)
+        Select Case b(i)
+            Case 48 To 57 '0..9
+                '
+            Case Else
+                IsDigital = False
+                Exit Function
+        End Select
+    Next
+    IsDigital = True
+End Function
+
+Public Function LFN(s As String) As String
+    If InStr(s, " ") > 0 Then
+        LFN = """" & s & """"
+    Else
+        LFN = s
+    End If
 End Function

@@ -5,19 +5,25 @@ Option Base 1
 DefLng A-Z
 
 Public Function RDate(v As Variant) As Date 'instead CDate()
+    Dim s As String, n As Long
     On Error Resume Next
     If IsDate(v) Then
         RDate = CDate(v)
     ElseIf Val(v) > 19000101 Then 'from 01.01.1900
         RDate = StoD(CStr(v))
     Else
-        RDate = DateValue(v)
+        s = CStr(v)
+        n = InStr(10, s, "г", vbTextCompare)
+        If n > 10 Then 'skip Авг.
+            s = Left(s, n - 1)
+        End If
+        RDate = DateValue(s)
     End If
 End Function
 
 Public Function RIsDate(v As Variant) As Boolean 'instead IsDate()
     On Error Resume Next
-    RIsDate = IsDate(RDate(v))
+    RIsDate = RDate(v) > 0
 End Function
 
 'Читает всю строку с цифрами и возвращает дробное целое число,

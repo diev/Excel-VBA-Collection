@@ -6,6 +6,7 @@ DefLng A-Z
 
 Const ExtChar = "."
 Const PathChar = "\"
+Const UNCChar = "\\"
 Const SepChar = ";"
 
 Declare Function GetWindowsDirectory Lib "kernel32" Alias "GetWindowsDirectoryA" (ByVal lpBuffer As String, ByVal nSize As Long) As Long
@@ -54,11 +55,14 @@ Public Function FullFile(File As String) As String
         FullFile = vbNullString
         Exit Function
     End If
-    CurPath = Workbooks(App.BookName).FullName
+    CurPath = ActiveWorkbook.FullName
     CurPath = Left(CurPath, InStrR(CurPath, PathChar) - 1) 'instead CurDir!
     If Mid(File, 2, 1) = ":" Then
         Disk = Left(File, 2)
         Path = Mid(File, 3)
+    ElseIf Left(File, 2) = UNCChar Then
+        Disk = vbNullString
+        Path = File
     Else 'ignore CurDir
         'Disk = Left(CurDir, 2)
         Disk = Left(CurPath, 2)
@@ -181,7 +185,7 @@ End Sub
 Public Function PathDirectories(Path As String, File As String) As String
     Dim Arr As Variant, i As Long, s As String
     On Error Resume Next
-    s = Workbooks(App.BookName).FullName
+    s = ActiveWorkbook.FullName
     s = Left(s, InStrR(s, PathChar) - 1)
     Path = Path & SepChar & s '& SepChar & Environ("PATH")
     Arr = StrToArr(Path, SepChar)
@@ -193,5 +197,15 @@ Public Function PathDirectories(Path As String, File As String) As String
         End If
     Next
     PathDirectories = vbNullString
+End Function
+
+Public Function CountFiles(Mask As String) As Long
+    Dim File As String
+    File = Dir(Mask)
+    CountFiles = 0
+    Do While File <> vbNullString
+        CountFiles = CountFiles + 1
+        File = Dir
+    Loop
 End Function
 
