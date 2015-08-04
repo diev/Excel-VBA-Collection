@@ -23,7 +23,7 @@ End Function
 
 Public Function YesNoBox(FormatStr As String, ParamArray Args() As Variant) As Boolean
     YesNoBox = MsgBox(Bvsprintf(FormatStr, CVar(Args)), vbQuestion + vbYesNo, _
-        App.TITLE) = vbyes
+        App.TITLE) = vbYes
 End Function
 
 Public Function YesNoCancelBox(FormatStr As String, ParamArray Args() As Variant) As Long

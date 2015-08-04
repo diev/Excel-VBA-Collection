@@ -5,7 +5,7 @@ Option Base 0 'ParamArray!!!
 DefLng A-Z
 
 Dim simple As Boolean, realign As Boolean
-Dim width As String, part As String, before As Boolean, argc As Long
+Dim width As String, PART As String, before As Boolean, argc As Long
 
 Public Function Bsprintf(FormatStr As String, ParamArray Args() As Variant) As String
     Bsprintf = Bvsprintf(FormatStr, CVar(Args))
@@ -14,7 +14,7 @@ End Function
 Public Function Bvsprintf(FormatStr As String, Args As Variant) As String
     'like the C function vsprintf()
     'required to investigate user32.wvsprintfA()!
-    Dim n1 As Long, n2 As Long, c As String, s As String
+    Dim n1 As Long, n2 As Long, C As String, s As String
     Bvsprintf = vbNullString
     n1 = 1
     Do
@@ -25,8 +25,8 @@ Public Function Bvsprintf(FormatStr As String, Args As Variant) As String
         Else
             Bvsprintf = Bvsprintf & Mid(FormatStr, n1, n2 - n1)
         End If
-        c = Mid(FormatStr, n2 + 1, 1)
-        Select Case c
+        C = Mid(FormatStr, n2 + 1, 1)
+        Select Case C
             Case "\":
                 Bvsprintf = Bvsprintf & "\"
             Case "'":
@@ -44,7 +44,7 @@ Public Function Bvsprintf(FormatStr As String, Args As Variant) As String
             Case "0":
                 Bvsprintf = Bvsprintf & vbNullChar
             Case Else
-                Bvsprintf = Bvsprintf & c
+                Bvsprintf = Bvsprintf & C
         End Select
         n1 = n2 + 2: n2 = n1
     Loop
@@ -57,7 +57,7 @@ Public Function Bvsprintf(FormatStr As String, Args As Variant) As String
         simple = True
         realign = False
         width = vbNullString
-        part = vbNullString
+        PART = vbNullString
         before = True
         n2 = InStr(n1, FormatStr, "%")
         If n2 = 0 Then
@@ -68,8 +68,8 @@ Public Function Bvsprintf(FormatStr As String, Args As Variant) As String
         End If
         Do
             n2 = n2 + 1
-            c = Mid(FormatStr, n2, 1)
-            Select Case c
+            C = Mid(FormatStr, n2, 1)
+            Select Case C
                 Case "%":
                     Bvsprintf = Bvsprintf & "%"
                     Exit Do
@@ -135,17 +135,17 @@ Public Function Bvsprintf(FormatStr As String, Args As Variant) As String
                     simple = False
                     If Len(width) = 0 Then width = "0"
                     If before Then
-                        width = width & c
+                        width = width & C
                     Else
-                        part = part & c
+                        PART = PART & C
                     End If
                 Case "1" To "9":
                     simple = False
                     If Len(width) = 0 Then width = " "
                     If before Then
-                        width = width & c
+                        width = width & C
                     Else
-                        part = part & c
+                        PART = PART & C
                     End If
                 Case "-":
                     simple = False
@@ -156,7 +156,7 @@ Public Function Bvsprintf(FormatStr As String, Args As Variant) As String
                     If before Then
                         width = width & CStr(Args(argc))
                     Else
-                        part = CStr(Args(argc))
+                        PART = CStr(Args(argc))
                     End If
                     argc = argc + 1
                 Case ".":
@@ -166,7 +166,7 @@ Public Function Bvsprintf(FormatStr As String, Args As Variant) As String
                 
                 'Something goes wrong...
                 Case Else
-                    Bvsprintf = Bvsprintf & c
+                    Bvsprintf = Bvsprintf & C
                     Exit Do
             End Select
         Loop
@@ -180,10 +180,10 @@ Public Function DFormat(v As Variant) As String
     If Not simple Then
         If realign Then 'align to left
             s = PadR(s, Val(width), Left(width, 1))
-            If Len(part) > 0 Then s = Right(s, Val(part))
+            If Len(PART) > 0 Then s = Right(s, Val(PART))
         Else 'align to right
             s = PadL(s, Val(width), Left(width, 1))
-            If Len(part) > 0 Then s = Left(s, Val(part))
+            If Len(PART) > 0 Then s = Left(s, Val(PART))
         End If
     End If
     DFormat = s
@@ -195,8 +195,8 @@ Public Function FFormat(v As Variant, Optional Delim As String = ".") As String
         s = Format(v, "#,0.00")
         Mid(s, Len(s) - 2, 1) = Delim
     Else
-        s = Format(v, "#,0." & String(Val(part), "0"))
-        Mid(s, Len(s) - Val(part), 1) = Delim
+        s = Format(v, "#,0." & String(Val(PART), "0"))
+        Mid(s, Len(s) - Val(PART), 1) = Delim
         If realign Then 'align to left
             s = PadR(s, Val(width), Left(width, 1))
         Else 'align to right
@@ -212,8 +212,8 @@ Public Function PFormat(v As Variant, Optional Delim As String = "-") As String
         s = Format(v, "0.00")
         Mid(s, Len(s) - 2, 1) = Delim
     Else
-        s = Format(v, "0." & String(Val(part), "0"))
-        Mid(s, Len(s) - Val(part), 1) = Delim
+        s = Format(v, "0." & String(Val(PART), "0"))
+        Mid(s, Len(s) - Val(PART), 1) = Delim
         If realign Then 'align to left
             s = PadR(s, Val(width), Left(width, 1))
         Else 'align to right
@@ -233,10 +233,10 @@ Public Function SFormat(v As Variant) As String
     If Not simple Then
         If realign Then 'align to right
             s = PadL(s, Val(width), Left(width, 1))
-            If Len(part) > 0 Then s = Right(s, Val(part))
+            If Len(PART) > 0 Then s = Right(s, Val(PART))
         Else 'align to left
             s = PadR(s, Val(width), Left(width, 1))
-            If Len(part) > 0 Then s = Left(s, Val(part))
+            If Len(PART) > 0 Then s = Left(s, Val(PART))
         End If
     End If
     SFormat = s

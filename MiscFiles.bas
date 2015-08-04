@@ -25,7 +25,7 @@ Public Function BrowseForFile(ByRef File As String, Optional Mask As String = vb
     End If
     With Application
         'set by default
-        .DefaultFilePath = App.Path
+        .DefaultFilePath = Application.Path
         ChDrive .DefaultFilePath
         ChDir .DefaultFilePath
     

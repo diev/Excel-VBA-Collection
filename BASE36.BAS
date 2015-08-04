@@ -46,7 +46,7 @@ Public Function Ot36(Value As String) As Long
                 GoTo ErrHandler
         End Select
     Else
-        StrToBytes Value, b
+        StrToBytes b, Value
         Ot36 = 0
         For i = 1 To n
             v = b(i)

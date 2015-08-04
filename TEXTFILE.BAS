@@ -4,6 +4,13 @@ Option Compare Text
 Option Base 1
 DefLng A-Z
 
+Public Sub ErrorBox(e As ErrObject, Optional Description As Variant, Optional TITLE As Variant)
+    If IsMissing(Description) Then Description = e.Description _
+        Else Description = BPrintF("%s\n\%s", Description, e.Description)
+    If IsMissing(TITLE) Then TITLE = BPrintF("Ошибка %d в %s", e.Number, e.Source)
+    MsgBox Description, vbExclamation, TITLE
+End Sub
+
 Public Sub DumpFile()
     Dim s As String, Buf As String, p, d, r
     
@@ -47,26 +54,24 @@ Public Function InputFile(FName As String) As String
     Dim FNum As Long
     On Error GoTo ErrHandler
     FNum = FreeFile
-    Open FName For Binary Access Read Shared As FNum
+    Open FName For Binary Access Read Lock Write As FNum
         InputFile = Input(LOF(FNum), #FNum)
     Close #FNum
     On Error GoTo 0
     Exit Function
 ErrHandler:
     Close #FNum
-    InputFile = vbNullString
-    WarnBox "Ошибка чтения из файла\n%s", FName
+    InputFile = ""
+    ErrorBox Err, BPrintF("Чтение файла ~%s~", FName)
 End Function
 
 Public Sub OutputFile(FName As String, s As String)
     Dim FNum As Long
-    On Error Resume Next
-    'Kill FName
+    On Error GoTo ErrHandler
     FNum = FreeFile
     Open FName For Output Access Write Lock Write As FNum
     Close #FNum
     FNum = FreeFile
-    On Error GoTo ErrHandler
     Open FName For Binary Access Write Lock Write As FNum
         Put #FNum, , s
     Close #FNum
@@ -74,40 +79,23 @@ Public Sub OutputFile(FName As String, s As String)
     Exit Sub
 ErrHandler:
     Close #FNum
-    WarnBox "Ошибка записи в файл\n%s", FName
+    ErrorBox Err, BPrintF("Запись файла ~%s~", FName)
 End Sub
 
 Public Sub AppendFile(FName As String, s As String)
     Dim FNum As Long, p As Long
     On Error GoTo ErrHandler
     FNum = FreeFile
-    Open FName For Binary Access Write Shared As FNum
-        p = LOF(FNum) + 1
+    Open FName For Binary Access Write Lock Write As FNum
+        p = LOF(FNum)
+        If p = 0 Then p = 1
         Put #FNum, p, s
     Close #FNum
     On Error GoTo 0
     Exit Sub
 ErrHandler:
     Close #FNum
-    WarnBox "Ошибка добавления в файл\n%s", FName
-End Sub
-
-Public Sub PatchFile(FName As String, Addr As String, Codes As String)
-    Dim FNum As Long, p As Long, i As Long, n As Long
-    On Error GoTo ErrHandler
-    FNum = FreeFile
-    Open FName For Binary Access Read Write Lock Write As FNum
-        p = CLng("&H" & Addr) + 1
-        For i = 1 To Len(Codes) Step 2
-            Put #FNum, p, CByte("&H" & Mid(Codes, i, 2))
-            p = p + 1
-        Next
-    Close #FNum
-    On Error GoTo 0
-    Exit Sub
-ErrHandler:
-    Close #FNum
-    WarnBox "Ошибка замены в файле\n%s\nпо адресу %s", FName, Addr
+    ErrorBox Err, BPrintF("Добавление файла ~%s~", FName)
 End Sub
 
 Public Sub WipeFile(FName As String)
@@ -122,14 +110,7 @@ Public Sub WipeFile(FName As String)
     Exit Sub
 ErrHandler:
     Close #FNum
-    WarnBox "Ошибка затирания файла\n%s", FName
+    ErrorBox Err, BPrintF("Затирание файла ~%s~", FName)
 End Sub
 
-Public Function OverwriteFile(FName As String) As Boolean
-    If IsFile(FName) Then
-        OverwriteFile = YesNoBox("Файл %s\nуже существует с %T!\n\nПерезаписать его?", _
-            FName, FileDateTime(FName))
-    Else
-        OverwriteFile = True
-    End If
-End Function
+

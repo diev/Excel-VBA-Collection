@@ -27,7 +27,7 @@ End Function
 Public Function CalcLSKeyValue(BICLS As String) As Long
     Dim i As Long, nSum As Long, ab() As Byte
     
-    StrToBytes BICLS + "0", ab 'Align to 24 (step 3)
+    StrToBytes ab, BICLS + "0" 'Align to 24 (step 3)
     For i = 1 To 24
         ab(i) = ab(i) - 48 'Asc("0")
     Next
@@ -59,7 +59,7 @@ Public Function INNKeyValid(ByVal INN As String) As Boolean
         Case 1
             INNKeyValid = INN = "0"
         Case 10
-            StrToBytes INN, ab
+            StrToBytes ab, INN
             For i = 1 To 10
                 ab(i) = ab(i) - 48 'Asc("0")
             Next
@@ -76,7 +76,7 @@ Public Function INNKeyValid(ByVal INN As String) As Boolean
             nSum = nSum Mod 11 Mod 10
             INNKeyValid = ab(10) = nSum
         Case 12
-            StrToBytes INN, ab
+            StrToBytes ab, INN
             For i = 1 To 12
                 ab(i) = ab(i) - 48 'Asc("0")
             Next

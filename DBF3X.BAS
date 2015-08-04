@@ -1,7 +1,9 @@
 Attribute VB_Name = "DBF3x"
 Option Explicit
-Option Base 1
+Option Base 0 '1
 DefLng A-Z
+
+Const BufSizeLimit = 8192 '4096 is one FAT32 disk cluster
 
 Const DBF_C As Byte = 67
 Const DBF_D As Byte = 68
@@ -64,7 +66,7 @@ Private Sub ParseHeader(Header As HeaderType, sHeader As String)
                         .dbfFormat = "C" & CStr(.Len)
                     Case DBF_D
                         .dbfFormat = "D8"
-                        .xlsFormat = "dd.mm.yy"
+                        .xlsFormat = "dd.mm.yyyy"
                     Case DBF_L
                         .dbfFormat = "L1"
                     Case DBF_N
@@ -91,7 +93,7 @@ Private Function CreateHeader(Header As HeaderType) As String
     Dim Buf() As Byte, i, p, l As Long
     
     With Header
-        FillBytes Buf, , , 4096
+        FillBytes Buf, , , BufSizeLimit
                 
         Buf(0) = 3 'No MEMO allowed!
         Buf(1) = Val(Format(Date, "yy")) 'Y2K!
@@ -133,13 +135,16 @@ End Function
 
 Public Sub DumpDbfFile()
     Dim Header As HeaderType
-    Dim db As Range, r, c, p
+    Dim db As Range, r, C, p
     Dim nFile As Long, Buffer As String, Buf As String
     
     Application.StatusBar = "Инициализация..."
     Buf = Cells(1, 1).Text
-    If Len(Buf) = 0 Then _
-        Buf = Application.GetOpenFilename("Файлы DBF (*.dbf),*.dbf,Все файлы (*.*),*.*", 1, "Открытие файла DBF")
+    If Len(Buf) = 0 Or Buf = "False" Then
+        ChDrive "C"
+        ChDir "C:\Temp"
+        Buf = Application.GetOpenFilename("Файлы 161п (*.??1;*.dbf),*.??1;*.dbf,Файлы DBF (*.dbf),*.dbf,Все файлы (*.*),*.*", 1, "Открытие файла DBF по 161п")
+    End If
     
     Cells.Clear
     Application.StatusBar = "Открытие файла..."
@@ -148,27 +153,33 @@ Public Sub DumpDbfFile()
     nFile = FreeFile
     Open Buf For Binary Access Read Lock Write As nFile
     r = LOF(nFile)
-    If r > 4096 Then r = 4096 'one FAT32 disk cluster
+    
+    If r < 32 Then
+        MsgBox "Файл не DBF или пуст", vbExclamation, "Ошибка"
+        GoTo ErrFile
+    End If
+    
+    If r > BufSizeLimit Then r = BufSizeLimit
     Buffer = Input(r, nFile)
     ParseHeader Header, Buffer
     On Error GoTo 0
     
     With Header
         .File = Buf
-        For c = 1 To .FieldsCount
-            With .Fields(c)
-                Columns(c).NumberFormat = .xlsFormat
+        For C = 1 To .FieldsCount
+            With .Fields(C)
+                Columns(C).NumberFormat = .xlsFormat
                 Select Case .Type
                     Case DBF_C
-                        Columns(c).Font.Color = QBColor(0)
+                        Columns(C).Font.Color = QBColor(0)
                     Case DBF_D
-                        Columns(c).Font.Color = QBColor(2)
+                        Columns(C).Font.Color = QBColor(2)
                     Case DBF_L
-                        Columns(c).Font.Color = QBColor(1)
+                        Columns(C).Font.Color = QBColor(1)
                     Case DBF_N
-                        Columns(c).Font.Color = QBColor(5)
+                        Columns(C).Font.Color = QBColor(5)
                     Case Else
-                        Columns(c).Font.Color = QBColor(12)
+                        Columns(C).Font.Color = QBColor(12)
                 End Select
             End With
         Next
@@ -180,22 +191,41 @@ Public Sub DumpDbfFile()
         For r = 1 To .RecCount
             Buffer = Input(.RecSize, nFile)
             p = 2 'skip the delete flag byte
-            For c = 1 To .FieldsCount
-                With .Fields(c)
+            For C = 1 To .FieldsCount
+                With .Fields(C)
                     Buf = Trim(Mid(Buffer, p, .Len))
                     Select Case .Type
                         Case DBF_C
-                            db.Cells(r, c) = CWin(Buf)
+                            If Len(Buf) > 0 Then
+                                db.Cells(r, C) = CWin(Buf)
+                            Else
+                                db.Cells(r, C) = "0"
+                            End If
+                            If db.Cells(r, C) = "0" Then _
+                                db.Cells(r, C).Font.Color = QBColor(12)
                         Case DBF_D
-                            If Len(Buf) > 0 Then db.Cells(r, c) = StoD(Buf)
+                            db.Cells(r, C) = StoD(Buf)
+                 '           Select Case Year(db.Cells(r, c))
+                 '               Case 2099
+                 '                   db.Cells(r, c).Font.Color = QBColor(12)
+                 '               Case Is > 2020
+                 '                   db.Cells(r, c).Font.Color = QBColor(13)
+                 '           End Select
                         Case DBF_L
-                            db.Cells(r, c) = Buf
+                            db.Cells(r, C) = Buf
                         Case DBF_N
-                            If Val(Buf) <> 0 Then _
-                                db.Cells(r, c) = Val(Buf)
+                            db.Cells(r, C) = Val(Buf)
+                            If db.Cells(r, C) = 0 Then _
+                                db.Cells(r, C).Font.Color = QBColor(12)
                         Case Else
-                            db.Cells(r, c) = Buf
+                            db.Cells(r, C) = Buf
                     End Select
+                    
+                    'User Final Prefs
+                    db.Cells(r, C).Font.Name = "Calibri"
+                    db.Cells(r, C).Font.Size = 11
+                    db.Cells(r, C).HorizontalAlignment = xlLeft
+                    
                     p = p + .Len
                 End With
             Next
@@ -209,9 +239,9 @@ Public Sub DumpDbfFile()
         Close nFile
         
         Application.ScreenUpdating = False
-        For c = 1 To .FieldsCount
-            Columns(c).AutoFit
-        Next
+        'For c = 1 To .FieldsCount
+        '    Columns(c).AutoFit
+        'Next
         
         Application.ScreenUpdating = True
         Cells(1, 1).Font.Color = QBColor(12)
@@ -220,9 +250,9 @@ Public Sub DumpDbfFile()
         Cells(2, 1) = "Последнее изменение " & .UpdateDate & _
             ", записей " & .RecCount
         Rows(3).Font.Color = QBColor(9)
-        For c = 1 To .FieldsCount
-            With .Fields(c)
-                Cells(3, c) = .Name & " " & .dbfFormat
+        For C = 1 To .FieldsCount
+            With .Fields(C)
+                Cells(3, C) = .Name & " " & .dbfFormat
             End With
         Next
     End With
@@ -237,32 +267,146 @@ ErrFile:
     Application.StatusBar = False
 End Sub
 
+Public Sub DumpDbfFile2()
+    Dim Header As HeaderType
+    Dim db As Range, r, C, p
+    Dim nFile As Long, Buffer As String, Buf As String
+    
+    Application.StatusBar = "Инициализация..."
+    Buf = Application.GetOpenFilename("Файлы 161п (*.0??;*.dbf),*.0??;*.dbf,Файлы DBF (*.dbf),*.dbf,Все файлы (*.*),*.*", 1, "Открытие файла DBF по 161п")
+    
+    Application.StatusBar = "Открытие файла..."
+    
+    'On Error GoTo ErrFile
+    nFile = FreeFile
+    Open Buf For Binary Access Read Lock Write As nFile
+    r = LOF(nFile)
+    
+    If r < 32 Then
+        MsgBox "Файл не DBF или пуст", vbExclamation, "Ошибка"
+        GoTo ErrFile
+    End If
+    
+    If r > BufSizeLimit Then r = BufSizeLimit
+    Buffer = Input(r, nFile)
+    ParseHeader Header, Buffer
+    On Error GoTo 0
+    
+    With Header
+        Seek nFile, .DataOffset + 1
+        
+        ActiveSheet.Range("A4").Select
+        Selection.End(xlDown).Select
+
+        Set db = ActiveSheet.Range("A4").CurrentRegion.End(xlDown).Offset(1, 0)
+        
+        On Error Resume Next 'skip every bad data!
+        For r = 1 To .RecCount
+            Buffer = Input(.RecSize, nFile)
+            p = 2 'skip the delete flag byte
+            For C = 1 To .FieldsCount
+                With .Fields(C)
+                    Buf = Trim(Mid(Buffer, p, .Len))
+                    Select Case .Type
+                        Case DBF_C
+                            If Len(Buf) > 0 Then
+                                db.Cells(r, C) = CWin(Buf)
+                            Else
+                                db.Cells(r, C) = "0"
+                            End If
+                            If db.Cells(r, C) = "0" Then _
+                                db.Cells(r, C).Font.Color = QBColor(12)
+                        Case DBF_D
+                            db.Cells(r, C) = StoD(Buf)
+                 '           Select Case Year(db.Cells(r, c))
+                 '               Case 2099
+                 '                   db.Cells(r, c).Font.Color = QBColor(12)
+                 '               Case Is > 2020
+                 '                   db.Cells(r, c).Font.Color = QBColor(13)
+                 '           End Select
+                        Case DBF_L
+                            db.Cells(r, C) = Buf
+                        Case DBF_N
+                            db.Cells(r, C) = Val(Buf)
+                            If db.Cells(r, C) = 0 Then _
+                                db.Cells(r, C).Font.Color = QBColor(12)
+                        Case Else
+                            db.Cells(r, C) = Buf
+                    End Select
+                    
+                    'User Final Prefs
+                    db.Cells(r, C).Font.Name = "Calibri"
+                    db.Cells(r, C).Font.Size = 11
+                    db.Cells(r, C).HorizontalAlignment = xlLeft
+                    
+                    p = p + .Len
+                End With
+            Next
+            Application.StatusBar = "Загружено " & r & " из " & .RecCount
+            If r Mod 10 = 0 Then
+                If r = 30 Then Application.ScreenUpdating = False
+                DoEvents
+            End If
+        Next
+        On Error GoTo 0
+        Close nFile
+        
+        'Application.ScreenUpdating = False
+        'For c = 1 To .FieldsCount
+        '    Columns(c).AutoFit
+        'Next
+        
+        Application.ScreenUpdating = True
+        'Cells(1, 1).Font.Color = QBColor(12)
+        'Cells(1, 1) = .File
+        'Cells(2, 1).Font.Color = QBColor(0)
+        'Cells(2, 1) = "Последнее изменение " & .UpdateDate & _
+        '    ", записей " & .RecCount
+        'Rows(3).Font.Color = QBColor(9)
+        'For c = 1 To .FieldsCount
+        '    With .Fields(c)
+        '        Cells(3, c) = .Name & " " & .dbfFormat
+        '    End With
+        'Next
+    End With
+    Application.StatusBar = False
+    db.Cells(1, 1).Select
+    Set db = Nothing
+    Exit Sub
+    
+ErrFile:
+    ErrorBox Err
+    Close nFile
+    Application.StatusBar = False
+End Sub
+
 Public Sub WriteDbfFile() 'dbfgen
     Dim db As Range, Header As HeaderType
-    Dim r, c, p, EmptyRow As Boolean
+    Dim r, C, p, EmptyRow As Boolean
     Dim nFile As Long, Buffer As String, Buf As String
     
     Application.StatusBar = "Инициализация..."
     With Header
         .File = Cells(1, 1)
-        If Len(.File) = 0 Then _
-            .File = Application.GetSaveAsFilename("Файлы DBF (*.dbf),*.dbf,Все файлы (*.*),*.*", 1, "Сохранение файла DBF")
+        If Len(.File) = 0 Or .File = "False" Then
+            .File = Application.GetSaveAsFilename("30702000", "Файлы 161п (*.0??),*.0??,Файлы DBF (*.dbf),*.dbf,Все файлы (*.*),*.*", 1, "Сохранение файла DBF по 161п")
+        End If
     
         '.FieldsCount = Cells(3, 1).End(xlToRight).Column
-        c = 1
+        C = 1
         Do
-            If Len(Trim(Cells(3, c).Text)) = 0 Then
-                .FieldsCount = c - 1
+            If Len(Trim(Cells(3, C).Text)) = 0 Then
+                .FieldsCount = C - 1
                 Exit Do
             End If
-            c = c + 1
+            C = C + 1
         Loop
         ReDim .Fields(.FieldsCount)
         
         p = 1 'del flag
-        For c = 1 To .FieldsCount
-            With .Fields(c)
-                Buf = Trim(Cells(3, c).Text)
+        For C = 1 To .FieldsCount
+            With .Fields(C)
+                Buf = Trim(Cells(3, C).Text)
                 r = InStr(Buf, " ")
                 .Name = Left(Buf, r - 1)
                 .dbfFormat = Trim(Mid(Buf, r + 1))
@@ -283,12 +427,12 @@ Public Sub WriteDbfFile() 'dbfgen
         r = 1
         Do
             EmptyRow = True
-            For c = 1 To .FieldsCount
-                With .Fields(c)
-                    p = Len(Trim(db.Cells(r, c).Text))
+            For C = 1 To .FieldsCount
+                With .Fields(C)
+                    p = Len(Trim(db.Cells(r, C).Text))
                     If EmptyRow And p > 0 Then EmptyRow = False
                     If .Type = DBF_C And p > .Len Then
-                        db.Cells(r, c).Select
+                        db.Cells(r, C).Select
                         MsgBox BPrintF("Размер символьного поля %d\nВведено %d", .Len, p), vbExclamation, "Ошибка"
                         Application.StatusBar = False
                         Exit Sub
@@ -323,14 +467,15 @@ Public Sub WriteDbfFile() 'dbfgen
         
         For r = 1 To .RecCount
             Buffer = " " 'the delete flag byte
-            For c = 1 To .FieldsCount
-                With .Fields(c)
-                    Buf = Trim(db.Cells(r, c).Text)
-                    If Buf = "" Then
-                        Buffer = Buffer & Space(.Len)
-                    Else
+            For C = 1 To .FieldsCount
+                With .Fields(C)
+                    Buf = Trim(db.Cells(r, C).Text)
+                    'If Buf = "" Then
+                    '    Buffer = Buffer & Space(.Len)
+                    'Else
                         Select Case .Type
                             Case DBF_C
+                                If Buf = "" Then Buf = "0"
                                 Buffer = Buffer & Pad(CDos(Buf), .Len)
                             Case DBF_D
                                 Buffer = Buffer & DtoS(Buf)
@@ -339,14 +484,14 @@ Public Sub WriteDbfFile() 'dbfgen
                             Case DBF_N
                                 'using fast preparation
                                 Buf = PadL(Format(RVal(Buf), .xlsFormat), .Len)
-                                If .Dec > 0 Then
+                                If .Dec > 0 And InStr(Buf, ",") > 0 Then
                                     Mid(Buf, InStr(Buf, ","), 1) = "."
                                 End If
                                 Buffer = Buffer & Buf
                             Case Else
                                 Buffer = Buffer & Pad(Buf, .Len)
                         End Select
-                    End If
+                    'End If
                 End With
             Next
             Put nFile, , Buffer
@@ -357,8 +502,14 @@ Public Sub WriteDbfFile() 'dbfgen
         
         Put nFile, , Chr(26) 'eof mark
         Close nFile
+        
+        Buf = .File
     End With
     Set db = Nothing
+    Application.StatusBar = False
+    
+    Application.StatusBar = "Резервная копия..."
+    FileCopy Buf, RepFile(Buf)
     Application.StatusBar = False
     Exit Sub
     
@@ -377,8 +528,8 @@ Public Function CDbf(Value As Variant, dbfFormat As String) As String
     Select Case t
         Case "C"
             CDbf = Pad(CDos(CStr(Value)), l)
-        Case "D"
-            CDbf = DtoS(Value)
+        'Case "D"
+            'CDbf = DtoS(Value)
         Case "L"
             CDbf = IIf(CBool(Value), "T", "F")
         Case "N"
@@ -396,7 +547,7 @@ End Function
 
 Public Function SeekDbfFile(File As String, Field As String, Value As String) As RecordType
     Dim Header As HeaderType
-    Dim r, c, p, nField
+    Dim r, C, p, nField
     Dim nFile As Long, Buffer As String, Buf As String
     
     SeekDbfFile.RecNo = 0
@@ -406,7 +557,7 @@ Public Function SeekDbfFile(File As String, Field As String, Value As String) As
     nFile = FreeFile
     Open File For Binary Access Read Lock Write As nFile
     r = LOF(nFile)
-    If r > 4096 Then r = 4096 'one FAT32 disk cluster
+    If r > BufSizeLimit Then r = BufSizeLimit
     Buffer = Input(r, nFile)
     ParseHeader Header, Buffer
     On Error GoTo 0
@@ -416,20 +567,20 @@ Public Function SeekDbfFile(File As String, Field As String, Value As String) As
         nField = 0
         ReDim SeekDbfFile.Fields(.FieldsCount)
         Buf = UCase(Field)
-        For c = 1 To .FieldsCount
-            With SeekDbfFile.Fields(c)
-                .Name = Header.Fields(c).Name
-                .Type = Header.Fields(c).Type
-                .Len = Header.Fields(c).Len
-                .Dec = Header.Fields(c).Dec
-                .dbfFormat = Header.Fields(c).dbfFormat
-                .xlsFormat = Header.Fields(c).xlsFormat
+        For C = 1 To .FieldsCount
+            With SeekDbfFile.Fields(C)
+                .Name = Header.Fields(C).Name
+                .Type = Header.Fields(C).Type
+                .Len = Header.Fields(C).Len
+                .Dec = Header.Fields(C).Dec
+                .dbfFormat = Header.Fields(C).dbfFormat
+                .xlsFormat = Header.Fields(C).xlsFormat
             End With
         Next
-        For c = 1 To .FieldsCount
-            With SeekDbfFile.Fields(c)
+        For C = 1 To .FieldsCount
+            With SeekDbfFile.Fields(C)
                 If .Name = Buf Then
-                    nField = c
+                    nField = C
                     Buf = String(.Len, " ")
                     Exit For
                 Else
@@ -454,9 +605,9 @@ Public Function SeekDbfFile(File As String, Field As String, Value As String) As
                     .RecNo = r
                     .FieldsCount = Header.FieldsCount
                     ReDim .Values(.FieldsCount)
-                    For c = 1 To .FieldsCount
-                        .Values(c) = Mid(Buffer, p, .Fields(c).Len)
-                        p = p + .Fields(c).Len
+                    For C = 1 To .FieldsCount
+                        .Values(C) = Mid(Buffer, p, .Fields(C).Len)
+                        p = p + .Fields(C).Len
                     Next
                 End With
                 Exit For
@@ -476,14 +627,14 @@ ErrFile:
 End Function
 
 Public Function FieldValue(Rec As RecordType, Name As String) As Variant
-    Dim c, Buf As String
+    Dim C, Buf As String
     
     Buf = UCase(Name)
     With Rec
-        For c = 1 To .FieldsCount
-            If .Fields(c).Name = Buf Then
-                Buf = Trim(.Values(c))
-                Select Case .Fields(c).Type
+        For C = 1 To .FieldsCount
+            If .Fields(C).Name = Buf Then
+                Buf = Trim(.Values(C))
+                Select Case .Fields(C).Type
                     Case DBF_C
                         FieldValue = CWin(Buf)
                     Case DBF_D
@@ -499,4 +650,27 @@ Public Function FieldValue(Rec As RecordType, Name As String) As Variant
             End If
         Next
     End With
+End Function
+
+Public Function RepFile(Buf As String) As String
+    Dim y As String, m As String, d As String
+    Dim dt As String, p As String, C As Long
+    
+    dt = DtoS(Now)
+    y = Left(dt, 4)
+    m = Mid(dt, 5, 2)
+    d = Right(dt, 2)
+    
+    'p = FilePath(Buf) & "Rep\" & y & "\" & m & "\" & d
+    p = "G:\OD\FORMS\F161p\Rep\" & y & "\" & m & "\" & d
+    ForceDirectories p
+    p = RightPathName(p, FileNameExt(Buf))
+    
+    dt = p
+    C = 1
+    Do While IsFile(dt)
+        C = C + 1
+        dt = p & "." & C
+    Loop
+    RepFile = dt
 End Function

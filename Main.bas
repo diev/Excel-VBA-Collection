@@ -1,22 +1,4 @@
 Attribute VB_Name = "Main"
-'ВНИМАНИЕ:
-
-'Исходные тексты системы Банк-Клиент ЗАО "Сити Инвест Банк"
-'предоставляются клиентам в открытом виде "как есть" на момент
-'поставки для настройки и адаптации на компьютере Клиента.
-
-'Также они могут быть интересны студентам и возможным работодателям.
-'Любое другое их использование НЕ РАЗРЕШАЕТСЯ в соответствии
-'с Законом об охране авторских прав Российской Федерации.
-'Вам оказано большое доверие для удобства Вашей работы!
-
-'Автор программы: Дмитрий Евдокимов, 1995-1999-2005
-'Адрес в сети Интернет: http://diev.narod.ru/
-'E-mail: diev@mail.ru, ICQ: 7372116
-
-'Любые контакты и предложения очень приветствуются!
-'Спасибо!
-
 Option Explicit
 Option Compare Text
 Option Base 1
@@ -28,23 +10,23 @@ Public Const OptionsSection = "Options"
 'Public Const SMailSection = "SMail"
 
 Public App As New CApp
-Public BnkSeek2 As New CBnkSeek2
-Public User As New CUser
-Public Payment As New CPayment
-Public Crypto As New CCrypto
-Public SMail As New CSMail
+'Public BnkSeek2 As New CBnkSeek2
+'Public User As New CUser
+'Public Payment As New CPayment
+'Public Crypto As New CCrypto
+'Public SMail As New CSMail
 
 Public Sub AutoOpen()
     'Dim s As String
-    On Error Resume Next
+    'On Error Resume Next
     's = App.Path
     'App.DefaultOptions("Send") = s & "SMail\Mailbox\Bank\S\"
     'App.DefaultOptions("Recv") = s & "SMail\Mailbox\Bank\R\"
     'InitMenuBars
-    User.ID = ActiveSheet.Name
-    Crypto.Password = vbNullString
-    DoEvents
-    CheckRecv
+    'User.ID = ActiveSheet.Name
+    'Crypto.Password = vbNullString
+    'DoEvents
+    'CheckRecv
 End Sub
 
 Public Sub AutoClose()
