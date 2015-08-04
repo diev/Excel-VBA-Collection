@@ -12,7 +12,7 @@ Option Compare Text
 Option Base 1
 DefLng A-Z
 
-Const PaySheet = "Платежка"
+Const PaySheet = "РџР»Р°С‚РµР¶РєР°"
 Const BaseRange = "$A$1"
 Const TERM = "^"
 Const WRAP = "!"
@@ -40,7 +40,7 @@ Dim mNAL(1 To 7) As String
 Dim mCountLastSelected As Long
 Dim mMoneyLastSelected As Currency
 
-'Номера столбцов на листе Архива
+'РќРѕРјРµСЂР° СЃС‚РѕР»Р±С†РѕРІ РЅР° Р»РёСЃС‚Рµ РђСЂС…РёРІР°
 Const ColFileName = 1
 Const ColMark = 2
 Const ColDocNo = 3
@@ -53,14 +53,14 @@ Const ColLS = 9
 Const ColQueue = 10
 Const ColDetails = 11
 
-'Диапазон печати бланка на листе
+'Р”РёР°РїР°Р·РѕРЅ РїРµС‡Р°С‚Рё Р±Р»Р°РЅРєР° РЅР° Р»РёСЃС‚Рµ
 Const CellRange = "$A$1:$AJ$39"
 
-'Подгон печатного листа под квадратные ячейки 5мм
+'РџРѕРґРіРѕРЅ РїРµС‡Р°С‚РЅРѕРіРѕ Р»РёСЃС‚Р° РїРѕРґ РєРІР°РґСЂР°С‚РЅС‹Рµ СЏС‡РµР№РєРё 5РјРј
 Const CellWidth = 1.8
 Const CellHeight = 14.5
 
-'Ячейки данных на бланке платежки
+'РЇС‡РµР№РєРё РґР°РЅРЅС‹С… РЅР° Р±Р»Р°РЅРєРµ РїР»Р°С‚РµР¶РєРё
 Const CellNo = "M4"
 Const CellDate = "R4"
 Const CellDelivery = "Z4"
@@ -131,11 +131,11 @@ End Property
 
 Public Property Let Name(ByVal vNewValue As String)
     Dim i1 As Long, i2 As Long
-    If Left(vNewValue, 4) = "ИНН " Then '1C
+    If Left(vNewValue, 4) = "РРќРќ " Then '1C
         vNewValue = Trim(Mid(vNewValue, 5))
         i1 = InStr(vNewValue, " ")
         i2 = InStr(vNewValue, "\")
-        If i2 = 0 Or i2 > i1 Then 'ИНН 7812345678 ООО ...
+        If i2 = 0 Or i2 > i1 Then 'РРќРќ 7812345678 РћРћРћ ...
             mINN = Left(vNewValue, i1 - 1)
             If IsDigital(mINN) Then
                 vNewValue = Trim(Mid(vNewValue, i1 + 1))
@@ -144,7 +144,7 @@ Public Property Let Name(ByVal vNewValue As String)
             End If
         End If
     End If
-    If Left(vNewValue, 1) = "\" Then 'ИНН 7812345678\781234567 ООО ... 1C
+    If Left(vNewValue, 1) = "\" Then 'РРќРќ 7812345678\781234567 РћРћРћ ... 1C
         vNewValue = Trim(Mid(vNewValue, 2))
         i1 = InStr(vNewValue, " ")
         mKPP = Left(vNewValue, i1 - 1)
@@ -153,7 +153,7 @@ Public Property Let Name(ByVal vNewValue As String)
         Else
             mKPP = vbNullString
         End If
-    ElseIf Left(vNewValue, 4) = "КПП " Then 'КПП 781234567 ООО ...
+    ElseIf Left(vNewValue, 4) = "РљРџРџ " Then 'РљРџРџ 781234567 РћРћРћ ...
         vNewValue = Trim(Mid(vNewValue, 5))
         i1 = InStr(vNewValue, " ")
         If i1 > 0 Then
@@ -163,9 +163,9 @@ Public Property Let Name(ByVal vNewValue As String)
             Else
                 mKPP = vbNullString
             End If
-        'Else 'ООО"НетПробеловНигде"
+        'Else 'РћРћРћ"РќРµС‚РџСЂРѕР±РµР»РѕРІРќРёРіРґРµ"
         End If
-    Else 'ООО ...
+    Else 'РћРћРћ ...
         'mINN = vbNullString
         'mKPP = vbNullString
     End If
@@ -394,9 +394,9 @@ Public Function MarkByFile(File As String, Mark As String, Optional Color As Lon
         LoadPlat File2
         Kill File2
     Else
-        WarnBox "Файл %s не расшифровать!", FileNameExt(File)
+        WarnBox "Р¤Р°Р№Р» %s РЅРµ СЂР°СЃС€РёС„СЂРѕРІР°С‚СЊ!", FileNameExt(File)
         If Not LoadPlat(File) Then
-            WarnBox "Файл %s не прочитать!", FileNameExt(File)
+            WarnBox "Р¤Р°Р№Р» %s РЅРµ РїСЂРѕС‡РёС‚Р°С‚СЊ!", FileNameExt(File)
             Exit Function
         End If
     End If
@@ -426,7 +426,7 @@ Public Function MarkByFile(File As String, Mark As String, Optional Color As Lon
                 'MarkByRow N, Mark, Color
                 
                 If LCase(r.Cells(n, ColMark).Text) = "ok" Then
-                    WarnBox "Файл %s уже был принят!", FileNameExt(File)
+                    WarnBox "Р¤Р°Р№Р» %s СѓР¶Рµ Р±С‹Р» РїСЂРёРЅСЏС‚!", FileNameExt(File)
                 Else
                     r.Cells(n, ColMark) = Mark
                     r.Cells(n, ColMark).Font.Color = QBColor(Color)
@@ -480,7 +480,7 @@ Public Sub PrintPreview()
     End If
 End Sub
 
-Public Function AskAllRows(Optional Ask As String = "Обработать все?") As Boolean
+Public Function AskAllRows(Optional Ask As String = "РћР±СЂР°Р±РѕС‚Р°С‚СЊ РІСЃРµ?") As Boolean
     Dim a As Range, r As Range, s As String
     mCountLastSelected = 0
     mMoneyLastSelected = 0
@@ -497,22 +497,22 @@ Public Function AskAllRows(Optional Ask As String = "Обработать все?") As Boolea
         Next a
     End With
     'If mCountLastSelected = 1 Then
-    '    'Ask = BSPrintF("Помечен 1 документ\nна сумму %f", mMoneyLastSelected)
+    '    'Ask = BSPrintF("РџРѕРјРµС‡РµРЅ 1 РґРѕРєСѓРјРµРЅС‚\nРЅР° СЃСѓРјРјСѓ %f", mMoneyLastSelected)
     '    AskAllRows = True
     '    Exit Function
     'Else
     If mMoneyLastSelected = 0 Then
-        Ask = Bsprintf("Помечено документов: %d\nНО ОБЩАЯ СУММА НУЛЕВАЯ!\n\n%s", mCountLastSelected, Ask)
+        Ask = Bsprintf("РџРѕРјРµС‡РµРЅРѕ РґРѕРєСѓРјРµРЅС‚РѕРІ: %d\nРќРћ РћР‘Р©РђРЇ РЎРЈРњРњРђ РќРЈР›Р•Р’РђРЇ!\n\n%s", mCountLastSelected, Ask)
     Else
-        Ask = Bsprintf("Помечено документов: %d\nНа общую сумму: %f\n\n%s", mCountLastSelected, mMoneyLastSelected, Ask)
+        Ask = Bsprintf("РџРѕРјРµС‡РµРЅРѕ РґРѕРєСѓРјРµРЅС‚РѕРІ: %d\nРќР° РѕР±С‰СѓСЋ СЃСѓРјРјСѓ: %f\n\n%s", mCountLastSelected, mMoneyLastSelected, Ask)
     End If
     With User
-        AskAllRows = OkCancelBox("Плательщик %s\n%s\nИНН %s / КПП %s\n\n%s\n\n%s", _
-            .LS, .Name, .INN, .KPP, Ask, "Перед обработкой файл будет автосохранен!")
+        AskAllRows = OkCancelBox("РџР»Р°С‚РµР»СЊС‰РёРє %s\n%s\nРРќРќ %s / РљРџРџ %s\n\n%s\n\n%s", _
+            .LS, .Name, .INN, .KPP, Ask, "РџРµСЂРµРґ РѕР±СЂР°Р±РѕС‚РєРѕР№ С„Р°Р№Р» Р±СѓРґРµС‚ Р°РІС‚РѕСЃРѕС…СЂР°РЅРµРЅ!")
     End With
 End Function
 
-Public Function EachSelected(Action As String, Optional Ask As String = "Обработать все?") As Boolean
+Public Function EachSelected(Action As String, Optional Ask As String = "РћР±СЂР°Р±РѕС‚Р°С‚СЊ РІСЃРµ?") As Boolean
     Dim a As Range, r As Range
     Dim s As String, nOk As Long, nErr As Long
     EachSelected = False
@@ -529,7 +529,7 @@ Public Function EachSelected(Action As String, Optional Ask As String = "Обработ
         Case "ExportPlat":
             s = User.ValidationError
             If Len(s) > 0 Then
-                StopBox "Исправьте ошибки в Ваших реквизитах плательщика:\n\n%s!", s
+                StopBox "РСЃРїСЂР°РІСЊС‚Рµ РѕС€РёР±РєРё РІ Р’Р°С€РёС… СЂРµРєРІРёР·РёС‚Р°С… РїР»Р°С‚РµР»СЊС‰РёРєР°:\n\n%s!", s
                 Exit Function
             End If
             If AskAllRows(Ask) Then
@@ -546,9 +546,9 @@ Public Function EachSelected(Action As String, Optional Ask As String = "Обработ
                             .ReadRow r.Row
                             s = LCase(.Mark)
                             If s = "mail" Then
-                                s = "Уже зашифрован - отправьте его."
+                                s = "РЈР¶Рµ Р·Р°С€РёС„СЂРѕРІР°РЅ - РѕС‚РїСЂР°РІСЊС‚Рµ РµРіРѕ."
                             ElseIf s = "ok" Then
-                                s = "Уже принят Банком."
+                                s = "РЈР¶Рµ РїСЂРёРЅСЏС‚ Р‘Р°РЅРєРѕРј."
                             Else
                                 s = .ValidationError
                             End If
@@ -560,9 +560,9 @@ Public Function EachSelected(Action As String, Optional Ask As String = "Обработ
                                 End If
                             Else
                                 nErr = nErr + 1
-                                If YesNoBox("Документ N %d на сумму %f\nв строке %d не может быть правильно обработан:\n\n%s!\n\nПрервать процесс?", _
+                                If YesNoBox("Р”РѕРєСѓРјРµРЅС‚ N %d РЅР° СЃСѓРјРјСѓ %f\nРІ СЃС‚СЂРѕРєРµ %d РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РїСЂР°РІРёР»СЊРЅРѕ РѕР±СЂР°Р±РѕС‚Р°РЅ:\n\n%s!\n\nРџСЂРµСЂРІР°С‚СЊ РїСЂРѕС†РµСЃСЃ?", _
                                     .DocNo, .Sum, .Row, s) Then
-                                    WarnBox "Обработка помеченных документов прервана.\nУспешных: %d\nОшибочных: %d", nOk, nErr
+                                    WarnBox "РћР±СЂР°Р±РѕС‚РєР° РїРѕРјРµС‡РµРЅРЅС‹С… РґРѕРєСѓРјРµРЅС‚РѕРІ РїСЂРµСЂРІР°РЅР°.\nРЈСЃРїРµС€РЅС‹С…: %d\nРћС€РёР±РѕС‡РЅС‹С…: %d", nOk, nErr
                                     Exit Function
                                 End If
                             End If
@@ -570,13 +570,13 @@ Public Function EachSelected(Action As String, Optional Ask As String = "Обработ
                     End If
                 Next r
             Next a
-            InfoBox "Обработка помеченных документов выполнена.\nУспешных: %d\nОшибочных: %d", nOk, nErr
+            InfoBox "РћР±СЂР°Р±РѕС‚РєР° РїРѕРјРµС‡РµРЅРЅС‹С… РґРѕРєСѓРјРµРЅС‚РѕРІ РІС‹РїРѕР»РЅРµРЅР°.\nРЈСЃРїРµС€РЅС‹С…: %d\nРћС€РёР±РѕС‡РЅС‹С…: %d", nOk, nErr
         Case "Delete":
-            If OkCancelBox("Безвозвратно удалить?!") Then
+            If OkCancelBox("Р‘РµР·РІРѕР·РІСЂР°С‚РЅРѕ СѓРґР°Р»РёС‚СЊ?!") Then
                 For Each a In Selection.Areas
                     For Each r In a.Rows
                         If r.Row = 1 Then
-                            StopBox "Нельзя удалять заголовок таблицы!"
+                            StopBox "РќРµР»СЊР·СЏ СѓРґР°Р»СЏС‚СЊ Р·Р°РіРѕР»РѕРІРѕРє С‚Р°Р±Р»РёС†С‹!"
                             Exit Function
                         End If
                     Next r
@@ -684,14 +684,14 @@ Public Property Get AsED101(Optional No As Long = 1) As String
 '   <ED101 xmlns="urn:cbr-ru:ed:v1.0" EDNo="7" EDDate="2003-04-14" EDAuthor="4525545000" PaytKind="1" Sum="2400000" TurnoverKind="1" TransKind="01" ChargeOffDate="2003-04-14" Priority="6" ReceiptDate="2003-04-14">
 '      <AccDoc AccDocNo="4" AccDocDate="2003-04-14"></AccDoc>
 '      <Payer INN="7726274727" PersonalAcc="40702810200203001037">
-'          <Name>ООО ТЕХНО ПЛЮС</Name>
+'          <Name>РћРћРћ РўР•РҐРќРћ РџР›Р®РЎ</Name>
 '          <Bank BIC="044525545" CorrespAcc="30101810300000000545"></Bank>
 '      </Payer>
 '      <Payee INN="7726062105" PersonalAcc="40702810010130010079">
-'          <Name>ООО ТД ТОРНАДО-ПРОДУКТ</Name>
+'          <Name>РћРћРћ РўР” РўРћР РќРђР”Рћ-РџР РћР”РЈРљРў</Name>
 '          <Bank BIC="044525219" CorrespAcc="30101810500000000219"></Bank>
 '      </Payee>
-'      <Purpose>ОПЛАТА ПО ДОГОВОРУ 95456 ОТ 15.01.2003 В ТОМ ЧИСЛЕ НДС 4000 РУБ</Purpose>
+'      <Purpose>РћРџР›РђРўРђ РџРћ Р”РћР“РћР’РћР РЈ 95456 РћРў 15.01.2003 Р’ РўРћРњ Р§РРЎР›Р• РќР”РЎ 4000 Р РЈР‘</Purpose>
 '   </ED101>
 '</PacketEPD>
     
@@ -757,8 +757,8 @@ Public Function ExportToFile(Optional File As String = vbNullString) As Boolean
             's = User.ID & To36(Day(Now)) & Format(Now, "hhmm") & ".plt" '8.3
             s = User.ID & Format(Now, "-dd-hhmm") & ".plt" 'LFN
             File = RightPathName(File, s)
-            If Not BrowseForSave(File, "Файлы выгрузки (*.plt),*.plt,Файлы УФЭБС (*.xml),*.xml", _
-                "файл для выгрузки") Then Exit Function
+            If Not BrowseForSave(File, "Р¤Р°Р№Р»С‹ РІС‹РіСЂСѓР·РєРё (*.plt),*.plt,Р¤Р°Р№Р»С‹ РЈР¤Р­Р‘РЎ (*.xml),*.xml", _
+                "С„Р°Р№Р» РґР»СЏ РІС‹РіСЂСѓР·РєРё") Then Exit Function
             User.ExportList = FilePath(File)
         'End If
     'End If
@@ -774,7 +774,7 @@ Public Function ExportToFile(Optional File As String = vbNullString) As Boolean
                             .MarkByRow r.Row, "Disk", 1 'Blue
                             s = s & Me.AsString & vbCrLf
                             mCountLastSelected = mCountLastSelected + 1
-                            Application.StatusBar = Bsprintf("Подготовлено: %d", mCountLastSelected)
+                            Application.StatusBar = Bsprintf("РџРѕРґРіРѕС‚РѕРІР»РµРЅРѕ: %d", mCountLastSelected)
                         End If
                     End With
                 Next r
@@ -782,11 +782,11 @@ Public Function ExportToFile(Optional File As String = vbNullString) As Boolean
             If Not App.BoolOptions("DontExportDos") Then s = CDos(s)
             Application.StatusBar = False
             If Len(s) = 0 Then
-                WarnBox "Нечего выгружать!"
+                WarnBox "РќРµС‡РµРіРѕ РІС‹РіСЂСѓР¶Р°С‚СЊ!"
                 Exit Function
             End If
             If IsFile(File) Then
-                x = MsgBox(Bsprintf("Файл %s уже существует!\nЧтобы добавить, нажмите \'Да\'\nПерезаписать - \'Нет\'", File), _
+                x = MsgBox(Bsprintf("Р¤Р°Р№Р» %s СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚!\nР§С‚РѕР±С‹ РґРѕР±Р°РІРёС‚СЊ, РЅР°Р¶РјРёС‚Рµ \'Р”Р°\'\nРџРµСЂРµР·Р°РїРёСЃР°С‚СЊ - \'РќРµС‚\'", File), _
                     vbQuestion + vbYesNoCancel, App.TITLE)
                 Select Case x
                     Case vbyes:
@@ -794,7 +794,7 @@ Public Function ExportToFile(Optional File As String = vbNullString) As Boolean
                     Case vbNo:
                         OutputFile File, s
                     Case Else
-                        MsgBox "Выгрузка НЕ выполнена!", vbExclamation, App.TITLE
+                        MsgBox "Р’С‹РіСЂСѓР·РєР° РќР• РІС‹РїРѕР»РЅРµРЅР°!", vbExclamation, App.TITLE
                         Exit Function
                 End Select
             Else
@@ -810,14 +810,14 @@ Public Function ExportToFile(Optional File As String = vbNullString) As Boolean
                             .MarkByRow r.Row, "Disk", 1 'Blue
                             s = s & Me.AsED101(mCountLastSelected + 1)
                             mCountLastSelected = mCountLastSelected + 1
-                            Application.StatusBar = Bsprintf("Подготовлено: %d", mCountLastSelected)
+                            Application.StatusBar = Bsprintf("РџРѕРґРіРѕС‚РѕРІР»РµРЅРѕ: %d", mCountLastSelected)
                         End If
                     End With
                 Next r
             Next a
             Application.StatusBar = False
             If Len(s) = 0 Then
-                WarnBox "Нечего выгружать!"
+                WarnBox "РќРµС‡РµРіРѕ РІС‹РіСЂСѓР¶Р°С‚СЊ!"
                 Exit Function
             End If
             x = Val(App.Options("EDNo")) + 1
@@ -832,15 +832,15 @@ Public Function ExportToFile(Optional File As String = vbNullString) As Boolean
             OutputFile File, s
 
         Case Else
-            WarnBox "Не указан формат вывода!"
+            WarnBox "РќРµ СѓРєР°Р·Р°РЅ С„РѕСЂРјР°С‚ РІС‹РІРѕРґР°!"
             Exit Function
     End Select
     If IsFile(File) Then
-        InfoBox "Выгрузка выполнена в файл\n%s\n\nРазмер файла: %d байт", _
+        InfoBox "Р’С‹РіСЂСѓР·РєР° РІС‹РїРѕР»РЅРµРЅР° РІ С„Р°Р№Р»\n%s\n\nР Р°Р·РјРµСЂ С„Р°Р№Р»Р°: %d Р±Р°Р№С‚", _
             File, FileLen(File)
         ExportToFile = True
     Else
-        StopBox "Ошибка выгрузки!"
+        StopBox "РћС€РёР±РєР° РІС‹РіСЂСѓР·РєРё!"
     End If
 End Function
 
@@ -854,9 +854,9 @@ Public Function ImportFromFile(Optional File As String = vbNullString) As Boolea
         s = User.ID4
         i = Val(App.Options("ImportIndex"))
         If i = 0 Then i = 1
-        If BrowseForFiles(Files, "Файлы загрузки (*.plt),*.plt,Файлы бухгалтерии (*.dbf),*.dbf,Файлы 1C:Windows (*.txt),*.txt," & _
-            Bsprintf("Платежки клиента %s (*.%s),*.%s", s, s, s), _
-            "файл(ы) для загрузки", i) Then
+        If BrowseForFiles(Files, "Р¤Р°Р№Р»С‹ Р·Р°РіСЂСѓР·РєРё (*.plt),*.plt,Р¤Р°Р№Р»С‹ Р±СѓС…РіР°Р»С‚РµСЂРёРё (*.dbf),*.dbf,Р¤Р°Р№Р»С‹ 1C:Windows (*.txt),*.txt," & _
+            Bsprintf("РџР»Р°С‚РµР¶РєРё РєР»РёРµРЅС‚Р° %s (*.%s),*.%s", s, s, s), _
+            "С„Р°Р№Р»(С‹) РґР»СЏ Р·Р°РіСЂСѓР·РєРё", i) Then
             User.ImportList = FilePath(CStr(Files(1)))
             'MultiSelect
             For i = LBound(Files) To UBound(Files)
@@ -908,13 +908,13 @@ Public Function ImportFrom1PLTFile(File As String) As Boolean
                 mRow = mRow + 1
                 WriteRow mRow
                 mMoneyLastSelected = mMoneyLastSelected + Me.Sum
-                Application.StatusBar = Bsprintf("Загружено: %d", mCountLastSelected)
+                Application.StatusBar = Bsprintf("Р—Р°РіСЂСѓР¶РµРЅРѕ: %d", mCountLastSelected)
             End If
         Next
         'Application.ScreenUpdating = True
         Application.StatusBar = False
     
-        xReply = MsgBox(Bsprintf("Завершена загрузка из файла\n%s\n\nДокументов: %d\nОбщая сумма: %f\n\nУдалить его?", _
+        xReply = MsgBox(Bsprintf("Р—Р°РІРµСЂС€РµРЅР° Р·Р°РіСЂСѓР·РєР° РёР· С„Р°Р№Р»Р°\n%s\n\nР”РѕРєСѓРјРµРЅС‚РѕРІ: %d\nРћР±С‰Р°СЏ СЃСѓРјРјР°: %f\n\nРЈРґР°Р»РёС‚СЊ РµРіРѕ?", _
             File, mCountLastSelected, mMoneyLastSelected), vbQuestion + vbYesNoCancel, App.TITLE)
         Select Case xReply
             Case vbyes: Kill File
@@ -923,7 +923,7 @@ Public Function ImportFrom1PLTFile(File As String) As Boolean
                 Exit Function
         End Select
     Else
-        xReply = MsgBox(Bsprintf("Нечего грузить из пустого файла\n%s\n\nУдалить его?", File), vbQuestion + vbYesNoCancel + vbDefaultButton2, App.TITLE)
+        xReply = MsgBox(Bsprintf("РќРµС‡РµРіРѕ РіСЂСѓР·РёС‚СЊ РёР· РїСѓСЃС‚РѕРіРѕ С„Р°Р№Р»Р°\n%s\n\nРЈРґР°Р»РёС‚СЊ РµРіРѕ?", File), vbQuestion + vbYesNoCancel + vbDefaultButton2, App.TITLE)
         Select Case xReply
             Case vbyes: Kill File
             Case vbNo:
@@ -940,9 +940,9 @@ Public Function ImportFrom1DBFFile(File As String) As Boolean
     ReadDbfFile File, Me.RowsCount + 1
     ImportFrom1DBFFile = True
 
-    'xReply = MsgBox(Bsprintf("Завершена загрузка из файла\n%s\n\nДокументов: %d\nОбщая сумма: %f\n\nУдалить его?", _
+    'xReply = MsgBox(Bsprintf("Р—Р°РІРµСЂС€РµРЅР° Р·Р°РіСЂСѓР·РєР° РёР· С„Р°Р№Р»Р°\n%s\n\nР”РѕРєСѓРјРµРЅС‚РѕРІ: %d\nРћР±С‰Р°СЏ СЃСѓРјРјР°: %f\n\nРЈРґР°Р»РёС‚СЊ РµРіРѕ?", _
     '    File, mCountLastSelected, mMoneyLastSelected), vbQuestion + vbYesNoCancel, App.Title)
-    xReply = MsgBox(Bsprintf("Завершена загрузка из файла\n%s\n\nУдалить его?", _
+    xReply = MsgBox(Bsprintf("Р—Р°РІРµСЂС€РµРЅР° Р·Р°РіСЂСѓР·РєР° РёР· С„Р°Р№Р»Р°\n%s\n\nРЈРґР°Р»РёС‚СЊ РµРіРѕ?", _
         File), vbQuestion + vbYesNoCancel, App.TITLE)
     Select Case xReply
         Case vbyes: Kill File
@@ -959,8 +959,8 @@ Public Function ImportFrom1CFile(File As String) As Boolean
     On Error Resume Next
     
     'Const Format1C = "1CClientBankExchange"
-    Const SecBegin = "СекцияДокумент=Платежное поручение"
-    'Const SecEnd = "КонецДокумента"
+    Const SecBegin = "РЎРµРєС†РёСЏР”РѕРєСѓРјРµРЅС‚=РџР»Р°С‚РµР¶РЅРѕРµ РїРѕСЂСѓС‡РµРЅРёРµ"
+    'Const SecEnd = "РљРѕРЅРµС†Р”РѕРєСѓРјРµРЅС‚Р°"
     
     ImportFrom1CFile = False
     
@@ -990,48 +990,48 @@ Public Function ImportFrom1CFile(File As String) As Boolean
         
         For i = 1 To n
             Sec = "Doc" & i
-            v = ReadIniFile(File2, Sec, "ПлательщикСчет")
+            v = ReadIniFile(File2, Sec, "РџР»Р°С‚РµР»СЊС‰РёРєРЎС‡РµС‚")
             If v <> User.LS Then
-                If Not YesNoBox("Это не Ваш счет %s!\nПродолжать?", v) Then
+                If Not YesNoBox("Р­С‚Рѕ РЅРµ Р’Р°С€ СЃС‡РµС‚ %s!\nРџСЂРѕРґРѕР»Р¶Р°С‚СЊ?", v) Then
                     Kill File2
                     Exit Function
                 End If
             End If
             
-            'Света со Шпалерной
-            v = ReadIniFile(File2, Sec, "ПлательщикКПП", "0")
+            'РЎРІРµС‚Р° СЃРѕ РЁРїР°Р»РµСЂРЅРѕР№
+            v = ReadIniFile(File2, Sec, "РџР»Р°С‚РµР»СЊС‰РёРєРљРџРџ", "0")
             If v <> User.KPP Then
-                If YesNoBox("Из 1C загружаются документы\nс КПП %s вместо вашего %s\n\nЗаменить как в 1C?", _
+                If YesNoBox("РР· 1C Р·Р°РіСЂСѓР¶Р°СЋС‚СЃСЏ РґРѕРєСѓРјРµРЅС‚С‹\nСЃ РљРџРџ %s РІРјРµСЃС‚Рѕ РІР°С€РµРіРѕ %s\n\nР—Р°РјРµРЅРёС‚СЊ РєР°Рє РІ 1C?", _
                     v, User.KPP) Then
                     User.KPP = v
-                    WarnBox "Не забудьте отправить эти платежи,\nпока снова не сменили КПП!\nСейчас %s", v
+                    WarnBox "РќРµ Р·Р°Р±СѓРґСЊС‚Рµ РѕС‚РїСЂР°РІРёС‚СЊ СЌС‚Рё РїР»Р°С‚РµР¶Рё,\nРїРѕРєР° СЃРЅРѕРІР° РЅРµ СЃРјРµРЅРёР»Рё РљРџРџ!\nРЎРµР№С‡Р°СЃ %s", v
                 End If
             End If
         
             mCountLastSelected = mCountLastSelected + 1
             With Me
                 .Mark = "1C"
-                .DocNo = NumIniFile(File2, Sec, "Номер", 1)
-                .DocDate = RDate(ReadIniFile(File2, Sec, "Дата", Now))
-                .Sum = RVal(ReadIniFile(File2, Sec, "Сумма"))
-                .Name = ReadIniFile(File2, Sec, "Получатель") '"Получатель1"
-                .INN = ReadIniFile(File2, Sec, "ПолучательИНН", "0") 'after Name!
-                .KPP = ReadIniFile(File2, Sec, "ПолучательКПП", "0") 'after Name!
-                .BIC = ReadIniFile(File2, Sec, "ПолучательБИК")
-                .LS = ReadIniFile(File2, Sec, "ПолучательРасчСчет")
+                .DocNo = NumIniFile(File2, Sec, "РќРѕРјРµСЂ", 1)
+                .DocDate = RDate(ReadIniFile(File2, Sec, "Р”Р°С‚Р°", Now))
+                .Sum = RVal(ReadIniFile(File2, Sec, "РЎСѓРјРјР°"))
+                .Name = ReadIniFile(File2, Sec, "РџРѕР»СѓС‡Р°С‚РµР»СЊ") '"РџРѕР»СѓС‡Р°С‚РµР»СЊ1"
+                .INN = ReadIniFile(File2, Sec, "РџРѕР»СѓС‡Р°С‚РµР»СЊРРќРќ", "0") 'after Name!
+                .KPP = ReadIniFile(File2, Sec, "РџРѕР»СѓС‡Р°С‚РµР»СЊРљРџРџ", "0") 'after Name!
+                .BIC = ReadIniFile(File2, Sec, "РџРѕР»СѓС‡Р°С‚РµР»СЊР‘РРљ")
+                .LS = ReadIniFile(File2, Sec, "РџРѕР»СѓС‡Р°С‚РµР»СЊР Р°СЃС‡РЎС‡РµС‚")
                 If Len(.LS) = 0 Then '1Cv8
-                    .LS = ReadIniFile(File2, Sec, "ПолучательСчет")
+                    .LS = ReadIniFile(File2, Sec, "РџРѕР»СѓС‡Р°С‚РµР»СЊРЎС‡РµС‚")
                 End If
-                .Queue = NumIniFile(File2, Sec, "Очередность", 6)
-                .SS = ReadIniFile(File2, Sec, "СтатусСоставителя")
+                .Queue = NumIniFile(File2, Sec, "РћС‡РµСЂРµРґРЅРѕСЃС‚СЊ", 6)
+                .SS = ReadIniFile(File2, Sec, "РЎС‚Р°С‚СѓСЃРЎРѕСЃС‚Р°РІРёС‚РµР»СЏ")
                 If Len(.SS) > 0 Then
-                    .NAL(1) = ReadIniFile(File2, Sec, "ПоказательКБК")
-                    .NAL(2) = ReadIniFile(File2, Sec, "ОКАТО")
-                    .NAL(3) = ReadIniFile(File2, Sec, "ПоказательОснования")
-                    .NAL(4) = ReadIniFile(File2, Sec, "ПоказательПериода")
-                    .NAL(5) = ReadIniFile(File2, Sec, "ПоказательНомера") '/////////???
-                    .NAL(6) = ReadIniFile(File2, Sec, "ПоказательДаты")
-                    .NAL(7) = ReadIniFile(File2, Sec, "ПоказательТипа")
+                    .NAL(1) = ReadIniFile(File2, Sec, "РџРѕРєР°Р·Р°С‚РµР»СЊРљР‘Рљ")
+                    .NAL(2) = ReadIniFile(File2, Sec, "РћРљРђРўРћ")
+                    .NAL(3) = ReadIniFile(File2, Sec, "РџРѕРєР°Р·Р°С‚РµР»СЊРћСЃРЅРѕРІР°РЅРёСЏ")
+                    .NAL(4) = ReadIniFile(File2, Sec, "РџРѕРєР°Р·Р°С‚РµР»СЊРџРµСЂРёРѕРґР°")
+                    .NAL(5) = ReadIniFile(File2, Sec, "РџРѕРєР°Р·Р°С‚РµР»СЊРќРѕРјРµСЂР°") '/////////???
+                    .NAL(6) = ReadIniFile(File2, Sec, "РџРѕРєР°Р·Р°С‚РµР»СЊР”Р°С‚С‹")
+                    .NAL(7) = ReadIniFile(File2, Sec, "РџРѕРєР°Р·Р°С‚РµР»СЊРўРёРїР°")
                 Else
                     .NAL(1) = vbNullString
                     .NAL(2) = vbNullString
@@ -1041,16 +1041,16 @@ Public Function ImportFrom1CFile(File As String) As Boolean
                     .NAL(6) = vbNullString
                     .NAL(7) = vbNullString
                 End If
-                .Details = ReadIniFile(File2, Sec, "НазначениеПлатежа")
+                .Details = ReadIniFile(File2, Sec, "РќР°Р·РЅР°С‡РµРЅРёРµРџР»Р°С‚РµР¶Р°")
             End With
             mRow = mRow + 1
             WriteRow mRow
             mMoneyLastSelected = mMoneyLastSelected + Me.Sum
-            Application.StatusBar = Bsprintf("Загружено: %d", mCountLastSelected)
+            Application.StatusBar = Bsprintf("Р—Р°РіСЂСѓР¶РµРЅРѕ: %d", mCountLastSelected)
         Next
         Kill File2
         
-        xReply = MsgBox(Bsprintf("Завершена загрузка из файла\n%s\n\nДокументов: %d\nОбщая сумма: %f\n\nУдалить его?", _
+        xReply = MsgBox(Bsprintf("Р—Р°РІРµСЂС€РµРЅР° Р·Р°РіСЂСѓР·РєР° РёР· С„Р°Р№Р»Р°\n%s\n\nР”РѕРєСѓРјРµРЅС‚РѕРІ: %d\nРћР±С‰Р°СЏ СЃСѓРјРјР°: %f\n\nРЈРґР°Р»РёС‚СЊ РµРіРѕ?", _
             File, mCountLastSelected, mMoneyLastSelected), vbQuestion + vbYesNoCancel, App.TITLE)
         Select Case xReply
             Case vbyes: Kill File
@@ -1059,7 +1059,7 @@ Public Function ImportFrom1CFile(File As String) As Boolean
                 Exit Function
         End Select
     Else
-        xReply = MsgBox(Bsprintf("Ошибка загрузки из файла\n%s\n\nУдалить его?", File), vbQuestion + vbYesNoCancel + vbDefaultButton2, App.TITLE)
+        xReply = MsgBox(Bsprintf("РћС€РёР±РєР° Р·Р°РіСЂСѓР·РєРё РёР· С„Р°Р№Р»Р°\n%s\n\nРЈРґР°Р»РёС‚СЊ РµРіРѕ?", File), vbQuestion + vbYesNoCancel + vbDefaultButton2, App.TITLE)
         Select Case xReply
             Case vbyes: Kill File
             Case vbNo:
@@ -1133,12 +1133,12 @@ Public Function SaveCryptedPlat() As Boolean
                 'MarkByFile File2, "Mail", 1    'Blue
                 MarkByRow Payment.Row, "Mail", 1     'Blue
             End If
-            InfoBox "Файл %s готов к отправке", File
+            InfoBox "Р¤Р°Р№Р» %s РіРѕС‚РѕРІ Рє РѕС‚РїСЂР°РІРєРµ", File
         Else
-            StopBox "Шифрованный файл НЕ создан!\nОшибка использования ключей PGP?"
+            StopBox "РЁРёС„СЂРѕРІР°РЅРЅС‹Р№ С„Р°Р№Р» РќР• СЃРѕР·РґР°РЅ!\nРћС€РёР±РєР° РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ РєР»СЋС‡РµР№ PGP?"
         End If
     'Else
-    '    StopBox "К отправке оставлен прежний файл!"
+    '    StopBox "Рљ РѕС‚РїСЂР°РІРєРµ РѕСЃС‚Р°РІР»РµРЅ РїСЂРµР¶РЅРёР№ С„Р°Р№Р»!"
     'End If
     SaveCryptedPlat = IsFile(File2)
 End Function
@@ -1235,7 +1235,7 @@ End Sub
 Public Sub FindText()
     Static s As String
     On Error Resume Next
-    s = InputBox("Введите часть строки для поиска:", App.TITLE, s)
+    s = InputBox("Р’РІРµРґРёС‚Рµ С‡Р°СЃС‚СЊ СЃС‚СЂРѕРєРё РґР»СЏ РїРѕРёСЃРєР°:", App.TITLE, s)
     If s = vbNullString Then Exit Sub
     Worksheets(User.ID).Cells.Find(What:=s, after:=ActiveCell, _
         LookIn:=xlFormulas, LookAt:=xlPart, SearchOrder:=xlByRows, _
@@ -1269,7 +1269,7 @@ Public Property Get MoneyLastSelected() As Currency
 End Property
 
 Public Function KppAndName() As String
-    KppAndName = "КПП " & mKPP & " " & mName
+    KppAndName = "РљРџРџ " & mKPP & " " & mName
 End Function
 
 Public Function NalAndDetails() As String
@@ -1326,92 +1326,92 @@ Public Function ValidationError() As String
     
     If User.Demo Then GoTo SkipCheck
     
-    Item = "Номер документа "
+    Item = "РќРѕРјРµСЂ РґРѕРєСѓРјРµРЅС‚Р° "
     If mDocNo < 1 Then
-        ValidationError = Item & "не указан"
+        ValidationError = Item & "РЅРµ СѓРєР°Р·Р°РЅ"
         Exit Function
     ElseIf mDocNo > 999 Then
         If mBIC <> App.DefBIC Then
-            ValidationError = Item & "не может превышать 999 для других банков"
+            ValidationError = Item & "РЅРµ РјРѕР¶РµС‚ РїСЂРµРІС‹С€Р°С‚СЊ 999 РґР»СЏ РґСЂСѓРіРёС… Р±Р°РЅРєРѕРІ"
             Exit Function
         ElseIf mDocNo > 99999 Then
-            ValidationError = Item & "не может превышать 99999 для нашего Банка"
+            ValidationError = Item & "РЅРµ РјРѕР¶РµС‚ РїСЂРµРІС‹С€Р°С‚СЊ 99999 РґР»СЏ РЅР°С€РµРіРѕ Р‘Р°РЅРєР°"
             Exit Function
         End If
     End If
         
-    Item = "Дата документа "
+    Item = "Р”Р°С‚Р° РґРѕРєСѓРјРµРЅС‚Р° "
     If Year(mDocDate) < 1999 Then
-        ValidationError = Item & "не действительна"
+        ValidationError = Item & "РЅРµ РґРµР№СЃС‚РІРёС‚РµР»СЊРЅР°"
         Exit Function
     End If
         
-    Item = "Сумма платежа "
+    Item = "РЎСѓРјРјР° РїР»Р°С‚РµР¶Р° "
     If mSum < 0.01 Then
-        ValidationError = Item & "не указана"
+        ValidationError = Item & "РЅРµ СѓРєР°Р·Р°РЅР°"
         Exit Function
     End If
         
-    Item = "Очередность платежа "
+    Item = "РћС‡РµСЂРµРґРЅРѕСЃС‚СЊ РїР»Р°С‚РµР¶Р° "
     If mQueue < 1 Or mQueue > 6 Then
-        ValidationError = Item & "не от 6 до 1"
+        ValidationError = Item & "РЅРµ РѕС‚ 6 РґРѕ 1"
         Exit Function
     End If
         
     s = User.Name
-    Item = "Плательщик платежа "
+    Item = "РџР»Р°С‚РµР»СЊС‰РёРє РїР»Р°С‚РµР¶Р° "
     L = Len(s)
     If L = 0 Then
-        ValidationError = Item & "не указан"
+        ValidationError = Item & "РЅРµ СѓРєР°Р·Р°РЅ"
         Exit Function
     ElseIf L > 160 Then
-        ValidationError = Item & "не может превышать 160 символов"
+        ValidationError = Item & "РЅРµ РјРѕР¶РµС‚ РїСЂРµРІС‹С€Р°С‚СЊ 160 СЃРёРјРІРѕР»РѕРІ"
         Exit Function
     ElseIf InStr(s, "  ") > 0 Then
-        ValidationError = Item & "не должен содержать лишних пробелов"
+        ValidationError = Item & "РЅРµ РґРѕР»Р¶РµРЅ СЃРѕРґРµСЂР¶Р°С‚СЊ Р»РёС€РЅРёС… РїСЂРѕР±РµР»РѕРІ"
         Exit Function
     ElseIf InStr(s, "?") > 0 Then
-        ValidationError = Item & "не должен содержать символ ?"
+        ValidationError = Item & "РЅРµ РґРѕР»Р¶РµРЅ СЃРѕРґРµСЂР¶Р°С‚СЊ СЃРёРјРІРѕР» ?"
         Exit Function
     ElseIf InStr(s, "^") > 0 Then
-        ValidationError = Item & "не должен содержать символ ^"
+        ValidationError = Item & "РЅРµ РґРѕР»Р¶РµРЅ СЃРѕРґРµСЂР¶Р°С‚СЊ СЃРёРјРІРѕР» ^"
         Exit Function
     ElseIf Left(s, 1) = """" Then
-        ValidationError = Item & "не должен начинаться с кавычки"
+        ValidationError = Item & "РЅРµ РґРѕР»Р¶РµРЅ РЅР°С‡РёРЅР°С‚СЊСЃСЏ СЃ РєР°РІС‹С‡РєРё"
         Exit Function
     ElseIf Left(s, 1) = "-" Then
-        ValidationError = Item & "не может начинаться с минуса"
+        ValidationError = Item & "РЅРµ РјРѕР¶РµС‚ РЅР°С‡РёРЅР°С‚СЊСЃСЏ СЃ РјРёРЅСѓСЃР°"
         Exit Function
     End If
     
     s = mName
-    Item = "Получатель платежа "
+    Item = "РџРѕР»СѓС‡Р°С‚РµР»СЊ РїР»Р°С‚РµР¶Р° "
     L = Len(s)
     If L = 0 Then
-        ValidationError = Item & "не указан"
+        ValidationError = Item & "РЅРµ СѓРєР°Р·Р°РЅ"
         Exit Function
     ElseIf L > 160 Then
-        ValidationError = Item & "не может превышать 160 символов"
+        ValidationError = Item & "РЅРµ РјРѕР¶РµС‚ РїСЂРµРІС‹С€Р°С‚СЊ 160 СЃРёРјРІРѕР»РѕРІ"
         Exit Function
     ElseIf InStr(s, "  ") > 0 Then
-        ValidationError = Item & "не должен содержать лишних пробелов"
+        ValidationError = Item & "РЅРµ РґРѕР»Р¶РµРЅ СЃРѕРґРµСЂР¶Р°С‚СЊ Р»РёС€РЅРёС… РїСЂРѕР±РµР»РѕРІ"
         Exit Function
     ElseIf InStr(s, "?") > 0 Then
-        ValidationError = Item & "не должен содержать символ ?"
+        ValidationError = Item & "РЅРµ РґРѕР»Р¶РµРЅ СЃРѕРґРµСЂР¶Р°С‚СЊ СЃРёРјРІРѕР» ?"
         Exit Function
     ElseIf InStr(s, "^") > 0 Then
-        ValidationError = Item & "не должен содержать символ ^"
+        ValidationError = Item & "РЅРµ РґРѕР»Р¶РµРЅ СЃРѕРґРµСЂР¶Р°С‚СЊ СЃРёРјРІРѕР» ^"
         Exit Function
     ElseIf Left(s, 1) = """" Then
-        ValidationError = Item & "не должен начинаться с кавычки"
+        ValidationError = Item & "РЅРµ РґРѕР»Р¶РµРЅ РЅР°С‡РёРЅР°С‚СЊСЃСЏ СЃ РєР°РІС‹С‡РєРё"
         Exit Function
     ElseIf Left(s, 1) = "-" Then
-        ValidationError = Item & "не может начинаться с минуса"
+        ValidationError = Item & "РЅРµ РјРѕР¶РµС‚ РЅР°С‡РёРЅР°С‚СЊСЃСЏ СЃ РјРёРЅСѓСЃР°"
         Exit Function
     End If
     
     s = mINN
-    Item = "ИНН получателя платежа "
+    Item = "РРќРќ РїРѕР»СѓС‡Р°С‚РµР»СЏ РїР»Р°С‚РµР¶Р° "
     If Left(s, 1) = "F" Then 'foreign
         s = Mid(s, 2)
     End If
@@ -1419,255 +1419,254 @@ Public Function ValidationError() As String
     If s = "0" Then
         'valid
     ElseIf Not IsDigital(s) Then
-        ValidationError = Item & "не из цифр"
+        ValidationError = Item & "РЅРµ РёР· С†РёС„СЂ"
         Exit Function
     ElseIf L > 1 And L <> 10 And L <> 12 Then
-        ValidationError = Item & "не 10 и не 12 цифр"
+        ValidationError = Item & "РЅРµ 10 Рё РЅРµ 12 С†РёС„СЂ"
         Exit Function
     ElseIf L > 1 And Not INNKeyValid(s) Then
         If User.Demo Then
-            WarnBox "%s %s неверный,\nно эта ошибка прощается в деморежиме.", Item, s
+            WarnBox "%s %s РЅРµРІРµСЂРЅС‹Р№,\nРЅРѕ СЌС‚Р° РѕС€РёР±РєР° РїСЂРѕС‰Р°РµС‚СЃСЏ РІ РґРµРјРѕСЂРµР¶РёРјРµ.", Item, s
         Else
-            ValidationError = Item & "неверный по ключу"
+            ValidationError = Item & "РЅРµРІРµСЂРЅС‹Р№ РїРѕ РєР»СЋС‡Сѓ"
             Exit Function
         End If
     End If
     
     s = mKPP
-    Item = "КПП получателя платежа "
+    Item = "РљРџРџ РїРѕР»СѓС‡Р°С‚РµР»СЏ РїР»Р°С‚РµР¶Р° "
     L = Len(s)
     If s = "0" Then
         'valid
     ElseIf Not IsDigital(s) Then
-        ValidationError = Item & "не из цифр"
+        ValidationError = Item & "РЅРµ РёР· С†РёС„СЂ"
         Exit Function
     ElseIf L > 1 And L <> 9 Then
-        ValidationError = Item & "не 9 цифр"
+        ValidationError = Item & "РЅРµ 9 С†РёС„СЂ"
         Exit Function
     End If
     
     s = mDetails
-    Item = "Назначение платежа "
+    Item = "РќР°Р·РЅР°С‡РµРЅРёРµ РїР»Р°С‚РµР¶Р° "
     L = Len(s)
     If L = 0 Then
-        ValidationError = Item & "не указано"
+        ValidationError = Item & "РЅРµ СѓРєР°Р·Р°РЅРѕ"
         Exit Function
     ElseIf L > 210 Then
-        ValidationError = Item & "не может превышать 210 символов"
+        ValidationError = Item & "РЅРµ РјРѕР¶РµС‚ РїСЂРµРІС‹С€Р°С‚СЊ 210 СЃРёРјРІРѕР»РѕРІ"
         Exit Function
     ElseIf InStr(s, "  ") > 0 Then
-        ValidationError = Item & "не должно содержать лишних пробелов"
+        ValidationError = Item & "РЅРµ РґРѕР»Р¶РЅРѕ СЃРѕРґРµСЂР¶Р°С‚СЊ Р»РёС€РЅРёС… РїСЂРѕР±РµР»РѕРІ"
         Exit Function
     ElseIf InStr(s, "^") > 0 Then
-        ValidationError = Item & "не должно содержать символ ^"
+        ValidationError = Item & "РЅРµ РґРѕР»Р¶РЅРѕ СЃРѕРґРµСЂР¶Р°С‚СЊ СЃРёРјРІРѕР» ^"
         Exit Function
     ElseIf Left(s, 1) = """" Then
-        ValidationError = Item & "не должно начинаться с кавычки"
+        ValidationError = Item & "РЅРµ РґРѕР»Р¶РЅРѕ РЅР°С‡РёРЅР°С‚СЊСЃСЏ СЃ РєР°РІС‹С‡РєРё"
         Exit Function
     ElseIf Left(s, 1) = "-" Then
-        ValidationError = Item & "не может начинаться с минуса"
+        ValidationError = Item & "РЅРµ РјРѕР¶РµС‚ РЅР°С‡РёРЅР°С‚СЊСЃСЏ СЃ РјРёРЅСѓСЃР°"
         Exit Function
     'ElseIf InStr("30122,30123,40813,40814,40815", Left(mLS, 5)) > 0 Then
     '    If Not (IsDigital(Left(s, 3)) And StrComp(Mid(s, 4, 3), "KNF", vbBinaryCompare) = 0) Then
-    '        ValidationError = Item & "не имеет слова KNF после трех цифр"
+    '        ValidationError = Item & "РЅРµ РёРјРµРµС‚ СЃР»РѕРІР° KNF РїРѕСЃР»Рµ С‚СЂРµС… С†РёС„СЂ"
     '        Exit Function
     '    End If
     End If
     
     s = mSS
-    Item = "Статус налогоплательщика "
+    Item = "РЎС‚Р°С‚СѓСЃ РЅР°Р»РѕРіРѕРїР»Р°С‚РµР»СЊС‰РёРєР° "
     L = Len(mSS)
     If L = 0 Then
         If mQueue <> 6 Then
-            ValidationError = Item & "отсутствует при очередности не 6"
+            ValidationError = Item & "РѕС‚СЃСѓС‚СЃС‚РІСѓРµС‚ РїСЂРё РѕС‡РµСЂРµРґРЅРѕСЃС‚Рё РЅРµ 6"
             Exit Function
         ElseIf Left(mLS, 5) = "40101" Then
-            ValidationError = Item & "отсутствует при платеже в бюджет"
+            ValidationError = Item & "РѕС‚СЃСѓС‚СЃС‚РІСѓРµС‚ РїСЂРё РїР»Р°С‚РµР¶Рµ РІ Р±СЋРґР¶РµС‚"
             Exit Function
         ElseIf Left(mLS, 5) = "40314" Then
-            ValidationError = Item & "отсутствует при платеже в таможню"
+            ValidationError = Item & "РѕС‚СЃСѓС‚СЃС‚РІСѓРµС‚ РїСЂРё РїР»Р°С‚РµР¶Рµ РІ С‚Р°РјРѕР¶РЅСЋ"
             Exit Function
         End If
     ElseIf InStr("01,02,03,04,05,06,07,08,09,10,11,12,13,14,15", s) = 0 Then
-        ValidationError = Item & "не 01-15"
+        ValidationError = Item & "РЅРµ 01-15"
         Exit Function
     Else
     
         s = mNAL(1)
-        Item = "Код бюджетной классификации "
+        Item = "РљРѕРґ Р±СЋРґР¶РµС‚РЅРѕР№ РєР»Р°СЃСЃРёС„РёРєР°С†РёРё "
         L = Len(s)
         If s = "0" Then
             'valid
         ElseIf L = 0 Then
-            ValidationError = Item & "не указан"
+            ValidationError = Item & "РЅРµ СѓРєР°Р·Р°РЅ"
             Exit Function
-        ElseIf Left(mLS, 5) = "40101" Then 'Бюджет
+        ElseIf Left(mLS, 5) = "40101" Then 'Р‘СЋРґР¶РµС‚
             If L <> 20 Then
-                ValidationError = Item & "не из 20 цифр"
+                ValidationError = Item & "РЅРµ РёР· 20 С†РёС„СЂ"
                 Exit Function
             'ElseIf InStr("1000,2000,3000", Mid(s, 14, 3)) = 0 Then
-            '    ValidationError = Item & "не 1000,2000,3000 в 14-17"
+            '    ValidationError = Item & "РЅРµ 1000,2000,3000 РІ 14-17"
             '    Exit Function
             End If
         ElseIf L > 20 Then
-            ValidationError = Item & "не может превышать 20 цифр"
+            ValidationError = Item & "РЅРµ РјРѕР¶РµС‚ РїСЂРµРІС‹С€Р°С‚СЊ 20 С†РёС„СЂ"
             Exit Function
         ElseIf Not IsDigital(s) Then
-            ValidationError = Item & "не из цифр"
+            ValidationError = Item & "РЅРµ РёР· С†РёС„СЂ"
             Exit Function
         End If
             
         s = mNAL(2)
-        Item = "Код ОКАТО "
+        Item = "РљРѕРґ РћРљРђРўРћ "
         L = Len(s)
         If s = "0" Then
             'valid
         ElseIf L = 0 Then
-            ValidationError = Item & "не указан"
+            ValidationError = Item & "РЅРµ СѓРєР°Р·Р°РЅ"
             Exit Function
         ElseIf L > 11 Then
-            ValidationError = Item & "не может превышать 11 цифр"
+            ValidationError = Item & "РЅРµ РјРѕР¶РµС‚ РїСЂРµРІС‹С€Р°С‚СЊ 11 С†РёС„СЂ"
             Exit Function
         ElseIf Not IsDigital(s) Then
-            ValidationError = Item & "не из цифр"
+            ValidationError = Item & "РЅРµ РёР· С†РёС„СЂ"
             Exit Function
         End If
             
         s = mNAL(3)
-        Item = "Основание платежа "
+        Item = "РћСЃРЅРѕРІР°РЅРёРµ РїР»Р°С‚РµР¶Р° "
         L = Len(s)
         If s = "0" Then
             'valid
         ElseIf L = 0 Then
-            ValidationError = Item & "не указано"
+            ValidationError = Item & "РЅРµ СѓРєР°Р·Р°РЅРѕ"
             Exit Function
-        ElseIf InStr("ТП,ЗД,БФ,ТР,РС,ОТ,РТ,ВУ,ПР,АП,АР", s) = 0 Then
-            ValidationError = Item & "не ТП,ЗД,БФ,ТР,РС,ОТ,РТ,ВУ,ПР,АП,АР"
+        ElseIf InStr("РўРџ,Р—Р”,Р‘Р¤,РўР ,Р РЎ,РћРў,Р Рў,Р’РЈ,РџР ,РђРџ,РђР ", s) = 0 Then
+            ValidationError = Item & "РЅРµ РўРџ,Р—Р”,Р‘Р¤,РўР ,Р РЎ,РћРў,Р Рў,Р’РЈ,РџР ,РђРџ,РђР "
             Exit Function
         End If
             
         s = mNAL(4)
-        Item = "Налоговый период "
+        Item = "РќР°Р»РѕРіРѕРІС‹Р№ РїРµСЂРёРѕРґ "
         L = Len(s)
         If s = "0" Then
             'valid
         ElseIf L = 0 Then
-            ValidationError = Item & "не указан"
+            ValidationError = Item & "РЅРµ СѓРєР°Р·Р°РЅ"
             Exit Function
         ElseIf L <> 10 Then
-            ValidationError = Item & "не из 10 знаков"
+            ValidationError = Item & "РЅРµ РёР· 10 Р·РЅР°РєРѕРІ"
             Exit Function
         ElseIf Mid(s, 3, 1) <> "." And Mid(s, 6, 1) <> "." Then
-            ValidationError = Item & "не через точки"
+            ValidationError = Item & "РЅРµ С‡РµСЂРµР· С‚РѕС‡РєРё"
             Exit Function
         ElseIf Not RIsDate(s) Then
-            If InStr("Д1,Д2,Д3,МС", Left(s, 2)) > 0 Then
+            If InStr("Р”1,Р”2,Р”3,РњРЎ", Left(s, 2)) > 0 Then
                 If InStr("01,02,03,04,05,06,07,08,09,10,11,12", Mid(s, 4, 2)) = 0 Then
-                    ValidationError = Item & "не имеет месяц 01-12"
+                    ValidationError = Item & "РЅРµ РёРјРµРµС‚ РјРµСЃСЏС† 01-12"
                     Exit Function
                 End If
-            ElseIf Left(s, 2) = "КВ" Then
+            ElseIf Left(s, 2) = "РљР’" Then
                 If InStr("01,02,03,04", Mid(s, 4, 2)) = 0 Then
-                    ValidationError = Item & "не имеет квартал 01-04"
+                    ValidationError = Item & "РЅРµ РёРјРµРµС‚ РєРІР°СЂС‚Р°Р» 01-04"
                     Exit Function
                 End If
-            ElseIf Left(s, 2) = "ПЛ" Then
+            ElseIf Left(s, 2) = "РџР›" Then
                 If InStr("01,02", Mid(s, 4, 2)) = 0 Then
-                    ValidationError = Item & "не имеет полугодие 01-02"
+                    ValidationError = Item & "РЅРµ РёРјРµРµС‚ РїРѕР»СѓРіРѕРґРёРµ 01-02"
                     Exit Function
                 End If
-            ElseIf Left(s, 2) = "ГД" Then
-                If Left(s, 6) <> "ГД.00." Then
-                    ValidationError = Item & "не имеет ГД.00"
+            ElseIf Left(s, 2) = "Р“Р”" Then
+                If Left(s, 6) <> "Р“Р”.00." Then
+                    ValidationError = Item & "РЅРµ РёРјРµРµС‚ Р“Р”.00"
                     Exit Function
                 End If
             Else
-                ValidationError = Item & "не Д1,Д2,Д3,МС,КВ,ПЛ,ГД и не дата"
+                ValidationError = Item & "РЅРµ Р”1,Р”2,Р”3,РњРЎ,РљР’,РџР›,Р“Р” Рё РЅРµ РґР°С‚Р°"
                 Exit Function
             End If
         End If
         
         s = mNAL(5)
-        Item = "Номер налогового документа "
+        Item = "РќРѕРјРµСЂ РЅР°Р»РѕРіРѕРІРѕРіРѕ РґРѕРєСѓРјРµРЅС‚Р° "
         L = Len(s)
         If s = "0" Then
             'valid
         ElseIf L = 0 Then
-            ValidationError = Item & "не указан"
+            ValidationError = Item & "РЅРµ СѓРєР°Р·Р°РЅ"
             Exit Function
         ElseIf L > 15 Then
-            ValidationError = Item & "не может превышать 15 знаков"
+            ValidationError = Item & "РЅРµ РјРѕР¶РµС‚ РїСЂРµРІС‹С€Р°С‚СЊ 15 Р·РЅР°РєРѕРІ"
             Exit Function
         End If
             
         s = mNAL(6)
-        Item = "Дата налогового документа "
+        Item = "Р”Р°С‚Р° РЅР°Р»РѕРіРѕРІРѕРіРѕ РґРѕРєСѓРјРµРЅС‚Р° "
         L = Len(s)
         If s = "0" Then
             'valid
         ElseIf L = 0 Then
-            ValidationError = Item & "не указана"
+            ValidationError = Item & "РЅРµ СѓРєР°Р·Р°РЅР°"
             Exit Function
         ElseIf L <> 10 Then
-            ValidationError = Item & "не из 10 знаков"
+            ValidationError = Item & "РЅРµ РёР· 10 Р·РЅР°РєРѕРІ"
             Exit Function
         ElseIf Mid(s, 3, 1) <> "." And Mid(s, 6, 1) <> "." Then
-            ValidationError = Item & "не через точки"
+            ValidationError = Item & "РЅРµ С‡РµСЂРµР· С‚РѕС‡РєРё"
             Exit Function
         ElseIf Not RIsDate(s) Then
-            ValidationError = Item & "не дата"
+            ValidationError = Item & "РЅРµ РґР°С‚Р°"
             Exit Function
         End If
     
         s = mNAL(7)
-        Item = "Тип налогового документа "
+        Item = "РўРёРї РЅР°Р»РѕРіРѕРІРѕРіРѕ РґРѕРєСѓРјРµРЅС‚Р° "
         L = Len(s)
         If s = "0" Then
             'valid
         ElseIf L = 0 Then
-            ValidationError = Item & "не указан"
+            ValidationError = Item & "РЅРµ СѓРєР°Р·Р°РЅ"
             Exit Function
-        ElseIf InStr("НС,ПЛ,ГП,ВЗ,АВ,ПЕ,ПЦ,СА,АШ,ИШ", s) = 0 Then
-            ValidationError = Item & "не НС,ПЛ,ГП,ВЗ,АВ,ПЕ,ПЦ,СА,АШ,ИШ"
+        ElseIf InStr("РќРЎ,РџР›,Р“Рџ,Р’Р—,РђР’,РџР•,РџР¦,РЎРђ,РђРЁ,РРЁ", s) = 0 Then
+            ValidationError = Item & "РЅРµ РќРЎ,РџР›,Р“Рџ,Р’Р—,РђР’,РџР•,РџР¦,РЎРђ,РђРЁ,РРЁ"
             Exit Function
         End If
             
     End If
         
     s = mLS
-    Item = "Счет получателя "
+    Item = "РЎС‡РµС‚ РїРѕР»СѓС‡Р°С‚РµР»СЏ "
     L = Len(s)
     If L <> 20 Then
-        ValidationError = Item & "не 20 цифр"
+        ValidationError = Item & "РЅРµ 20 С†РёС„СЂ"
         Exit Function
     ElseIf Not IsDigital(s) Then
-        ValidationError = Item & "не из цифр"
+        ValidationError = Item & "РЅРµ РёР· С†РёС„СЂ"
         Exit Function
     ElseIf Mid(s, 6, 3) <> "810" Then
-        ValidationError = Item & "не имеет кода валюты 810"
+        ValidationError = Item & "РЅРµ РёРјРµРµС‚ РєРѕРґР° РІР°Р»СЋС‚С‹ 810"
         Exit Function
     ElseIf Not LSKeyValid(mBIC, s) Then
-        ValidationError = Item & "не соответствует БИК по ключу"
+        ValidationError = Item & "РЅРµ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓРµС‚ Р‘РРљ РїРѕ РєР»СЋС‡Сѓ"
         Exit Function
     End If
         
     s = mBIC
-    Item = "БИК банка получателя "
+    Item = "Р‘РРљ Р±Р°РЅРєР° РїРѕР»СѓС‡Р°С‚РµР»СЏ "
     If Len(s) <> 9 Then
-        ValidationError = Item & "не 9 цифр"
+        ValidationError = Item & "РЅРµ 9 С†РёС„СЂ"
         Exit Function
     ElseIf Not IsDigital(s) Then
-        ValidationError = Item & "не из цифр"
+        ValidationError = Item & "РЅРµ РёР· С†РёС„СЂ"
         Exit Function
     ElseIf Left(s, 2) <> "04" Then
-        ValidationError = Item & "не начинается с 04"
+        ValidationError = Item & "РЅРµ РЅР°С‡РёРЅР°РµС‚СЃСЏ СЃ 04"
         Exit Function
     ElseIf Len(Me.Bank) = 0 Then
-        ValidationError = Item & "не найден в справочнике"
+        ValidationError = Item & "РЅРµ РЅР°Р№РґРµРЅ РІ СЃРїСЂР°РІРѕС‡РЅРёРєРµ"
         Exit Function
     End If
     
 SkipCheck:
     ValidationError = vbNullString
 End Function
-

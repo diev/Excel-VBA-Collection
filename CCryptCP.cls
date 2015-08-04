@@ -36,7 +36,7 @@ Public Function Encrypt(File1 As String, File2 As String) As Boolean
             '
             Encrypt = IsFile(File2)
         Else
-            WarnBox "Криптопровайдер %s не работает!\nБудет использована система PGP.", File
+            WarnBox "РљСЂРёРїС‚РѕРїСЂРѕРІР°Р№РґРµСЂ %s РЅРµ СЂР°Р±РѕС‚Р°РµС‚!\nР‘СѓРґРµС‚ РёСЃРїРѕР»СЊР·РѕРІР°РЅР° СЃРёСЃС‚РµРјР° PGP.", File
         End If
     End If
 End Function
@@ -79,11 +79,10 @@ Private Sub RunCryptCP(RunCmd As String)
         s = QFile(File) & " " & RunCmd
         retValue = ShellDialog(s, vbNormalFocus, App.BoolOptions("Debug"))
     Else
-        StopBox "У Вас нет программы\n%s", File
+        StopBox "РЈ Р’Р°СЃ РЅРµС‚ РїСЂРѕРіСЂР°РјРјС‹\n%s", File
     End If
 End Sub
 
 Public Function Info() As String
-    Info = Bsprintf("Шифрование и ЭЦП обеспечиваются CryptoPro\n%s", App.FileInfo(Me.File))
+    Info = Bsprintf("РЁРёС„СЂРѕРІР°РЅРёРµ Рё Р­Р¦Рџ РѕР±РµСЃРїРµС‡РёРІР°СЋС‚СЃСЏ CryptoPro\n%s", App.FileInfo(Me.File))
 End Function
-

@@ -6,20 +6,20 @@ DefLng A-Z
 
 Public Sub IfPaint(Optional Fields As Boolean = False)
     Dim c As Range, cSrc, cDest
-    With Range("Бланк")
+    With Range("Р‘Р»Р°РЅРє")
         cDest = .Cells(1).Interior.ColorIndex 'A1 - get dest. color
         cSrc = .Cells(2).Interior.ColorIndex 'A2 - get back color
         .Cells(1).Interior.ColorIndex = cSrc 'restore sample A1
     End With
     If Fields Then
-        cSrc = Range("Номер").Interior.ColorIndex
+        cSrc = Range("РќРѕРјРµСЂ").Interior.ColorIndex
     End If
     If cDest = cSrc Then
-        MsgBox "Выберите отличный цвет ячейки A1 и повторите", vbInformation, AppTitle
+        MsgBox "Р’С‹Р±РµСЂРёС‚Рµ РѕС‚Р»РёС‡РЅС‹Р№ С†РІРµС‚ СЏС‡РµР№РєРё A1 Рё РїРѕРІС‚РѕСЂРёС‚Рµ", vbInformation, AppTitle
         Exit Sub
     End If
     ScreenUpdating = False
-    For Each c In Range("Бланк")
+    For Each c In Range("Р‘Р»Р°РЅРє")
         If c.Interior.ColorIndex = cSrc Then
             c.Interior.ColorIndex = cDest
         End If
@@ -27,40 +27,39 @@ Public Sub IfPaint(Optional Fields As Boolean = False)
     ScreenUpdating = True
 End Sub
 
-'Не очень страшная функция - очищает платежку!
+'РќРµ РѕС‡РµРЅСЊ СЃС‚СЂР°С€РЅР°СЏ С„СѓРЅРєС†РёСЏ - РѕС‡РёС‰Р°РµС‚ РїР»Р°С‚РµР¶РєСѓ!
 Public Sub ClearPlat()
-    Range("Номер") = Empty
-    Range("Дата") = Empty
-    Range("Срок") = Empty
-    Range("Очередность") = Empty
-    Range("Сумма") = Empty
-    Range("СуммаПрописью") = Empty
-    Range("Назначение") = Empty
+    Range("РќРѕРјРµСЂ") = Empty
+    Range("Р”Р°С‚Р°") = Empty
+    Range("РЎСЂРѕРє") = Empty
+    Range("РћС‡РµСЂРµРґРЅРѕСЃС‚СЊ") = Empty
+    Range("РЎСѓРјРјР°") = Empty
+    Range("РЎСѓРјРјР°РџСЂРѕРїРёСЃСЊСЋ") = Empty
+    Range("РќР°Р·РЅР°С‡РµРЅРёРµ") = Empty
     
-    Range("ИНН2") = Empty
-    Range("Название2") = Empty
-    Range("Счет2") = Empty
-    Range("БИК2") = Empty
-    Range("Банк2") = Empty
-    Range("Место2") = Empty
-    Range("Корсчет2") = Empty
+    Range("РРќРќ2") = Empty
+    Range("РќР°Р·РІР°РЅРёРµ2") = Empty
+    Range("РЎС‡РµС‚2") = Empty
+    Range("Р‘РРљ2") = Empty
+    Range("Р‘Р°РЅРє2") = Empty
+    Range("РњРµСЃС‚Рѕ2") = Empty
+    Range("РљРѕСЂСЃС‡РµС‚2") = Empty
     
-    Range("Тип") = Empty
-    Range("ВидПлатежа") = Empty
-    Range("Файл") = Empty
-    Range("Посылка") = Empty
-    Range("Отправлено") = Empty
+    Range("РўРёРї") = Empty
+    Range("Р’РёРґРџР»Р°С‚РµР¶Р°") = Empty
+    Range("Р¤Р°Р№Р»") = Empty
+    Range("РџРѕСЃС‹Р»РєР°") = Empty
+    Range("РћС‚РїСЂР°РІР»РµРЅРѕ") = Empty
 End Sub
 
-'Очень страшная функция - уничтожает всю платежку!
+'РћС‡РµРЅСЊ СЃС‚СЂР°С€РЅР°СЏ С„СѓРЅРєС†РёСЏ - СѓРЅРёС‡С‚РѕР¶Р°РµС‚ РІСЃСЋ РїР»Р°С‚РµР¶РєСѓ!
 Public Sub ClearPlatAll()
     ClearPlat
-    Range("ИНН1") = Empty
-    Range("Название1") = Empty
-    Range("Счет1") = Empty
-    Range("БИК1") = Empty
-    Range("Банк1") = Empty
-    Range("Место1") = Empty
-    Range("Корсчет1") = Empty
+    Range("РРќРќ1") = Empty
+    Range("РќР°Р·РІР°РЅРёРµ1") = Empty
+    Range("РЎС‡РµС‚1") = Empty
+    Range("Р‘РРљ1") = Empty
+    Range("Р‘Р°РЅРє1") = Empty
+    Range("РњРµСЃС‚Рѕ1") = Empty
+    Range("РљРѕСЂСЃС‡РµС‚1") = Empty
 End Sub
-

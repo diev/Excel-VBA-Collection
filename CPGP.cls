@@ -32,14 +32,14 @@ Public Property Get File() As String
 End Property
 
 Public Sub ChangePassword()
-    If YesNoBox("ПРОЧТИТЕ ВНИМАТЕЛЬНО ПОРЯДОК СМЕНЫ ПАРОЛЯ PGP\n" & _
-        "и приготовьтесь ответить на следующие вопросы:\n\n" & _
-        "1. Идентификатор пользователя этого ключа: \'%s\'.\n" & _
-        "2. Ввести старый пароль...\n" & _
-        "3. Новый идентификатор пользователя - \'N\'.\n" & _
-        "4. Сменить ваш пароль - \'Y\'.\n" & _
-        "5. Ввести новый пароль...\n\n" & _
-        "Приступить?", User.ID4) Then
+    If YesNoBox("РџР РћР§РўРРўР• Р’РќРРњРђРўР•Р›Р¬РќРћ РџРћР РЇР”РћРљ РЎРњР•РќР« РџРђР РћР›РЇ PGP\n" & _
+        "Рё РїСЂРёРіРѕС‚РѕРІСЊС‚РµСЃСЊ РѕС‚РІРµС‚РёС‚СЊ РЅР° СЃР»РµРґСѓСЋС‰РёРµ РІРѕРїСЂРѕСЃС‹:\n\n" & _
+        "1. РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ СЌС‚РѕРіРѕ РєР»СЋС‡Р°: \'%s\'.\n" & _
+        "2. Р’РІРµСЃС‚Рё СЃС‚Р°СЂС‹Р№ РїР°СЂРѕР»СЊ...\n" & _
+        "3. РќРѕРІС‹Р№ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ - \'N\'.\n" & _
+        "4. РЎРјРµРЅРёС‚СЊ РІР°С€ РїР°СЂРѕР»СЊ - \'Y\'.\n" & _
+        "5. Р’РІРµСЃС‚Рё РЅРѕРІС‹Р№ РїР°СЂРѕР»СЊ...\n\n" & _
+        "РџСЂРёСЃС‚СѓРїРёС‚СЊ?", User.ID4) Then
             mExtId = User.ID4
             RunPGP "-ke"
             ResetPasswords
@@ -53,7 +53,7 @@ Public Property Get Password() As String
     If Len(mExtId) = 0 Then mExtId = User.ID4
     s = mPassCollection.Item(mExtId)
     If s = vbNullString Then
-        s = InputBox("Введите пароль секретного ключа PGP для " & mExtId & ":", _
+        s = InputBox("Р’РІРµРґРёС‚Рµ РїР°СЂРѕР»СЊ СЃРµРєСЂРµС‚РЅРѕРіРѕ РєР»СЋС‡Р° PGP РґР»СЏ " & mExtId & ":", _
             App.TITLE)
         If Len(s) > 0 Then
             mPassCollection.Add s, Key:=mExtId
@@ -200,20 +200,20 @@ Private Sub RunPGP(RunCmd As String)
         s = QFile(File) & " " & RunCmd & s
         ShellDialog s, vbNormalFocus, App.BoolOptions("Debug")
     Else
-        StopBox "У Вас нет программы\n%s", File
+        StopBox "РЈ Р’Р°СЃ РЅРµС‚ РїСЂРѕРіСЂР°РјРјС‹\n%s", File
     End If
 End Sub
 
 Public Function Info() As String
     Dim s As String, File As String
     File = Me.KeysPath
-    s = "Ключи PGP: "
+    s = "РљР»СЋС‡Рё PGP: "
     If UCase(Left(File, 2)) = "A:" Then
-        s = s & "на дискете - в " & QFile(File)
+        s = s & "РЅР° РґРёСЃРєРµС‚Рµ - РІ " & QFile(File)
     ElseIf Left(File, Len(App.Path)) = App.Path Then
-        s = s & "вместе с программой - в " & QFile(Mid(File, Len(App.Path) + 1))
+        s = s & "РІРјРµСЃС‚Рµ СЃ РїСЂРѕРіСЂР°РјРјРѕР№ - РІ " & QFile(Mid(File, Len(App.Path) + 1))
     Else
-        s = s & "в другом месте - в " & QFile(File)
+        s = s & "РІ РґСЂСѓРіРѕРј РјРµСЃС‚Рµ - РІ " & QFile(File)
     End If
     s = s & Bsprintf("\n(")
     File = Dir(Me.KeysPath & "Secr*.pgp")

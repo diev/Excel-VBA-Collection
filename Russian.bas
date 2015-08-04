@@ -13,8 +13,8 @@ Public Function RDate(v As Variant) As Date 'instead CDate()
         RDate = StoD(CStr(v))
     Else
         s = CStr(v)
-        n = InStr(10, s, "г", vbTextCompare)
-        If n > 10 Then 'skip Авг.
+        n = InStr(10, s, "Рі", vbTextCompare)
+        If n > 10 Then 'skip РђРІРі.
             s = Left(s, n - 1)
         End If
         RDate = DateValue(s)
@@ -26,10 +26,10 @@ Public Function RIsDate(v As Variant) As Boolean 'instead IsDate()
     RIsDate = RDate(v) > 0
 End Function
 
-'Читает всю строку с цифрами и возвращает дробное целое число,
-'независимо от наличия пробелов и букв в этой строке,
-'но дробная часть отделяется после последней точки,
-'запятой, знака равенства или минуса (или указанного списка разделителей).
+'Р§РёС‚Р°РµС‚ РІСЃСЋ СЃС‚СЂРѕРєСѓ СЃ С†РёС„СЂР°РјРё Рё РІРѕР·РІСЂР°С‰Р°РµС‚ РґСЂРѕР±РЅРѕРµ С†РµР»РѕРµ С‡РёСЃР»Рѕ,
+'РЅРµР·Р°РІРёСЃРёРјРѕ РѕС‚ РЅР°Р»РёС‡РёСЏ РїСЂРѕР±РµР»РѕРІ Рё Р±СѓРєРІ РІ СЌС‚РѕР№ СЃС‚СЂРѕРєРµ,
+'РЅРѕ РґСЂРѕР±РЅР°СЏ С‡Р°СЃС‚СЊ РѕС‚РґРµР»СЏРµС‚СЃСЏ РїРѕСЃР»Рµ РїРѕСЃР»РµРґРЅРµР№ С‚РѕС‡РєРё,
+'Р·Р°РїСЏС‚РѕР№, Р·РЅР°РєР° СЂР°РІРµРЅСЃС‚РІР° РёР»Рё РјРёРЅСѓСЃР° (РёР»Рё СѓРєР°Р·Р°РЅРЅРѕРіРѕ СЃРїРёСЃРєР° СЂР°Р·РґРµР»РёС‚РµР»РµР№).
 Public Function RVal(Value As Variant, Optional Delim As String = ".,=-") As Currency
     Dim i, b() As Byte, s As String, n, p
     RVal = 0: n = 0: p = 0: s = Trim(CStr(Value))
@@ -61,4 +61,3 @@ End Function
 '    Next
 '    RVal = Val(ss)
 'End Function
-

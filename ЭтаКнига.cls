@@ -2,7 +2,7 @@ VERSION 1.0 CLASS
 BEGIN
   MultiUse = -1  'True
 END
-Attribute VB_Name = "›Ú‡ ÌË„‡"
+Attribute VB_Name = "–≠—Ç–∞–ö–Ω–∏–≥–∞"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
@@ -19,8 +19,3 @@ End Sub
 Private Sub Workbook_Open()
     AddBar
 End Sub
-
-
-
-
-

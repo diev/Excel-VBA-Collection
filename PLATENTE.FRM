@@ -1,6 +1,6 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} PlatEnter 
-   Caption         =   "Ввод платежного поручения"
+   Caption         =   "Р’РІРѕРґ РїР»Р°С‚РµР¶РЅРѕРіРѕ РїРѕСЂСѓС‡РµРЅРёСЏ"
    ClientHeight    =   5535
    ClientLeft      =   30
    ClientTop       =   270
@@ -77,7 +77,7 @@ Private Sub cmdOk_Click()
     With lstPayees
         If .ListIndex < 0 Then
             MultiPage.Value = multiPayees
-            MsgBox "Не выбран получатель", vbExclamation, AppTitle
+            MsgBox "РќРµ РІС‹Р±СЂР°РЅ РїРѕР»СѓС‡Р°С‚РµР»СЊ", vbExclamation, AppTitle
             .SetFocus
             Exit Sub
         Else
@@ -85,7 +85,7 @@ Private Sub cmdOk_Click()
         End If
     End With
     If RVal(cboSum) = 0 Then
-        MsgBox "Не введена сумма платежа", vbExclamation, AppTitle
+        MsgBox "РќРµ РІРІРµРґРµРЅР° СЃСѓРјРјР° РїР»Р°С‚РµР¶Р°", vbExclamation, AppTitle
         MultiPage.Value = multiPayment
         cboSum.SetFocus
         Exit Sub
@@ -93,7 +93,7 @@ Private Sub cmdOk_Click()
     With txtDescription
         .Text = strspaces1(.Text)
         If .TextLength = 0 Then
-            MsgBox "Не введено назначение платежа", vbExclamation, AppTitle
+            MsgBox "РќРµ РІРІРµРґРµРЅРѕ РЅР°Р·РЅР°С‡РµРЅРёРµ РїР»Р°С‚РµР¶Р°", vbExclamation, AppTitle
             MultiPage.Value = multiDesc
             .SetFocus
             Exit Sub
@@ -191,15 +191,15 @@ Private Sub lstNDS_Click()
     Dim s As String, v1 As Currency, v2 As Double
     v1 = RVal(cboSum.Text)
     If v1 = 0 Then
-        MsgBox "Не указана сумма для вычисления НДС", vbExclamation, AppTitle
+        MsgBox "РќРµ СѓРєР°Р·Р°РЅР° СЃСѓРјРјР° РґР»СЏ РІС‹С‡РёСЃР»РµРЅРёСЏ РќР”РЎ", vbExclamation, AppTitle
         Exit Sub
     End If
     v2 = CDbl(RVal(lstNDS.Text))
     If v2 = 0 Then
-        TextInsert "НДС не облагается."
+        TextInsert "РќР”РЎ РЅРµ РѕР±Р»Р°РіР°РµС‚СЃСЏ."
         Exit Sub
     End If
-    s = IIf(chkIncludingNDS, "Включая НДС ", "") & lstNDS.Text
+    s = IIf(chkIncludingNDS, "Р’РєР»СЋС‡Р°СЏ РќР”РЎ ", "") & lstNDS.Text
     v1 = Sum2Tax(v1, v2)
     If v1 > 0 Then
         TextInsert s & ": " & PlatFormat(v1)

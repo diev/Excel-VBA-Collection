@@ -13,21 +13,21 @@ Option Compare Text
 Option Base 1
 DefLng A-Z
 
-'Архив
-Const mArchiveSheet = "Архив"
-'Поля
-Const mArchivePayeeNick = 1 'Получатель (кр.название)
-Const mArchiveNo = 2 'Номер
-Const mArchiveDate = 3 'Дата
-Const mArchiveFile = 4 'Файл
-Const mArchiveMark = 5 'Отметка Банка
-Const mArchiveAction = 6 'Срок
-Const mArchiveQueue = 7 'Очередность
-Const mArchiveSum = 8 'Сумма
-Const mArchiveNDS = 9 'НДС
-Const mArchiveDescription = 10 'Назначение
-'Итого
-Const mArchiveSize = 10 'Общее число столбцов
+'РђСЂС…РёРІ
+Const mArchiveSheet = "РђСЂС…РёРІ"
+'РџРѕР»СЏ
+Const mArchivePayeeNick = 1 'РџРѕР»СѓС‡Р°С‚РµР»СЊ (РєСЂ.РЅР°Р·РІР°РЅРёРµ)
+Const mArchiveNo = 2 'РќРѕРјРµСЂ
+Const mArchiveDate = 3 'Р”Р°С‚Р°
+Const mArchiveFile = 4 'Р¤Р°Р№Р»
+Const mArchiveMark = 5 'РћС‚РјРµС‚РєР° Р‘Р°РЅРєР°
+Const mArchiveAction = 6 'РЎСЂРѕРє
+Const mArchiveQueue = 7 'РћС‡РµСЂРµРґРЅРѕСЃС‚СЊ
+Const mArchiveSum = 8 'РЎСѓРјРјР°
+Const mArchiveNDS = 9 'РќР”РЎ
+Const mArchiveDescription = 10 'РќР°Р·РЅР°С‡РµРЅРёРµ
+'РС‚РѕРіРѕ
+Const mArchiveSize = 10 'РћР±С‰РµРµ С‡РёСЃР»Рѕ СЃС‚РѕР»Р±С†РѕРІ
 
 Dim mArchive As New CDataSheet
 Dim mListCount As Long
@@ -49,18 +49,18 @@ Public Sub Add(PayeeNick As String, DocNo As Variant, DocDate As Variant, Action
     arr(mArchiveNDS) = NDS
     arr(mArchiveDescription) = Description
     
-    Range("Номер") = arr(mArchiveNo)
-    Range("Дата") = arr(mArchiveDate)
-    Range("Срок") = DateAdd("d", arr(mArchiveAction), arr(mArchiveDate))
-    Range("Очередность") = arr(mArchiveQueue)
+    Range("РќРѕРјРµСЂ") = arr(mArchiveNo)
+    Range("Р”Р°С‚Р°") = arr(mArchiveDate)
+    Range("РЎСЂРѕРє") = DateAdd("d", arr(mArchiveAction), arr(mArchiveDate))
+    Range("РћС‡РµСЂРµРґРЅРѕСЃС‚СЊ") = arr(mArchiveQueue)
     s.Value = arr(mArchiveSum)
-    Range("Сумма") = s.PlatText
-    Range("СуммаПрописью") = s.AmountText
-    Range("Назначение") = arr(mArchiveDescription)
+    Range("РЎСѓРјРјР°") = s.PlatText
+    Range("РЎСѓРјРјР°РџСЂРѕРїРёСЃСЊСЋ") = s.AmountText
+    Range("РќР°Р·РЅР°С‡РµРЅРёРµ") = arr(mArchiveDescription)
     Payment.FillForm
     MakeSheetVMD
     
-    arr(mArchiveFile) = Left(Range("Файл").Text, 8)
+    arr(mArchiveFile) = Left(Range("Р¤Р°Р№Р»").Text, 8)
     mArchive.InsertRecord arr
 End Sub
 
@@ -71,18 +71,18 @@ Public Sub FillByRow(n As Long)
         Payment.Nick = .Cells(n, mArchivePayeeNick).Text
         Payment.FillForm
     
-        Range("Номер") = .Cells(n, mArchiveNo).Text
-        Range("Дата") = .Cells(n, mArchiveDate)
-        Range("Срок") = DateAdd("d", .Cells(n, mArchiveAction), .Cells(n, mArchiveDate))
-        Range("Очередность") = .Cells(n, mArchiveQueue).Text
+        Range("РќРѕРјРµСЂ") = .Cells(n, mArchiveNo).Text
+        Range("Р”Р°С‚Р°") = .Cells(n, mArchiveDate)
+        Range("РЎСЂРѕРє") = DateAdd("d", .Cells(n, mArchiveAction), .Cells(n, mArchiveDate))
+        Range("РћС‡РµСЂРµРґРЅРѕСЃС‚СЊ") = .Cells(n, mArchiveQueue).Text
         s.Value = .Cells(n, mArchiveSum)
-        Range("Сумма") = s.PlatText
-        Range("СуммаПрописью") = s.AmountText
-        Range("Назначение") = .Cells(n, mArchiveDescription).Text
+        Range("РЎСѓРјРјР°") = s.PlatText
+        Range("РЎСѓРјРјР°РџСЂРѕРїРёСЃСЊСЋ") = s.AmountText
+        Range("РќР°Р·РЅР°С‡РµРЅРёРµ") = .Cells(n, mArchiveDescription).Text
         
-        'Range("Файл") = .Cells(n, mArchiveFile).Text
-        'Range("Тип") = .Cells(n, mArchiveFile).Text '///////////////////////////
-        'Range("Посылка") = .Cells(n, mArchiveFile).Text '///////////////////////////
+        'Range("Р¤Р°Р№Р»") = .Cells(n, mArchiveFile).Text
+        'Range("РўРёРї") = .Cells(n, mArchiveFile).Text '///////////////////////////
+        'Range("РџРѕСЃС‹Р»РєР°") = .Cells(n, mArchiveFile).Text '///////////////////////////
         MakeSheetVMD
     End With
     Application.ScreenUpdating = True

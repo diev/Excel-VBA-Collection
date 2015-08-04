@@ -1,6 +1,6 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} PlatNAL 
-   Caption         =   "Перечисление налогов и сборов"
+   Caption         =   "РџРµСЂРµС‡РёСЃР»РµРЅРёРµ РЅР°Р»РѕРіРѕРІ Рё СЃР±РѕСЂРѕРІ"
    ClientHeight    =   3600
    ClientLeft      =   45
    ClientTop       =   360
@@ -62,22 +62,22 @@ Private Sub UserForm_Initialize()
     Dim s As String, i As Long
     On Error Resume Next
     With cboSS
-        .AddItem "01/налогоплательщик"
-        .AddItem "02/налоговый агент"
-        .AddItem "03/сборщик налогов"
-        .AddItem "04/налоговый орган"
-        .AddItem "05/служба приставов"
-        .AddItem "06/участник ВнешЭкДеятельности"
-        .AddItem "07/таможенный орган"
-        .AddItem "08/плательщик иных обяз.сборов"
-        .AddItem "09/инд.предприниматель"
-        .AddItem "10/частный нотариус"
-        .AddItem "11/адвокат, учр.кабинет"
-        .AddItem "12/глава фермер.хоз-ва"
-        .AddItem "13/иное физ.лицо со счёта"
-        .AddItem "14/выплаты физ.лицам"
-        .AddItem "15/физ.лица без счёта"
-        .AddItem "  /нет - обычный платеж"
+        .AddItem "01/РЅР°Р»РѕРіРѕРїР»Р°С‚РµР»СЊС‰РёРє"
+        .AddItem "02/РЅР°Р»РѕРіРѕРІС‹Р№ Р°РіРµРЅС‚"
+        .AddItem "03/СЃР±РѕСЂС‰РёРє РЅР°Р»РѕРіРѕРІ"
+        .AddItem "04/РЅР°Р»РѕРіРѕРІС‹Р№ РѕСЂРіР°РЅ"
+        .AddItem "05/СЃР»СѓР¶Р±Р° РїСЂРёСЃС‚Р°РІРѕРІ"
+        .AddItem "06/СѓС‡Р°СЃС‚РЅРёРє Р’РЅРµС€Р­РєР”РµСЏС‚РµР»СЊРЅРѕСЃС‚Рё"
+        .AddItem "07/С‚Р°РјРѕР¶РµРЅРЅС‹Р№ РѕСЂРіР°РЅ"
+        .AddItem "08/РїР»Р°С‚РµР»СЊС‰РёРє РёРЅС‹С… РѕР±СЏР·.СЃР±РѕСЂРѕРІ"
+        .AddItem "09/РёРЅРґ.РїСЂРµРґРїСЂРёРЅРёРјР°С‚РµР»СЊ"
+        .AddItem "10/С‡Р°СЃС‚РЅС‹Р№ РЅРѕС‚Р°СЂРёСѓСЃ"
+        .AddItem "11/Р°РґРІРѕРєР°С‚, СѓС‡СЂ.РєР°Р±РёРЅРµС‚"
+        .AddItem "12/РіР»Р°РІР° С„РµСЂРјРµСЂ.С…РѕР·-РІР°"
+        .AddItem "13/РёРЅРѕРµ С„РёР·.Р»РёС†Рѕ СЃРѕ СЃС‡С‘С‚Р°"
+        .AddItem "14/РІС‹РїР»Р°С‚С‹ С„РёР·.Р»РёС†Р°Рј"
+        .AddItem "15/С„РёР·.Р»РёС†Р° Р±РµР· СЃС‡С‘С‚Р°"
+        .AddItem "  /РЅРµС‚ - РѕР±С‹С‡РЅС‹Р№ РїР»Р°С‚РµР¶"
     End With
     With cboNAL1
         s = Payment.NAL(1)
@@ -98,63 +98,63 @@ Private Sub UserForm_Initialize()
         End If
     End With
     With cboNAL3
-        .AddItem "ТП/текущий платеж"
-        .AddItem "ЗД/задолженность"
-        .AddItem "БФ/физ.лицо"
-        .AddItem "ТР/требование"
-        .AddItem "РС/рассрочка"
-        .AddItem "ОТ/отсрочка"
-        .AddItem "РТ/реструктуризация"
-        .AddItem "ВУ/внешнее управление"
-        .AddItem "ПР/приостановление"
-        .AddItem "АП/акт проверки"
-        .AddItem "АР/исполнительный док."
+        .AddItem "РўРџ/С‚РµРєСѓС‰РёР№ РїР»Р°С‚РµР¶"
+        .AddItem "Р—Р”/Р·Р°РґРѕР»Р¶РµРЅРЅРѕСЃС‚СЊ"
+        .AddItem "Р‘Р¤/С„РёР·.Р»РёС†Рѕ"
+        .AddItem "РўР /С‚СЂРµР±РѕРІР°РЅРёРµ"
+        .AddItem "Р РЎ/СЂР°СЃСЃСЂРѕС‡РєР°"
+        .AddItem "РћРў/РѕС‚СЃСЂРѕС‡РєР°"
+        .AddItem "Р Рў/СЂРµСЃС‚СЂСѓРєС‚СѓСЂРёР·Р°С†РёСЏ"
+        .AddItem "Р’РЈ/РІРЅРµС€РЅРµРµ СѓРїСЂР°РІР»РµРЅРёРµ"
+        .AddItem "РџР /РїСЂРёРѕСЃС‚Р°РЅРѕРІР»РµРЅРёРµ"
+        .AddItem "РђРџ/Р°РєС‚ РїСЂРѕРІРµСЂРєРё"
+        .AddItem "РђР /РёСЃРїРѕР»РЅРёС‚РµР»СЊРЅС‹Р№ РґРѕРє."
         .AddItem NULNAL
         .Text = .List(0)
     End With
     s = Right(DtoC(Now), 8)
     With cboNAL4
-        .AddItem "Д1" & s
-        .AddItem "Д2" & s
-        .AddItem "Д3" & s
-        .AddItem "МС" & Right(DtoC(DateAdd("m", -1, Now)), 8)
-        .AddItem "МС" & s
+        .AddItem "Р”1" & s
+        .AddItem "Р”2" & s
+        .AddItem "Р”3" & s
+        .AddItem "РњРЎ" & Right(DtoC(DateAdd("m", -1, Now)), 8)
+        .AddItem "РњРЎ" & s
         s = Right(s, 5)
-        .AddItem "КВ.01" & s
-        .AddItem "КВ.02" & s
-        .AddItem "КВ.03" & s
-        .AddItem "КВ.04" & s
-        .AddItem "ПЛ.01" & s
-        .AddItem "ПЛ.02" & s
-        .AddItem "ГД.00" & s
+        .AddItem "РљР’.01" & s
+        .AddItem "РљР’.02" & s
+        .AddItem "РљР’.03" & s
+        .AddItem "РљР’.04" & s
+        .AddItem "РџР›.01" & s
+        .AddItem "РџР›.02" & s
+        .AddItem "Р“Р”.00" & s
         .AddItem DtoC(Now)
         .AddItem NULNAL
     End With
     With cboNAL5
-        .AddItem "ТР"
-        .AddItem "РС"
-        .AddItem "ОТ"
-        .AddItem "РТ"
-        .AddItem "ПР"
-        .AddItem "ВУ"
-        .AddItem "АП"
-        .AddItem "АР"
+        .AddItem "РўР "
+        .AddItem "Р РЎ"
+        .AddItem "РћРў"
+        .AddItem "Р Рў"
+        .AddItem "РџР "
+        .AddItem "Р’РЈ"
+        .AddItem "РђРџ"
+        .AddItem "РђР "
         .AddItem NULNAL
     End With
     With cboNAL6
         .AddItem NULNAL
     End With
     With cboNAL7
-        .AddItem "НС/налог,сбор"
-        .AddItem "ПЛ/платёж"
-        .AddItem "ГП/пошлина"
-        .AddItem "ВЗ/взнос"
-        .AddItem "АВ/аванс,предоплата"
-        .AddItem "ПЕ/пени"
-        .AddItem "ПЦ/проценты"
-        .AddItem "СА/санкции"
-        .AddItem "АШ/адм.штраф"
-        .AddItem "ИШ/иной штраф"
+        .AddItem "РќРЎ/РЅР°Р»РѕРі,СЃР±РѕСЂ"
+        .AddItem "РџР›/РїР»Р°С‚С‘Р¶"
+        .AddItem "Р“Рџ/РїРѕС€Р»РёРЅР°"
+        .AddItem "Р’Р—/РІР·РЅРѕСЃ"
+        .AddItem "РђР’/Р°РІР°РЅСЃ,РїСЂРµРґРѕРїР»Р°С‚Р°"
+        .AddItem "РџР•/РїРµРЅРё"
+        .AddItem "РџР¦/РїСЂРѕС†РµРЅС‚С‹"
+        .AddItem "РЎРђ/СЃР°РЅРєС†РёРё"
+        .AddItem "РђРЁ/Р°РґРј.С€С‚СЂР°С„"
+        .AddItem "РРЁ/РёРЅРѕР№ С€С‚СЂР°С„"
         .AddItem NULNAL
         .Text = .List(0)
     End With
@@ -194,4 +194,3 @@ Private Sub UserForm_Initialize()
         Next
     End With
 End Sub
-

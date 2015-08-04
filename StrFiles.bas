@@ -208,4 +208,3 @@ Public Function CountFiles(Mask As String) As Long
         File = Dir
     Loop
 End Function
-

@@ -14,14 +14,14 @@ Public Sub SMailSend()
                 PGPRun Range("PGPView").Text, FileName
             Case Else
                 'If FileLen(FileName) > 32000 Then
-                '    If MsgBox("Файл превышает 32K! Продолжать?", vbExclamation + vbOKCancel, AppTitle) = vbOK Then
+                '    If MsgBox("Р¤Р°Р№Р» РїСЂРµРІС‹С€Р°РµС‚ 32K! РџСЂРѕРґРѕР»Р¶Р°С‚СЊ?", vbExclamation + vbOKCancel, AppTitle) = vbOK Then
                         s = InputFile(FileName)
                         TempName = RightPathName(GetWinTempDir, FileNameExt(FileName))
                         s = CWin(s)
                         OutputFile TempName, s
                         s = RightPathName(GetWinDir, "NOTEPAD ") & TempName
                         If Shell(s, vbNormalFocus) = 0 Then
-                            ErrorBox Err, BPrintF("Невозможно запустить\n~%s~", s), AppTitle
+                            ErrorBox Err, BPrintF("РќРµРІРѕР·РјРѕР¶РЅРѕ Р·Р°РїСѓСЃС‚РёС‚СЊ\n~%s~", s), AppTitle
                         End If
                         DoEvents
                         Kill TempName
@@ -52,24 +52,24 @@ Public Sub SMailRecv()
                     's = GetSetting(AppName, "Misc", "Notepad")
                     's = StrTran(s, "%1", TempName)
                     'If Shell(s, vbNormalFocus) = 0 Then
-                    '    ErrorBox Err, BPrintF("Невозможно запустить\n~%s~", s), AppTitle
+                    '    ErrorBox Err, BPrintF("РќРµРІРѕР·РјРѕР¶РЅРѕ Р·Р°РїСѓСЃС‚РёС‚СЊ\n~%s~", s), AppTitle
                     'End If
                     'DoEvents
                     
                     'View Only
                     PGPRun Range("PGPView").Text, FileName
                 Case "EX_"
-                    MsgBox BPrintF("Файл обновления:\nНеобходимо выйти и запустить UPDATE.BAT"), vbInformation, AppTitle
+                    MsgBox BPrintF("Р¤Р°Р№Р» РѕР±РЅРѕРІР»РµРЅРёСЏ:\nРќРµРѕР±С…РѕРґРёРјРѕ РІС‹Р№С‚Рё Рё Р·Р°РїСѓСЃС‚РёС‚СЊ UPDATE.BAT"), vbInformation, AppTitle
                 Case Else
                     'If FileLen(FileName) > 32000 Then
-                    '    If MsgBox("Файл превышает 32K! Продолжать?", vbExclamation + vbOKCancel, AppTitle) = vbOK Then
+                    '    If MsgBox("Р¤Р°Р№Р» РїСЂРµРІС‹С€Р°РµС‚ 32K! РџСЂРѕРґРѕР»Р¶Р°С‚СЊ?", vbExclamation + vbOKCancel, AppTitle) = vbOK Then
                             s = InputFile(FileName)
                             TempName = RightPathName(GetWinTempDir, FileNameExt(FileName))
                             s = CWin(s)
                             OutputFile TempName, s
                             s = RightPathName(GetWinDir, "NOTEPAD ") & TempName
                             If Shell(s, vbNormalFocus) = 0 Then
-                                ErrorBox Err, BPrintF("Невозможно запустить\n~%s~", s), AppTitle
+                                ErrorBox Err, BPrintF("РќРµРІРѕР·РјРѕР¶РЅРѕ Р·Р°РїСѓСЃС‚РёС‚СЊ\n~%s~", s), AppTitle
                             End If
                             DoEvents
                             Kill TempName
@@ -93,5 +93,3 @@ Public Sub SMailAutoMark()
         FileName = Dir
     Loop
 End Sub
-
-

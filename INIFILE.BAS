@@ -34,4 +34,3 @@ End Function
 Public Sub WriteIniFile(File As String, Section As String, Key As String, Optional vNewValue As String = vbNullString)
     WritePrivateProfileString Section, Key, vNewValue, File
 End Sub
-

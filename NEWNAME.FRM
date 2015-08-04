@@ -1,6 +1,6 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} NewName 
-   Caption         =   "Реквизиты получателя"
+   Caption         =   "Р РµРєРІРёР·РёС‚С‹ РїРѕР»СѓС‡Р°С‚РµР»СЏ"
    ClientHeight    =   3600
    ClientLeft      =   45
    ClientTop       =   330
@@ -39,49 +39,49 @@ Private Sub cmdOk_Click()
     If User.Demo And Mode <> "New" Then GoTo SkipCheck
     
     If txtBIC.TextLength <> 9 Then
-        WarnBox "Длина БИК Банка не 9 символов!"
+        WarnBox "Р”Р»РёРЅР° Р‘РРљ Р‘Р°РЅРєР° РЅРµ 9 СЃРёРјРІРѕР»РѕРІ!"
         txtBIC.SetFocus
         Exit Sub
     End If
     If txtLS.TextLength <> 20 Then
-        WarnBox "Длина Л/С не 20 символов!"
+        WarnBox "Р”Р»РёРЅР° Р›/РЎ РЅРµ 20 СЃРёРјРІРѕР»РѕРІ!"
         txtLS.SetFocus
         Exit Sub
     End If
     If Right(txtLS, 7) = "0000000" And Not User.Demo Then
-        If YesNoBox("Л/С подозрительно кончается на нули!\n\nИсправить?") Then
+        If YesNoBox("Р›/РЎ РїРѕРґРѕР·СЂРёС‚РµР»СЊРЅРѕ РєРѕРЅС‡Р°РµС‚СЃСЏ РЅР° РЅСѓР»Рё!\n\nРСЃРїСЂР°РІРёС‚СЊ?") Then
             txtLS.SetFocus
             Exit Sub
         End If
     End If
     s = SetLSKey(txtBIC, txtLS)
     If s <> txtLS Then
-        If YesNoBox("БИК %s не соответвует Л/С:\n%s (введено)\n%s (должно быть)\n\nИсправить?", txtBIC, txtLS, s) Then
+        If YesNoBox("Р‘РРљ %s РЅРµ СЃРѕРѕС‚РІРµС‚РІСѓРµС‚ Р›/РЎ:\n%s (РІРІРµРґРµРЅРѕ)\n%s (РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ)\n\nРСЃРїСЂР°РІРёС‚СЊ?", txtBIC, txtLS, s) Then
             txtLS = s
             txtLS.SetFocus
             Exit Sub
         End If
     End If
     If Not INNKeyValid(txtINN) Then
-        If YesNoBox("ИНН неправильный!\n\nИсправить?") Then
+        If YesNoBox("РРќРќ РЅРµРїСЂР°РІРёР»СЊРЅС‹Р№!\n\nРСЃРїСЂР°РІРёС‚СЊ?") Then
             txtINN.SetFocus
             Exit Sub
         End If
     End If
     If txtKPP.TextLength <> 9 Then
-        If YesNoBox("Длина КПП не 9 символов!\n\nИсправить?") Then
+        If YesNoBox("Р”Р»РёРЅР° РљРџРџ РЅРµ 9 СЃРёРјРІРѕР»РѕРІ!\n\nРСЃРїСЂР°РІРёС‚СЊ?") Then
             txtKPP.SetFocus
             Exit Sub
         End If
     End If
     If Left(txtKPP.Text, 4) <> Left(txtINN.Text, 4) Then
-        If YesNoBox("Коды налоговой инспекции в ИНН и КПП не совпадают!\n\nИсправить?") Then
+        If YesNoBox("РљРѕРґС‹ РЅР°Р»РѕРіРѕРІРѕР№ РёРЅСЃРїРµРєС†РёРё РІ РРќРќ Рё РљРџРџ РЅРµ СЃРѕРІРїР°РґР°СЋС‚!\n\nРСЃРїСЂР°РІРёС‚СЊ?") Then
             txtINN.SetFocus
             Exit Sub
         End If
     End If
     If txtName.TextLength = 0 Then
-        WarnBox "Не введено название организации!"
+        WarnBox "РќРµ РІРІРµРґРµРЅРѕ РЅР°Р·РІР°РЅРёРµ РѕСЂРіР°РЅРёР·Р°С†РёРё!"
         txtName.SetFocus
         Exit Sub
     End If
@@ -90,12 +90,12 @@ Private Sub cmdOk_Click()
     If i = 0 Then
         'skip
     ElseIf i = 1 Then
-        If YesNoBox("Название не начинается с формы собственности (ООО, ЗАО и т.п.)!\n\nИсправить?") Then
+        If YesNoBox("РќР°Р·РІР°РЅРёРµ РЅРµ РЅР°С‡РёРЅР°РµС‚СЃСЏ СЃ С„РѕСЂРјС‹ СЃРѕР±СЃС‚РІРµРЅРЅРѕСЃС‚Рё (РћРћРћ, Р—РђРћ Рё С‚.Рї.)!\n\nРСЃРїСЂР°РІРёС‚СЊ?") Then
             txtName.SetFocus
             Exit Sub
         End If
     ElseIf Mid(s, i - 1, 1) <> " " Then
-        If YesNoBox("Перед кавычкой принято ставить пробел.\n\nИсправить?") Then
+        If YesNoBox("РџРµСЂРµРґ РєР°РІС‹С‡РєРѕР№ РїСЂРёРЅСЏС‚Рѕ СЃС‚Р°РІРёС‚СЊ РїСЂРѕР±РµР».\n\nРСЃРїСЂР°РІРёС‚СЊ?") Then
             txtName.SetFocus
             Exit Sub
         End If
@@ -191,10 +191,10 @@ Private Sub UserForm_Activate()
                 txtLS = .LS
                 txtINN = .INN
                 txtName = .Name
-                txtKPP = .KPP 'после Name! (for conversion)
+                txtKPP = .KPP 'РїРѕСЃР»Рµ Name! (for conversion)
             End With
         Case "New"
-            Caption = "Реквизиты нового плательщика"
+            Caption = "Р РµРєРІРёР·РёС‚С‹ РЅРѕРІРѕРіРѕ РїР»Р°С‚РµР»СЊС‰РёРєР°"
             With User
                 txtBIC = .BIC
                 txtLS = .LS
@@ -203,7 +203,7 @@ Private Sub UserForm_Activate()
                 txtKPP = .KPP
             End With
         Case "Edit"
-            Caption = "Исправление реквизитов плательщика"
+            Caption = "РСЃРїСЂР°РІР»РµРЅРёРµ СЂРµРєРІРёР·РёС‚РѕРІ РїР»Р°С‚РµР»СЊС‰РёРєР°"
             With User
                 txtBIC = .BIC
                 txtLS = .LS

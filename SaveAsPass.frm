@@ -1,6 +1,6 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} SaveAsPass 
-   Caption         =   "Смена пароля, сохранение и выход"
+   Caption         =   "РЎРјРµРЅР° РїР°СЂРѕР»СЏ, СЃРѕС…СЂР°РЅРµРЅРёРµ Рё РІС‹С…РѕРґ"
    ClientHeight    =   3585
    ClientLeft      =   45
    ClientTop       =   330
@@ -47,12 +47,12 @@ Private Sub cmdOk_Click()
             .Save
         ElseIf optNewPass Then
             If txtPass1.TextLength = 0 Or txtPass2.TextLength = 0 Then
-                WarnBox "Пароль не введен!"
+                WarnBox "РџР°СЂРѕР»СЊ РЅРµ РІРІРµРґРµРЅ!"
                 txtPass1.SetFocus
                 Exit Sub
             End If
             If txtPass1 <> txtPass2 Then
-                WarnBox "Пароли не совпадают!"
+                WarnBox "РџР°СЂРѕР»Рё РЅРµ СЃРѕРІРїР°РґР°СЋС‚!"
                 txtPass2.SetFocus
                 Exit Sub
             End If
@@ -126,4 +126,3 @@ Private Sub EnableBoxes()
         txtPass2.PasswordChar = "*"
     End If
 End Sub
-

@@ -86,7 +86,7 @@ Public Property Let ID(ByVal vNewValue As String)
             OutputFile mUserIDFile, CWin(s)
             WriteIniFile mUserIDFile, mUserID, "CP", "1251"
         End If
-        'If OkCancelBox("Тщательно проверьте Ваши реквизиты!") Then
+        'If OkCancelBox("РўС‰Р°С‚РµР»СЊРЅРѕ РїСЂРѕРІРµСЂСЊС‚Рµ Р’Р°С€Рё СЂРµРєРІРёР·РёС‚С‹!") Then
         '    EditUserShow
         'End If
     End If
@@ -113,8 +113,8 @@ End Property
 
 Public Property Get Name() As String
     Dim i1 As Integer, i2 As Integer, s As String
-    s = ReadIniFile(mUserIDFile, mUserID, "Name", "ООО ""Демонстрация""")
-    If Left(s, 3) = "КПП" Then
+    s = ReadIniFile(mUserIDFile, mUserID, "Name", "РћРћРћ ""Р”РµРјРѕРЅСЃС‚СЂР°С†РёСЏ""")
+    If Left(s, 3) = "РљРџРџ" Then
         i1 = InStr(3, s, " ") + 1
         i2 = InStr(i1, s, " ")
         Me.KPP = Mid(s, i1, i2 - i1)
@@ -257,7 +257,7 @@ End Property
 
 Public Sub ResetCaption()
     With Me
-        Application.Caption = Bsprintf("Банк-Клиент %s (%s)", .ID, .Name)
+        Application.Caption = Bsprintf("Р‘Р°РЅРє-РљР»РёРµРЅС‚ %s (%s)", .ID, .Name)
     End With
 End Sub
 
@@ -331,33 +331,33 @@ Public Function ValidationError() As String
     If Me.Demo Then Exit Function
     
     s = Me.Name
-    Item = "Плательщик "
+    Item = "РџР»Р°С‚РµР»СЊС‰РёРє "
     L = Len(s)
     If L = 0 Then
-        ValidationError = Item & "не указан"
+        ValidationError = Item & "РЅРµ СѓРєР°Р·Р°РЅ"
         Exit Function
     ElseIf L > 160 Then
-        ValidationError = Item & "не может превышать 160 символов"
+        ValidationError = Item & "РЅРµ РјРѕР¶РµС‚ РїСЂРµРІС‹С€Р°С‚СЊ 160 СЃРёРјРІРѕР»РѕРІ"
         Exit Function
     ElseIf InStr(s, "  ") > 0 Then
-        ValidationError = Item & "не должен содержать лишних пробелов"
+        ValidationError = Item & "РЅРµ РґРѕР»Р¶РµРЅ СЃРѕРґРµСЂР¶Р°С‚СЊ Р»РёС€РЅРёС… РїСЂРѕР±РµР»РѕРІ"
         Exit Function
     ElseIf InStr(s, "?") > 0 Then
-        ValidationError = Item & "не должен содержать символ ?"
+        ValidationError = Item & "РЅРµ РґРѕР»Р¶РµРЅ СЃРѕРґРµСЂР¶Р°С‚СЊ СЃРёРјРІРѕР» ?"
         Exit Function
     ElseIf InStr(s, "^") > 0 Then
-        ValidationError = Item & "не должен содержать символ ^"
+        ValidationError = Item & "РЅРµ РґРѕР»Р¶РµРЅ СЃРѕРґРµСЂР¶Р°С‚СЊ СЃРёРјРІРѕР» ^"
         Exit Function
     ElseIf Left(s, 1) = """" Then
-        ValidationError = Item & "не должен начинаться с кавычки"
+        ValidationError = Item & "РЅРµ РґРѕР»Р¶РµРЅ РЅР°С‡РёРЅР°С‚СЊСЃСЏ СЃ РєР°РІС‹С‡РєРё"
         Exit Function
     ElseIf Left(s, 1) = "-" Then
-        ValidationError = Item & "не может начинаться с минуса"
+        ValidationError = Item & "РЅРµ РјРѕР¶РµС‚ РЅР°С‡РёРЅР°С‚СЊСЃСЏ СЃ РјРёРЅСѓСЃР°"
         Exit Function
     End If
     
     s = Me.INN
-    Item = "ИНН плательщика "
+    Item = "РРќРќ РїР»Р°С‚РµР»СЊС‰РёРєР° "
     If Left(s, 1) = "F" Then 'foreign
         s = Mid(s, 2)
     End If
@@ -365,56 +365,54 @@ Public Function ValidationError() As String
     If s = "0" Then
         'valid
     ElseIf Not IsDigital(s) Then
-        ValidationError = Item & "не из цифр"
+        ValidationError = Item & "РЅРµ РёР· С†РёС„СЂ"
         Exit Function
     ElseIf L > 1 And L <> 10 And L <> 12 Then
-        ValidationError = Item & "не 10 и не 12 цифр"
+        ValidationError = Item & "РЅРµ 10 Рё РЅРµ 12 С†РёС„СЂ"
         Exit Function
     ElseIf L > 1 And Not INNKeyValid(s) Then
         If User.Demo Then
-            WarnBox "%s %s неверный,\nно эта ошибка прощается в деморежиме.", Item, s
+            WarnBox "%s %s РЅРµРІРµСЂРЅС‹Р№,\nРЅРѕ СЌС‚Р° РѕС€РёР±РєР° РїСЂРѕС‰Р°РµС‚СЃСЏ РІ РґРµРјРѕСЂРµР¶РёРјРµ.", Item, s
         Else
-            ValidationError = Item & "неверный по ключу"
+            ValidationError = Item & "РЅРµРІРµСЂРЅС‹Р№ РїРѕ РєР»СЋС‡Сѓ"
             Exit Function
         End If
     End If
     
     s = Me.KPP
-    Item = "КПП плательщика "
+    Item = "РљРџРџ РїР»Р°С‚РµР»СЊС‰РёРєР° "
     L = Len(s)
     If s = "0" Then
         'valid
     ElseIf Not IsDigital(s) Then
-        ValidationError = Item & "не из цифр"
+        ValidationError = Item & "РЅРµ РёР· С†РёС„СЂ"
         Exit Function
     ElseIf L > 1 And L <> 9 Then
-        ValidationError = Item & "не 9 цифр"
+        ValidationError = Item & "РЅРµ 9 С†РёС„СЂ"
         Exit Function
     End If
     
     s = Me.LS
-    Item = "Счет плательщика "
+    Item = "РЎС‡РµС‚ РїР»Р°С‚РµР»СЊС‰РёРєР° "
     L = Len(s)
     If L <> 20 Then
-        ValidationError = Item & "не 20 цифр"
+        ValidationError = Item & "РЅРµ 20 С†РёС„СЂ"
         Exit Function
     ElseIf Not IsDigital(s) Then
-        ValidationError = Item & "не из цифр"
+        ValidationError = Item & "РЅРµ РёР· С†РёС„СЂ"
         Exit Function
     ElseIf Mid(s, 6, 3) <> "810" Then
-        ValidationError = Item & "не имеет кода валюты 810"
+        ValidationError = Item & "РЅРµ РёРјРµРµС‚ РєРѕРґР° РІР°Р»СЋС‚С‹ 810"
         Exit Function
     ElseIf Not LSKeyValid(Me.BIC, s) Then
-        ValidationError = Item & "не соответствует БИК по ключу"
+        ValidationError = Item & "РЅРµ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓРµС‚ Р‘РРљ РїРѕ РєР»СЋС‡Сѓ"
         Exit Function
     End If
         
     s = Me.BIC
-    Item = "БИК банка плательщика "
+    Item = "Р‘РРљ Р±Р°РЅРєР° РїР»Р°С‚РµР»СЊС‰РёРєР° "
     If s <> App.DefBIC Then
-        ValidationError = Item & "не " & App.DefBIC
+        ValidationError = Item & "РЅРµ " & App.DefBIC
         Exit Function
     End If
 End Function
-
-

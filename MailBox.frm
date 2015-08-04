@@ -1,6 +1,6 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} MailBox 
-   Caption         =   "Отправка и прием"
+   Caption         =   "РћС‚РїСЂР°РІРєР° Рё РїСЂРёРµРј"
    ClientHeight    =   6720
    ClientLeft      =   45
    ClientTop       =   330
@@ -41,10 +41,10 @@ End Sub
 
 Private Sub chkInet_Click()
     If chkInet Then
-        chkInet.ControlTipText = "Соединение по TCP/IP"
+        chkInet.ControlTipText = "РЎРѕРµРґРёРЅРµРЅРёРµ РїРѕ TCP/IP"
         SMail.DialOrInet = 2
     Else
-        chkInet.ControlTipText = "Соединение по телефону"
+        chkInet.ControlTipText = "РЎРѕРµРґРёРЅРµРЅРёРµ РїРѕ С‚РµР»РµС„РѕРЅСѓ"
         SMail.DialOrInet = 1
     End If
 End Sub
@@ -74,16 +74,16 @@ Private Sub cmdClean_Click()
         End If
         File = Dir
     Loop
-    s = Bsprintf("В директории %s файлов: %d,\nсамый старый - %n (дней: %d).\n\n" & _
-        "Укажите число дней, сколько следует оставить\n" & _
-        "(например, 60 = 2 месяца, 0 = оставить как есть)", _
+    s = Bsprintf("Р’ РґРёСЂРµРєС‚РѕСЂРёРё %s С„Р°Р№Р»РѕРІ: %d,\nСЃР°РјС‹Р№ СЃС‚Р°СЂС‹Р№ - %n (РґРЅРµР№: %d).\n\n" & _
+        "РЈРєР°Р¶РёС‚Рµ С‡РёСЃР»Рѕ РґРЅРµР№, СЃРєРѕР»СЊРєРѕ СЃР»РµРґСѓРµС‚ РѕСЃС‚Р°РІРёС‚СЊ\n" & _
+        "(РЅР°РїСЂРёРјРµСЂ, 60 = 2 РјРµСЃСЏС†Р°, 0 = РѕСЃС‚Р°РІРёС‚СЊ РєР°Рє РµСЃС‚СЊ)", _
         p, n, dt, DateDiff("d", dt, Now))
-    s = InputBox(s, "Очистка старого (рекомендуется)", 0)
+    s = InputBox(s, "РћС‡РёСЃС‚РєР° СЃС‚Р°СЂРѕРіРѕ (СЂРµРєРѕРјРµРЅРґСѓРµС‚СЃСЏ)", 0)
     If s = vbNullString Then Exit Sub
     n = Int(s)
     If n > 0 Then
         dt = DateAdd("d", -n, Now)
-        If Not YesNoBox("Удалить файлы старее %n\n(%d дней назад)?", dt, n) Then Exit Sub
+        If Not YesNoBox("РЈРґР°Р»РёС‚СЊ С„Р°Р№Р»С‹ СЃС‚Р°СЂРµРµ %n\n(%d РґРЅРµР№ РЅР°Р·Р°Рґ)?", dt, n) Then Exit Sub
         n = 0: n = 0
         File = Dir(p & "*.*")
         Do While File <> vbNullString
@@ -96,7 +96,7 @@ Private Sub cmdClean_Click()
             File = Dir
         Loop
         RefreshBoxes
-        InfoBox "Удалено файлов: %d, оставлено: %d.\n", n, k
+        InfoBox "РЈРґР°Р»РµРЅРѕ С„Р°Р№Р»РѕРІ: %d, РѕСЃС‚Р°РІР»РµРЅРѕ: %d.\n", n, k
     End If
 End Sub
 
@@ -128,22 +128,22 @@ Private Sub DecodeFile(p As String, File As String)
     If User.IsID4(FileExt(File)) Then
         If InStr(1, File, "v1c", vbTextCompare) = 1 Then
             File2 = FilePath(User.ExportList) & "kl_to_1c.txt"
-            If BrowseForSave(File2, "Файлы 1C (*.txt),*.txt", _
-                "файл для загрузки в 1C") Then
+            If BrowseForSave(File2, "Р¤Р°Р№Р»С‹ 1C (*.txt),*.txt", _
+                "С„Р°Р№Р» РґР»СЏ Р·Р°РіСЂСѓР·РєРё РІ 1C") Then
                 Path2 = FilePath(File2)
                 If InStr(1, Path2, SMail.Send, vbTextCompare) = 1 Then
-                    StopBox "Не следует мусорить в каталоге отправки!"
+                    StopBox "РќРµ СЃР»РµРґСѓРµС‚ РјСѓСЃРѕСЂРёС‚СЊ РІ РєР°С‚Р°Р»РѕРіРµ РѕС‚РїСЂР°РІРєРё!"
                     Exit Sub
                 End If
                 User.ExportList = Path2
                 If IsFile(File2) Then
-                    If Not YesNoBox("Файл %s уже существует.\n\nПерезаписать?", File2) Then
+                    If Not YesNoBox("Р¤Р°Р№Р» %s СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚.\n\nРџРµСЂРµР·Р°РїРёСЃР°С‚СЊ?", File2) Then
                         Exit Sub
                     End If
                 End If
                 If Not Crypto.Decrypt(p & File, File2) Then
-                    If YesNoBox("Программа PGP не смогла расшифровать файл!\n" & _
-                        "Возможно, ошибка использования ключей.\n\nПросто скопировать?") Then
+                    If YesNoBox("РџСЂРѕРіСЂР°РјРјР° PGP РЅРµ СЃРјРѕРіР»Р° СЂР°СЃС€РёС„СЂРѕРІР°С‚СЊ С„Р°Р№Р»!\n" & _
+                        "Р’РѕР·РјРѕР¶РЅРѕ, РѕС€РёР±РєР° РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ РєР»СЋС‡РµР№.\n\nРџСЂРѕСЃС‚Рѕ СЃРєРѕРїРёСЂРѕРІР°С‚СЊ?") Then
                         FileCopy p & File, File2
                     End If
                 End If
@@ -151,22 +151,22 @@ Private Sub DecodeFile(p As String, File As String)
             End If
         Else
             File2 = FilePath(User.ExportList) & File & ".txt"
-            If BrowseForSave(File2, "Текстовые файлы (*.txt),*.txt", _
-                "файл для создания расшифрованной копии") Then
+            If BrowseForSave(File2, "РўРµРєСЃС‚РѕРІС‹Рµ С„Р°Р№Р»С‹ (*.txt),*.txt", _
+                "С„Р°Р№Р» РґР»СЏ СЃРѕР·РґР°РЅРёСЏ СЂР°СЃС€РёС„СЂРѕРІР°РЅРЅРѕР№ РєРѕРїРёРё") Then
                 Path2 = FilePath(File2)
                 If InStr(1, Path2, SMail.Send, vbTextCompare) = 1 Then
-                    StopBox "Не следует мусорить в каталоге отправки!"
+                    StopBox "РќРµ СЃР»РµРґСѓРµС‚ РјСѓСЃРѕСЂРёС‚СЊ РІ РєР°С‚Р°Р»РѕРіРµ РѕС‚РїСЂР°РІРєРё!"
                     Exit Sub
                 End If
                 User.ExportList = Path2
                 If IsFile(File2) Then
-                    If Not YesNoBox("Файл %s уже существует.\n\nПерезаписать?", File2) Then
+                    If Not YesNoBox("Р¤Р°Р№Р» %s СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚.\n\nРџРµСЂРµР·Р°РїРёСЃР°С‚СЊ?", File2) Then
                         Exit Sub
                     End If
                 End If
                 If Not Crypto.Decrypt(p & File, File2) Then
-                    If YesNoBox("Программа PGP не смогла расшифровать файл!\n" & _
-                        "Возможно, ошибка использования ключей.\n\nПросто скопировать?") Then
+                    If YesNoBox("РџСЂРѕРіСЂР°РјРјР° PGP РЅРµ СЃРјРѕРіР»Р° СЂР°СЃС€РёС„СЂРѕРІР°С‚СЊ С„Р°Р№Р»!\n" & _
+                        "Р’РѕР·РјРѕР¶РЅРѕ, РѕС€РёР±РєР° РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ РєР»СЋС‡РµР№.\n\nРџСЂРѕСЃС‚Рѕ СЃРєРѕРїРёСЂРѕРІР°С‚СЊ?") Then
                         FileCopy p & File, File2
                     End If
                 End If
@@ -175,15 +175,15 @@ Private Sub DecodeFile(p As String, File As String)
     Else
         File2 = FilePath(User.ExportList) & File
         If BrowseForSave(File2, , _
-            "файл для создания копии") Then
+            "С„Р°Р№Р» РґР»СЏ СЃРѕР·РґР°РЅРёСЏ РєРѕРїРёРё") Then
             Path2 = FilePath(File2)
             If InStr(1, Path2, SMail.Send, vbTextCompare) = 1 Then
-                StopBox "Не следует мусорить в каталоге отправки!"
+                StopBox "РќРµ СЃР»РµРґСѓРµС‚ РјСѓСЃРѕСЂРёС‚СЊ РІ РєР°С‚Р°Р»РѕРіРµ РѕС‚РїСЂР°РІРєРё!"
                 Exit Sub
             End If
             User.ExportList = Path2
             If IsFile(File2) Then
-                If Not YesNoBox("Файл %s уже существует.\n\nПерезаписать?", File2) Then
+                If Not YesNoBox("Р¤Р°Р№Р» %s СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚.\n\nРџРµСЂРµР·Р°РїРёСЃР°С‚СЊ?", File2) Then
                     Exit Sub
                 End If
             End If
@@ -224,7 +224,7 @@ End Sub
 
 Private Sub cmdKill_Click()
     Dim p As String, i As Long
-    If Not YesNoBox("Удалить файл(ы)?") Then
+    If Not YesNoBox("РЈРґР°Р»РёС‚СЊ С„Р°Р№Р»(С‹)?") Then
         Exit Sub
     End If
     On Error Resume Next
@@ -298,7 +298,7 @@ End Sub
 Private Sub UserForm_Initialize()
     Dim n As Long
     On Error Resume Next
-    Caption = Bsprintf("%s клиента %s", Caption, User.ID)
+    Caption = Bsprintf("%s РєР»РёРµРЅС‚Р° %s", Caption, User.ID)
     DefCaption1 = MailBoxes.Tabs(0).Caption
     DefCaption2 = MailBoxes.Tabs(1).Caption
     DefCaption3 = MailBoxes.Tabs(2).Caption
@@ -310,12 +310,12 @@ Private Sub UserForm_Initialize()
     chkInet = SMail.DialOrInet = 2
     chkAll = App.BoolOptions("ViewAll")
     chkToday = App.BoolOptions("ViewToday")
-    chkToday.ControlTipText = Bsprintf("Только %n и %n!", DateAdd("d", -1, Now), Now)
+    chkToday.ControlTipText = Bsprintf("РўРѕР»СЊРєРѕ %n Рё %n!", DateAdd("d", -1, Now), Now)
     lstFiles.MultiSelect = App.Options("MultiSelect")
-    cboMulti.AddItem "Мульти 0"
-    cboMulti.AddItem "Мульти 1"
-    cboMulti.AddItem "Мульти 2"
-    cboMulti.Text = "Мульти " & CStr(lstFiles.MultiSelect)
+    cboMulti.AddItem "РњСѓР»СЊС‚Рё 0"
+    cboMulti.AddItem "РњСѓР»СЊС‚Рё 1"
+    cboMulti.AddItem "РњСѓР»СЊС‚Рё 2"
+    cboMulti.Text = "РњСѓР»СЊС‚Рё " & CStr(lstFiles.MultiSelect)
     StandardHeight = Height
     With Application
         Move Left, .Top + 5, width, .Height - 10
@@ -343,27 +343,27 @@ Private Sub RefreshBoxes()
                 File = Dir(SMail.Recv & "*.exe")
                 Do While File <> vbNullString
                     If LCase(Left(File, 3)) <> "ok-" Then
-                        .AddItem "Обновление новое " & UpdateName(File) & FileDT(SMail.Recv & File)
+                        .AddItem "РћР±РЅРѕРІР»РµРЅРёРµ РЅРѕРІРѕРµ " & UpdateName(File) & FileDT(SMail.Recv & File)
                     End If
                     File = Dir
                 Loop
                 
                 File = Dir(SMail.Recv & "ok-*.exe")
                 Do While File <> vbNullString
-                    .AddItem "Обновление вып. " & UpdateName(File) & FileDT(SMail.Recv & File)
+                    .AddItem "РћР±РЅРѕРІР»РµРЅРёРµ РІС‹Рї. " & UpdateName(File) & FileDT(SMail.Recv & File)
                     File = Dir
                 Loop
                 
                 File = Dir(SMail.Recv & "inv." & myID)
                 Do While File <> vbNullString
-                    .AddItem "Входящие " & VypDate(File) & FileDT(SMail.Recv & File)
+                    .AddItem "Р’С…РѕРґСЏС‰РёРµ " & VypDate(File) & FileDT(SMail.Recv & File)
                     File = Dir
                 Loop
                 
                 File = Dir(SMail.Recv & "vyp??-??." & myID)
                 Do While File <> vbNullString
                     If FileDateTime(SMail.Recv & File) >= dt Then
-                        .AddItem "Выписка " & VypDate(File) & FileDT(SMail.Recv & File)
+                        .AddItem "Р’С‹РїРёСЃРєР° " & VypDate(File) & FileDT(SMail.Recv & File)
                     End If
                     File = Dir
                 Loop
@@ -371,27 +371,27 @@ Private Sub RefreshBoxes()
                 File = Dir(SMail.Recv & "v1c??-??." & myID)
                 Do While File <> vbNullString
                     If FileDateTime(SMail.Recv & File) >= dt Then
-                        .AddItem "Выписка 1C " & VypDate(File) & FileDT(SMail.Recv & File)
+                        .AddItem "Р’С‹РїРёСЃРєР° 1C " & VypDate(File) & FileDT(SMail.Recv & File)
                     End If
                     File = Dir
                 Loop
                 
                 File = Dir(SMail.Recv & "vyp??r*." & myID)
                 Do While File <> vbNullString
-                    .AddItem "Реестр " & VypDate(File) & FileDT(SMail.Recv & File)
+                    .AddItem "Р РµРµСЃС‚СЂ " & VypDate(File) & FileDT(SMail.Recv & File)
                     File = Dir
                 Loop
                 
                 File = Dir(SMail.Recv & "!*.txt")
                 Do While File <> vbNullString
-                    .AddItem Bsprintf("Извещение (%s)", _
+                    .AddItem Bsprintf("РР·РІРµС‰РµРЅРёРµ (%s)", _
                         LCase(File)) & FileDT(SMail.Recv & File)
                     File = Dir
                 Loop
                 File = Dir(SMail.Recv & "rep*.txt")
                 Do While File <> vbNullString
                     If FileDateTime(SMail.Recv & File) >= dt Then
-                        .AddItem Bsprintf("Итоги (%s)", _
+                        .AddItem Bsprintf("РС‚РѕРіРё (%s)", _
                             LCase(File)) & FileDT(SMail.Recv & File)
                     End If
                     File = Dir
@@ -400,55 +400,55 @@ Private Sub RefreshBoxes()
                 Do While File <> vbNullString
                     If Left(File, 1) <> "!" And _
                         LCase(Left(File, 3)) <> "rep" _
-                            Then .AddItem Bsprintf("Сообщение (%s)", _
+                            Then .AddItem Bsprintf("РЎРѕРѕР±С‰РµРЅРёРµ (%s)", _
                                 LCase(File)) & FileDT(SMail.Recv & File)
                     File = Dir
                 Loop
                 File = Dir(SMail.Recv & "*.htm")
                 Do While File <> vbNullString
-                    .AddItem Bsprintf("Сообщение (%s)", _
+                    .AddItem Bsprintf("РЎРѕРѕР±С‰РµРЅРёРµ (%s)", _
                         LCase(File)) & FileDT(SMail.Recv & File)
                     File = Dir
                 Loop
                 File = Dir(SMail.Recv & "*.gif")
                 Do While File <> vbNullString
-                    .AddItem Bsprintf("Файл с документом (%s)", _
+                    .AddItem Bsprintf("Р¤Р°Р№Р» СЃ РґРѕРєСѓРјРµРЅС‚РѕРј (%s)", _
                         LCase(File)) & FileDT(SMail.Recv & File)
                     File = Dir
                 Loop
                 File = Dir(SMail.Recv & "*.jpg")
                 Do While File <> vbNullString
-                    .AddItem Bsprintf("Файл с документом (%s)", _
+                    .AddItem Bsprintf("Р¤Р°Р№Р» СЃ РґРѕРєСѓРјРµРЅС‚РѕРј (%s)", _
                         LCase(File)) & FileDT(SMail.Recv & File)
                     File = Dir
                 Loop
                 File = Dir(SMail.Recv & "*.cer")
                 Do While File <> vbNullString
-                    .AddItem Bsprintf("Сертификат (%s)", _
+                    .AddItem Bsprintf("РЎРµСЂС‚РёС„РёРєР°С‚ (%s)", _
                         LCase(File)) & FileDT(SMail.Recv & File)
                     File = Dir
                 Loop
                 File = Dir(SMail.Recv & "*.doc")
                 Do While File <> vbNullString
-                    .AddItem Bsprintf("Файл MS Word (%s)", _
+                    .AddItem Bsprintf("Р¤Р°Р№Р» MS Word (%s)", _
                         LCase(File)) & FileDT(SMail.Recv & File)
                     File = Dir
                 Loop
                 File = Dir(SMail.Recv & "*.rtf")
                 Do While File <> vbNullString
-                    .AddItem Bsprintf("Файл MS Word (%s)", _
+                    .AddItem Bsprintf("Р¤Р°Р№Р» MS Word (%s)", _
                         LCase(File)) & FileDT(SMail.Recv & File)
                     File = Dir
                 Loop
                 File = Dir(SMail.Recv & "*.xls")
                 Do While File <> vbNullString
-                    .AddItem Bsprintf("Файл MS Excel (%s)", _
+                    .AddItem Bsprintf("Р¤Р°Р№Р» MS Excel (%s)", _
                         LCase(File)) & FileDT(SMail.Recv & File)
                     File = Dir
                 Loop
                 File = Dir(SMail.Recv & "*.chm")
                 Do While File <> vbNullString
-                    .AddItem Bsprintf("Файл помощи (%s)", _
+                    .AddItem Bsprintf("Р¤Р°Р№Р» РїРѕРјРѕС‰Рё (%s)", _
                         LCase(File)) & FileDT(SMail.Recv & File)
                     File = Dir
                 Loop
@@ -456,27 +456,27 @@ Private Sub RefreshBoxes()
                 File = Dir(SMail.Recv & "o???????." & myID)
                 Do While File <> vbNullString
                     If LCase(Left(File, 3)) <> "ok-" Then
-                        .AddItem "Принятый " & DocName(File) & FileDT(SMail.Recv & File)
+                        .AddItem "РџСЂРёРЅСЏС‚С‹Р№ " & DocName(File) & FileDT(SMail.Recv & File)
                     End If
                     File = Dir
                 Loop
                 
                 File = Dir(SMail.Recv & "e???????." & myID)
                 Do While File <> vbNullString
-                    .AddItem "Ошибочный " & DocName(File) & FileDT(SMail.Recv & File)
+                    .AddItem "РћС€РёР±РѕС‡РЅС‹Р№ " & DocName(File) & FileDT(SMail.Recv & File)
                     File = Dir
                 Loop
                 
                 File = Dir(SMail.Recv & "t???????." & myID)
                 Do While File <> vbNullString
-                    .AddItem "Тестовый " & DocName(File) & FileDT(SMail.Recv & File)
+                    .AddItem "РўРµСЃС‚РѕРІС‹Р№ " & DocName(File) & FileDT(SMail.Recv & File)
                     File = Dir
                 Loop
                 
                 File = Dir(SMail.Recv & "cur?????.dbf")
                 Do While File <> vbNullString
                     If FileDateTime(SMail.Recv & File) >= dt Then
-                        .AddItem Bsprintf("Курс валют ЦБ (%s)", LCase(File)) & FileDT(SMail.Recv & File)
+                        .AddItem Bsprintf("РљСѓСЂСЃ РІР°Р»СЋС‚ Р¦Р‘ (%s)", LCase(File)) & FileDT(SMail.Recv & File)
                     End If
                     File = Dir
                 Loop
@@ -506,7 +506,7 @@ Private Sub RefreshBoxes()
                 File = Dir(SMail.Archive & "o???????." & myID)
                 Do While File <> vbNullString
                     If FileDateTime(SMail.Archive & File) >= dt Then
-                        .AddItem "Принятый " & DocName(File) & FileDT(SMail.Archive & File)
+                        .AddItem "РџСЂРёРЅСЏС‚С‹Р№ " & DocName(File) & FileDT(SMail.Archive & File)
                     End If
                     File = Dir
                 Loop
@@ -514,7 +514,7 @@ Private Sub RefreshBoxes()
                 File = Dir(SMail.Archive & "e???????." & myID)
                 Do While File <> vbNullString
                     If FileDateTime(SMail.Archive & File) >= dt Then
-                        .AddItem "Ошибочный " & DocName(File) & FileDT(SMail.Archive & File)
+                        .AddItem "РћС€РёР±РѕС‡РЅС‹Р№ " & DocName(File) & FileDT(SMail.Archive & File)
                     End If
                     File = Dir
                 Loop
@@ -522,7 +522,7 @@ Private Sub RefreshBoxes()
                 File = Dir(SMail.Archive & "t???????." & myID)
                 Do While File <> vbNullString
                     If FileDateTime(SMail.Archive & File) >= dt Then
-                        .AddItem "Тестовый " & DocName(File) & FileDT(SMail.Archive & File)
+                        .AddItem "РўРµСЃС‚РѕРІС‹Р№ " & DocName(File) & FileDT(SMail.Archive & File)
                     End If
                     File = Dir
                 Loop
@@ -547,7 +547,7 @@ Public Function VypDate(File As String) As String
     '    dd = Val(Mid(File, 7, 2))
     '    VypDate = Bsprintf("%d.%02d (%s)", dd, mm, LCase(File))
     'Else
-    '    VypDate = Bsprintf("%d месяц (%s)", mm, LCase(File))
+    '    VypDate = Bsprintf("%d РјРµСЃСЏС† (%s)", mm, LCase(File))
     'End If
     VypDate = Bsprintf("(%s)", LCase(File))
 End Function
@@ -561,7 +561,7 @@ Public Function DocName(File As String) As String
         If nnn > 0 Then
             M = Ot36(Mid(File, 3, 1))
             dd = Val(Mid(File, 4, 2))
-            DocName = Bsprintf("N %d от %s.%02d (%s)", nnn, dd, M, LCase(File))
+            DocName = Bsprintf("N %d РѕС‚ %s.%02d (%s)", nnn, dd, M, LCase(File))
         End If
     Else
         DocName = Bsprintf("(%s)", LCase(File))

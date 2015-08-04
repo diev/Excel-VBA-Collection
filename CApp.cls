@@ -12,7 +12,7 @@ Option Compare Text
 Option Base 1
 DefLng A-Z
 
-Const AppTitle = "Подготовка файла ФСФМ"
+Const AppTitle = "РџРѕРґРіРѕС‚РѕРІРєР° С„Р°Р№Р»Р° Р¤РЎР¤Рњ"
 Const AppVersion = "04.08.2015"
 
 Const CIBLS = "40702810100000000000"
@@ -24,7 +24,7 @@ Public Property Get Path() As String
 End Property
 
 Public Property Get TITLE() As String
-    TITLE = AppTitle & " вер. " & AppVersion
+    TITLE = AppTitle & " РІРµСЂ. " & AppVersion
 End Property
 
 Public Property Get VERSION() As String
@@ -54,38 +54,38 @@ Public Sub Info()
     'Dim s As String, File As String, ID4 As String
     'On Error Resume Next
     'If User.Demo Then
-    '    s = Bsprintf("ДЕМОНСТРАЦИОННАЯ ВЕРСИЯ!\n")
+    '    s = Bsprintf("Р”Р•РњРћРќРЎРўР РђР¦РРћРќРќРђРЇ Р’Р•Р РЎРРЇ!\n")
     'Else
     '    With User
-    '        s = Bsprintf("Номер клиента: %s\n%s\nЛ/с: %s\n", .ID, .Name, .LS)
+    '        s = Bsprintf("РќРѕРјРµСЂ РєР»РёРµРЅС‚Р°: %s\n%s\nР›/СЃ: %s\n", .ID, .Name, .LS)
     '    End With
     'End If
     '
-    'fmt = "\nПрограмма Банк-Клиент: %s\nДАТА ВЕРСИИ: %s\n"
+    'fmt = "\nРџСЂРѕРіСЂР°РјРјР° Р‘Р°РЅРє-РљР»РёРµРЅС‚: %s\nР”РђРўРђ Р’Р•Р РЎРР: %s\n"
     's = s & Bsprintf(fmt, ThisWorkbook.FullName, App.Version)
     '
-    'fmt = "\nРабочая книга Excel: %s\n"
+    'fmt = "\nР Р°Р±РѕС‡Р°СЏ РєРЅРёРіР° Excel: %s\n"
     's = s & Bsprintf(fmt, ActiveWorkbook.FullName)
     '
     's = s & BnkSeek2.Info
     's = s & Crypto.Info
     's = s & SMail.Info
     '
-    'fmt = "\nЗагрузка: %s\nВыгрузка: %s"
+    'fmt = "\nР—Р°РіСЂСѓР·РєР°: %s\nР’С‹РіСЂСѓР·РєР°: %s"
     's = s & Bsprintf(fmt, User.ImportList, User.ExportList)
     '
-    'If OkCancelBox("%s\n\nОтчет о конфигурации будет выслан в Банк.\nЕго подготовка займет некоторое время.", s) Then
+    'If OkCancelBox("%s\n\nРћС‚С‡РµС‚ Рѕ РєРѕРЅС„РёРіСѓСЂР°С†РёРё Р±СѓРґРµС‚ РІС‹СЃР»Р°РЅ РІ Р‘Р°РЅРє.\nР•РіРѕ РїРѕРґРіРѕС‚РѕРІРєР° Р·Р°Р№РјРµС‚ РЅРµРєРѕС‚РѕСЂРѕРµ РІСЂРµРјСЏ.", s) Then
     '    SendInfo
     'End If
     
     's = vbNullString
     'With User
-    '    s = s & Bsprintf("Номер клиента: %s\n\n(%s)\n(счет %s)\n\n", _
+    '    s = s & Bsprintf("РќРѕРјРµСЂ РєР»РёРµРЅС‚Р°: %s\n\n(%s)\n(СЃС‡РµС‚ %s)\n\n", _
     '        .ID4, .Name, .LS)
     'End With
     '
     'With App
-    '    s = s & Bsprintf("ВЕРСИЯ ПРОГРАММЫ: %s\nОбновлена: %s\nДиректория установки: %s\n\n", _
+    '    s = s & Bsprintf("Р’Р•Р РЎРРЇ РџР РћР“Р РђРњРњР«: %s\nРћР±РЅРѕРІР»РµРЅР°: %s\nР”РёСЂРµРєС‚РѕСЂРёСЏ СѓСЃС‚Р°РЅРѕРІРєРё: %s\n\n", _
     '        .Version, .Options("Updated"), QFile(.Path))
     '    s = s & Bsprintf("%s%s\n", _
     '        FileInfo(ActiveWorkbook.FullName), _
@@ -98,44 +98,44 @@ Public Sub Info()
     '    File = .File
     '    If IsFile(File) Then
     '        .LoadFile
-    '        s = s & Bsprintf("Справочник БИК от %s (банков: %d)\n%s\n", _
+    '        s = s & Bsprintf("РЎРїСЂР°РІРѕС‡РЅРёРє Р‘РРљ РѕС‚ %s (Р±Р°РЅРєРѕРІ: %d)\n%s\n", _
     '            DtoC(.Updated), .RecCount, FileInfo(File))
     '    Else
-    '        s = s & Bsprintf("Справочник БИК не установлен!\n")
+    '        s = s & Bsprintf("РЎРїСЂР°РІРѕС‡РЅРёРє Р‘РРљ РЅРµ СѓСЃС‚Р°РЅРѕРІР»РµРЅ!\n")
     '    End If
     'End With
     '
     'With SMail
     '    File = App.Path & "SMail\Flags\Bank.fin"
     '    If IsFile(File) Then
-    '       s = s & Bsprintf("Последний сеанс связи: %s (%s)\n", _
+    '       s = s & Bsprintf("РџРѕСЃР»РµРґРЅРёР№ СЃРµР°РЅСЃ СЃРІСЏР·Рё: %s (%s)\n", _
     '           FileDateTime(App.Path & "SMail\Flags\Bank.fin"), _
-    '           IIf(.DialOrInet = 2, "через Интернет", "по модему"))
-    '       s = s & Bsprintf("Файлов в принятом: %d (последний %s)\n\n", _
+    '           IIf(.DialOrInet = 2, "С‡РµСЂРµР· РРЅС‚РµСЂРЅРµС‚", "РїРѕ РјРѕРґРµРјСѓ"))
+    '       s = s & Bsprintf("Р¤Р°Р№Р»РѕРІ РІ РїСЂРёРЅСЏС‚РѕРј: %d (РїРѕСЃР»РµРґРЅРёР№ %s)\n\n", _
     '           CountFiles(.Recv & "*.*"), FileDateTime(App.Path & "SMail\Flags\Bank.rcv"))
     '    Else
-    '       s = s & Bsprintf("Сеансов связи не было или SMail не установлен!\n\n")
+    '       s = s & Bsprintf("РЎРµР°РЅСЃРѕРІ СЃРІСЏР·Рё РЅРµ Р±С‹Р»Рѕ РёР»Рё SMail РЅРµ СѓСЃС‚Р°РЅРѕРІР»РµРЅ!\n\n")
     '    End If
     'End With
     '
     'If User.Demo Then
-    '    s = Bsprintf("ДЕМОНСТРАЦИОННАЯ ВЕРСИЯ\n\n%s", s)
+    '    s = Bsprintf("Р”Р•РњРћРќРЎРўР РђР¦РРћРќРќРђРЇ Р’Р•Р РЎРРЇ\n\n%s", s)
     'Else
-    '    s = Bsprintf("ПРИ ЗВОНКЕ В БАНК НАЗОВИТЕ СЛЕДУЮЩЕЕ:\n\n%s", s)
+    '    s = Bsprintf("РџР Р Р—Р’РћРќРљР• Р’ Р‘РђРќРљ РќРђР—РћР’РРўР• РЎР›Р•Р”РЈР®Р©Р•Р•:\n\n%s", s)
     'End If
     'File = Dir(App.Path & "*.chm")
     'If File <> vbNullString Then
-    '    s = s & Bsprintf("Файлы помощи:\n")
+    '    s = s & Bsprintf("Р¤Р°Р№Р»С‹ РїРѕРјРѕС‰Рё:\n")
     '    Do While File <> vbNullString
     '        s = s & Bsprintf("%s\n", FileInfo(App.Path & File))
     '        File = Dir
     '    Loop
-    '    If MsgBox(s & "Показать помощь?", vbInformation + vbOKCancel, App.TITLE) = vbOK Then
+    '    If MsgBox(s & "РџРѕРєР°Р·Р°С‚СЊ РїРѕРјРѕС‰СЊ?", vbInformation + vbOKCancel, App.TITLE) = vbOK Then
     '        ShowHelp
     '    End If
     'Else
-    '    's = s & Bsprintf("Файлов помощи не найдено!")
-    '    s = s & Bsprintf("Помощь на сайте www.cibank.ru в разделе Банк-Клиент")
+    '    's = s & Bsprintf("Р¤Р°Р№Р»РѕРІ РїРѕРјРѕС‰Рё РЅРµ РЅР°Р№РґРµРЅРѕ!")
+    '    s = s & Bsprintf("РџРѕРјРѕС‰СЊ РЅР° СЃР°Р№С‚Рµ www.cibank.ru РІ СЂР°Р·РґРµР»Рµ Р‘Р°РЅРє-РљР»РёРµРЅС‚")
     '    InfoBox "%s", s
     'End If
     '
@@ -148,7 +148,7 @@ Public Function FileInfo(File As String) As String
     Else
         s = File
     End If
-    FileInfo = Bsprintf("(файл: %s, дата: %s, размер: %s)\n", _
+    FileInfo = Bsprintf("(С„Р°Р№Р»: %s, РґР°С‚Р°: %s, СЂР°Р·РјРµСЂ: %s)\n", _
         QFile(s), FileDateTime(File), FileLen(File))
 End Function
 
@@ -209,10 +209,10 @@ Public Function LocateFile(ByRef File As String) As Boolean
         ChDrive .DefaultFilePath
         ChDir .DefaultFilePath
     End With
-    WarnBox "Файл %s не найден!\nТребуется указать его местонахождение", File
+    WarnBox "Р¤Р°Р№Р» %s РЅРµ РЅР°Р№РґРµРЅ!\nРўСЂРµР±СѓРµС‚СЃСЏ СѓРєР°Р·Р°С‚СЊ РµРіРѕ РјРµСЃС‚РѕРЅР°С…РѕР¶РґРµРЅРёРµ", File
     s = FileExt(File)
-    s = Bsprintf("Файлы (*.%s),*.%s,Все файлы (*.*),*.*", s, s)
-    f = Application.GetOpenFilename(s, 1, "Укажите " & File)
+    s = Bsprintf("Р¤Р°Р№Р»С‹ (*.%s),*.%s,Р’СЃРµ С„Р°Р№Р»С‹ (*.*),*.*", s, s)
+    f = Application.GetOpenFilename(s, 1, "РЈРєР°Р¶РёС‚Рµ " & File)
     If f <> False Then 'don't change this!
         File = CStr(f)
         LocateFile = True
@@ -220,4 +220,3 @@ Public Function LocateFile(ByRef File As String) As Boolean
         File = vbNullString
     End If
 End Function
-

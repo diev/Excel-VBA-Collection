@@ -7,12 +7,12 @@ DefLng A-Z
 Public Sub AutoOpen()
     With Application
         .Cursor = xlWait
-        .StatusBar = "Ждите, идет загрузка..."
+        .StatusBar = "Р–РґРёС‚Рµ, РёРґРµС‚ Р·Р°РіСЂСѓР·РєР°..."
         .Caption = AppTitle
     End With
     
     'Worksheets(Payment.Sheet).Activate
-    Worksheets("Платежка").Activate
+    Worksheets("РџР»Р°С‚РµР¶РєР°").Activate
     
     With ActiveWindow
         '.Caption = GetSetting(AppName, "User", "Nick", NoUser) & " - " & ActiveSheet.Name
@@ -29,7 +29,7 @@ Public Sub AutoOpen()
     End With
     
     'If Len(GetSetting(AppName, "User", "Nick", "")) = 0 Then
-    '    MsgBox "Пожалуйста, проверьте все настройки!", vbInformation, AppTitle
+    '    MsgBox "РџРѕР¶Р°Р»СѓР№СЃС‚Р°, РїСЂРѕРІРµСЂСЊС‚Рµ РІСЃРµ РЅР°СЃС‚СЂРѕР№РєРё!", vbInformation, AppTitle
     '    UserOptionsShow
     'End If
 End Sub
@@ -48,4 +48,3 @@ Public Sub AutoClose()
         .Reset
     End With
 End Sub
-

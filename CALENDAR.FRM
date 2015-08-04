@@ -1,6 +1,6 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} Calendar 
-   Caption         =   "Κΰλενδΰπό"
+   Caption         =   "ΠΠ°Π»ΠµΠ½Π΄Π°Ρ€Ρ"
    ClientHeight    =   4335
    ClientLeft      =   45
    ClientTop       =   330
@@ -481,31 +481,31 @@ Private Sub SetDate(d As String)
 End Sub
 
 Private Sub DisplayDate()
-    lblDate.Caption = Format(DateEntered, "dddd dd mmmm yyyy γ.", vbMonday, vbFirstJan1)
+    lblDate.Caption = Format(DateEntered, "dddd dd mmmm yyyy Π³.", vbMonday, vbFirstJan1)
     cmdToday.Enabled = DateEntered <> Date
 End Sub
 
 Private Sub Reset()
     DateEntered = Date
     With cmdToday
-        .ControlTipText = Format(Date, "dddd dd mmmm yyyy", vbMonday, vbFirstJan1) & " γ."
+        .ControlTipText = Format(Date, "dddd dd mmmm yyyy", vbMonday, vbFirstJan1) & " Π³."
         .Enabled = False
     End With
     
     With lstMonth
         .Clear
-        .AddItem "01 ίνβΰπό"
-        .AddItem "02 Τεβπΰλό"
-        .AddItem "03 Μΰπς"
-        .AddItem "04 ΐοπελό"
-        .AddItem "05 Μΰι"
-        .AddItem "06 Θώνό"
-        .AddItem "07 Θώλό"
-        .AddItem "08 ΐβγσρς"
-        .AddItem "09 Ρενςÿαπό"
-        .AddItem "10 Ξκςÿαπό"
-        .AddItem "11 Νξÿαπό"
-        .AddItem "12 Δεκΰαπό"
+        .AddItem "01 Π―Π½Π²Π°Ρ€Ρ"
+        .AddItem "02 Π¤ΠµΠ²Ρ€Π°Π»Ρ"
+        .AddItem "03 ΠΠ°Ρ€Ρ‚"
+        .AddItem "04 ΠΠΏΡ€ΠµΠ»Ρ"
+        .AddItem "05 ΠΠ°ΠΉ"
+        .AddItem "06 ΠΡΠ½Ρ"
+        .AddItem "07 ΠΡΠ»Ρ"
+        .AddItem "08 ΠΠ²Π³ΡƒΡΡ‚"
+        .AddItem "09 Π΅ΠµΠ½Ρ‚ΡΠ±Ρ€Ρ"
+        .AddItem "10 ΠΠΊΡ‚ΡΠ±Ρ€Ρ"
+        .AddItem "11 ΠΠΎΡΠ±Ρ€Ρ"
+        .AddItem "12 Π”ΠµΠΊΠ°Π±Ρ€Ρ"
         .ListIndex = Month(Date) - 1
     End With
     

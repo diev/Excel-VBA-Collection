@@ -4,7 +4,7 @@ Option Compare Text
 Option Base 1
 DefLng A-Z
 
-Const BarName = "161п"
+Const BarName = "161Рї"
 Const BarPosition = 1
 
 Public Sub AddBar()
@@ -17,55 +17,55 @@ Public Sub AddBar()
         With .Controls
             With .Add(Type:=msoControlButton, ID:=1, temporary:=True)
                 i = i + 1
-                .Caption = "&" & CStr(i) & ". Загрузить"
-                .TooltipText = "Загрузить DBF"
+                .Caption = "&" & CStr(i) & ". Р—Р°РіСЂСѓР·РёС‚СЊ"
+                .TooltipText = "Р—Р°РіСЂСѓР·РёС‚СЊ DBF"
                 .OnAction = "DumpDBFFile"
                 .Style = msoButtonCaption
             End With
             With .Add(Type:=msoControlButton, ID:=1, temporary:=True)
                 i = i + 1
-                .Caption = "&" & CStr(i) & ". Добавить"
-                .TooltipText = "Добавить ещё один DBF"
+                .Caption = "&" & CStr(i) & ". Р”РѕР±Р°РІРёС‚СЊ"
+                .TooltipText = "Р”РѕР±Р°РІРёС‚СЊ РµС‰С‘ РѕРґРёРЅ DBF"
                 .OnAction = "DumpDBFFile2"
                 .Style = msoButtonCaption
                 .BeginGroup = True
             End With
             With .Add(Type:=msoControlButton, ID:=1, temporary:=True)
                 i = i + 1
-                .Caption = "&" & CStr(i) & ". Проверить"
-                .TooltipText = "Проверить данные"
+                .Caption = "&" & CStr(i) & ". РџСЂРѕРІРµСЂРёС‚СЊ"
+                .TooltipText = "РџСЂРѕРІРµСЂРёС‚СЊ РґР°РЅРЅС‹Рµ"
                 .OnAction = "CheckData"
                 .Style = msoButtonCaption
                 .BeginGroup = True
             End With
             With .Add(Type:=msoControlButton, ID:=1, temporary:=True)
                 i = i + 1
-                .Caption = "&" & CStr(i) & ". Сохранить"
-                .TooltipText = "Сохранить DBF"
+                .Caption = "&" & CStr(i) & ". РЎРѕС…СЂР°РЅРёС‚СЊ"
+                .TooltipText = "РЎРѕС…СЂР°РЅРёС‚СЊ DBF"
                 .OnAction = "WriteDBFFile"
                 .Style = msoButtonCaption
                 .BeginGroup = True
             End With
             With .Add(Type:=msoControlButton, ID:=1, temporary:=True)
                 i = i + 1
-                .Caption = "&" & CStr(i) & ". Передать в Комиту"
-                .TooltipText = "Передать на проверку в Комиту"
+                .Caption = "&" & CStr(i) & ". РџРµСЂРµРґР°С‚СЊ РІ РљРѕРјРёС‚Сѓ"
+                .TooltipText = "РџРµСЂРµРґР°С‚СЊ РЅР° РїСЂРѕРІРµСЂРєСѓ РІ РљРѕРјРёС‚Сѓ"
                 .OnAction = "ExportComita"
                 .Style = msoButtonCaption
                 .BeginGroup = True
             End With
             With .Add(Type:=msoControlButton, ID:=1, temporary:=True)
                 i = i + 1
-                .Caption = "&" & CStr(i) & ". Отправить в ЦБ"
-                .TooltipText = "Передать на отправку в ЦБ"
+                .Caption = "&" & CStr(i) & ". РћС‚РїСЂР°РІРёС‚СЊ РІ Р¦Р‘"
+                .TooltipText = "РџРµСЂРµРґР°С‚СЊ РЅР° РѕС‚РїСЂР°РІРєСѓ РІ Р¦Р‘"
                 .OnAction = "ExportSVK"
                 .Style = msoButtonCaption
                 .BeginGroup = True
             End With
             With .Add(Type:=msoControlButton, ID:=1, temporary:=True)
                 i = i + 1
-                .Caption = "&" & CStr(i) & ". Печать"
-                .TooltipText = "Распечатать сокр.вариант"
+                .Caption = "&" & CStr(i) & ". РџРµС‡Р°С‚СЊ"
+                .TooltipText = "Р Р°СЃРїРµС‡Р°С‚Р°С‚СЊ СЃРѕРєСЂ.РІР°СЂРёР°РЅС‚"
                 .OnAction = "PrintDBFDigest"
                 .Style = msoButtonCaption
                 .BeginGroup = True
@@ -78,4 +78,3 @@ Public Sub CloseBar()
     On Error Resume Next
     CommandBars(BarName).Delete
 End Sub
-

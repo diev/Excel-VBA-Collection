@@ -37,4 +37,3 @@ End Property
 Public Property Get Tax(Percent As Variant) As Variant
     Tax = Sum2Tax(mSum, CDbl(Percent))
 End Property
-

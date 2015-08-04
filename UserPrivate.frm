@@ -1,6 +1,6 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} UserPrivate 
-   Caption         =   "Ключи PGP и прочее плательщика"
+   Caption         =   "РљР»СЋС‡Рё PGP Рё РїСЂРѕС‡РµРµ РїР»Р°С‚РµР»СЊС‰РёРєР°"
    ClientHeight    =   3585
    ClientLeft      =   45
    ClientTop       =   330
@@ -23,7 +23,7 @@ Option Compare Text
 Option Base 1
 DefLng A-Z
 
-Const None = "(нет)"
+Const None = "(РЅРµС‚)"
 
 Private Sub cmdCancel_Click()
     Unload Me

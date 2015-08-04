@@ -22,7 +22,7 @@ Dim mBar1 As Variant
 
 Public Sub InitMenuBars()
     On Error Resume Next
-    Application.StatusBar = "Загрузка меню..."
+    Application.StatusBar = "Р—Р°РіСЂСѓР·РєР° РјРµРЅСЋ..."
     Application.ScreenUpdating = False
     AddMenu
     AddRClick
@@ -224,46 +224,46 @@ End Sub
 Public Sub WriteINI()
     Dim i As Long, s As String
     With App
-        'Название нашего меню в Excel
-        .Setting(MenuSection, "Caption") = "&1. Банк-Клиент"
-        .Setting(MenuSection, "Before") = "1" '0 - не вставлять
+        'РќР°Р·РІР°РЅРёРµ РЅР°С€РµРіРѕ РјРµРЅСЋ РІ Excel
+        .Setting(MenuSection, "Caption") = "&1. Р‘Р°РЅРє-РљР»РёРµРЅС‚"
+        .Setting(MenuSection, "Before") = "1" '0 - РЅРµ РІСЃС‚Р°РІР»СЏС‚СЊ
         
-        'Контекстное меню по правой кнопке мыши
+        'РљРѕРЅС‚РµРєСЃС‚РЅРѕРµ РјРµРЅСЋ РїРѕ РїСЂР°РІРѕР№ РєРЅРѕРїРєРµ РјС‹С€Рё
         .Setting(MenuSection, "RClick") = "1"
         
-        'Линейный тулбар
-        .Setting(MenuSection, "Bar") = "Сити Инвест Банк"
+        'Р›РёРЅРµР№РЅС‹Р№ С‚СѓР»Р±Р°СЂ
+        .Setting(MenuSection, "Bar") = "РЎРёС‚Рё РРЅРІРµСЃС‚ Р‘Р°РЅРє"
         .Setting(MenuSection, "BarAdd") = "1"
         .Setting(MenuSection, "BarPosition") = "1" '0=left, 1=top, 2=right, 3=bottom, 4=floating
         .Setting(MenuSection, "BarVisible") = "1"
         
-        'Менюобразный тулбар
-        .Setting(MenuSection, "Bar1") = "Сити Инвест Банк Меню"
-        .Setting(MenuSection, "Bar1Menu") = "[Пуск] Банк-Клиент"
+        'РњРµРЅСЋРѕР±СЂР°Р·РЅС‹Р№ С‚СѓР»Р±Р°СЂ
+        .Setting(MenuSection, "Bar1") = "РЎРёС‚Рё РРЅРІРµСЃС‚ Р‘Р°РЅРє РњРµРЅСЋ"
+        .Setting(MenuSection, "Bar1Menu") = "[РџСѓСЃРє] Р‘Р°РЅРє-РљР»РёРµРЅС‚"
         .Setting(MenuSection, "Bar1Add") = "1"
         .Setting(MenuSection, "Bar1Position") = "3" '0=left, 1=top, 2=right, 3=bottom, 4=floating
         .Setting(MenuSection, "Bar1Visible") = "0"
         
         i = 0
-        i = i + 1: .Setting(MenuSection, CStr(i)) = "&1. Вход в систему...\LogonShow\59\BPS"
-        i = i + 1: .Setting(MenuSection, CStr(i)) = "-&2. Создать...\PlatEnterShow\64\BPS"
-        i = i + 1: .Setting(MenuSection, CStr(i)) = "&3. Загрузить с диска...\ImportList\270\BPS"
-        i = i + 1: .Setting(MenuSection, CStr(i)) = "-&4. Просмотр и печать\PreviewPlat\2174\BPS"
-        i = i + 1: .Setting(MenuSection, CStr(i)) = "&5. Записать на диск...\ExportList\271\BPS"
-        i = i + 1: .Setting(MenuSection, CStr(i)) = "&6. Зашифровать к отправке\ExportPlat\277\BPS"
-        i = i + 1: .Setting(MenuSection, CStr(i)) = "-&7. Отправка и прием...\MailBoxShow\275\BPS"
-        i = i + 1: .Setting(MenuSection, CStr(i)) = "-&8. Сервис\\" & ServiceMenu & "\\Сервис\\BPS"
-        i = i + 1: .Setting(MenuSection, CStr(i)) = "&9. О программе\Info\1954\BPS"
-        i = i + 1: .Setting(MenuSection, CStr(i)) = "-&0. Выход со сменой пароля\SavePassShow\276\BPS"
+        i = i + 1: .Setting(MenuSection, CStr(i)) = "&1. Р’С…РѕРґ РІ СЃРёСЃС‚РµРјСѓ...\LogonShow\59\BPS"
+        i = i + 1: .Setting(MenuSection, CStr(i)) = "-&2. РЎРѕР·РґР°С‚СЊ...\PlatEnterShow\64\BPS"
+        i = i + 1: .Setting(MenuSection, CStr(i)) = "&3. Р—Р°РіСЂСѓР·РёС‚СЊ СЃ РґРёСЃРєР°...\ImportList\270\BPS"
+        i = i + 1: .Setting(MenuSection, CStr(i)) = "-&4. РџСЂРѕСЃРјРѕС‚СЂ Рё РїРµС‡Р°С‚СЊ\PreviewPlat\2174\BPS"
+        i = i + 1: .Setting(MenuSection, CStr(i)) = "&5. Р—Р°РїРёСЃР°С‚СЊ РЅР° РґРёСЃРє...\ExportList\271\BPS"
+        i = i + 1: .Setting(MenuSection, CStr(i)) = "&6. Р—Р°С€РёС„СЂРѕРІР°С‚СЊ Рє РѕС‚РїСЂР°РІРєРµ\ExportPlat\277\BPS"
+        i = i + 1: .Setting(MenuSection, CStr(i)) = "-&7. РћС‚РїСЂР°РІРєР° Рё РїСЂРёРµРј...\MailBoxShow\275\BPS"
+        i = i + 1: .Setting(MenuSection, CStr(i)) = "-&8. РЎРµСЂРІРёСЃ\\" & ServiceMenu & "\\РЎРµСЂРІРёСЃ\\BPS"
+        i = i + 1: .Setting(MenuSection, CStr(i)) = "&9. Рћ РїСЂРѕРіСЂР°РјРјРµ\Info\1954\BPS"
+        i = i + 1: .Setting(MenuSection, CStr(i)) = "-&0. Р’С‹С…РѕРґ СЃРѕ СЃРјРµРЅРѕР№ РїР°СЂРѕР»СЏ\SavePassShow\276\BPS"
         .Setting(MenuSection, "Count") = i
         
         i = 0
-        i = i + 1: .Setting(ServiceMenu, CStr(i)) = "&1. Справочник банков РФ...\LSShow\176\BPS"
-        i = i + 1: .Setting(ServiceMenu, CStr(i)) = "-&2. Удалить строки\DelRows\67\BPS"
-        i = i + 1: .Setting(ServiceMenu, CStr(i)) = "-&3. Реквизиты клиента...\EditUserShow\2148\BPS"
-        'i = i + 1: .Setting(ServiceMenu,CStr(i)) = "&4. Ключи клиента...\UserPrivateShow\2148\BPS"
-        i = i + 1: .Setting(ServiceMenu, CStr(i)) = "-&4. Добавить клиента...\NewUserShow\2141\BPS"
-        i = i + 1: .Setting(ServiceMenu, CStr(i)) = "-&0. Перезапуск программы\Restart\2144\BPS"
+        i = i + 1: .Setting(ServiceMenu, CStr(i)) = "&1. РЎРїСЂР°РІРѕС‡РЅРёРє Р±Р°РЅРєРѕРІ Р Р¤...\LSShow\176\BPS"
+        i = i + 1: .Setting(ServiceMenu, CStr(i)) = "-&2. РЈРґР°Р»РёС‚СЊ СЃС‚СЂРѕРєРё\DelRows\67\BPS"
+        i = i + 1: .Setting(ServiceMenu, CStr(i)) = "-&3. Р РµРєРІРёР·РёС‚С‹ РєР»РёРµРЅС‚Р°...\EditUserShow\2148\BPS"
+        'i = i + 1: .Setting(ServiceMenu,CStr(i)) = "&4. РљР»СЋС‡Рё РєР»РёРµРЅС‚Р°...\UserPrivateShow\2148\BPS"
+        i = i + 1: .Setting(ServiceMenu, CStr(i)) = "-&4. Р”РѕР±Р°РІРёС‚СЊ РєР»РёРµРЅС‚Р°...\NewUserShow\2141\BPS"
+        i = i + 1: .Setting(ServiceMenu, CStr(i)) = "-&0. РџРµСЂРµР·Р°РїСѓСЃРє РїСЂРѕРіСЂР°РјРјС‹\Restart\2144\BPS"
         .Setting(ServiceMenu, "Count") = i
     End With
 End Sub

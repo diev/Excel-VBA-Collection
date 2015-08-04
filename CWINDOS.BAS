@@ -10,14 +10,14 @@ Public Function CWin(Dos As String) As String
     For i = LBound(C) To UBound(C)
         x = C(i)
         If x > 127 Then
-            If x <= 175 Then 'À..ßà..ï
+            If x <= 175 Then 'Ð ..Ð¿Ñ€..Ñ
                 C(i) = x + 64
-            ElseIf x >= 224 And x <= 239 Then 'ð..ÿ
+            ElseIf x >= 224 And x <= 239 Then 'â„–..
                 C(i) = x + 16
             
-            ElseIf x = 240 Then '¨
+            ElseIf x = 240 Then '
                 C(i) = 168
-            ElseIf x = 241 Then '¸
+            ElseIf x = 241 Then '
                 C(i) = 184
             
             ElseIf x = 193 Or x = 194 Or x = 196 Then
@@ -40,17 +40,17 @@ Public Function CDos(Win As String) As String
     For i = LBound(C) To UBound(C)
         x = C(i)
         If x > 127 Then
-            If x >= 192 And x <= 239 Then 'À..ßà..ï
+            If x >= 192 And x <= 239 Then 'Ð ..Ð¿Ñ€..Ñ
                 C(i) = x - 64
-            ElseIf x >= 240 And x <= 255 Then 'ð..ÿ
+            ElseIf x >= 240 And x <= 255 Then 'â„–..ÑŸ
                 C(i) = x - 16
             
-            ElseIf x = 168 Then '¨240, Å133
+            ElseIf x = 168 Then 'Ðˆ240, Ð¥133
                 C(i) = 133
-            ElseIf x = 184 Then '¸241, å165
+            ElseIf x = 184 Then 'Ð˜241, Ñ…165
                 C(i) = 165
             
-            ElseIf x = 185 Then '¹->N
+            ElseIf x = 185 Then 'Ð™->N
                 C(i) = 78
             ElseIf x = 150 Or x = 151 Then '--
                 C(i) = 45
@@ -68,13 +68,13 @@ End Function
 '    For i = 1 To Len(Dos)
 '        x = Asc(Mid(Dos, i, 1))
 '        If x > 127 Then
-'            If x <= 175 Then 'À..ßà..ï
+'            If x <= 175 Then 'Ð ..Ð¿Ñ€..Ñ
 '                Mid(CWin, i, 1) = Chr(x + 64)
-'            ElseIf x >= 224 And x <= 239 Then 'ð..ÿ
+'            ElseIf x >= 224 And x <= 239 Then 'â„–..ÑŸ
 '                Mid(CWin, i, 1) = Chr(x + 16)
-'            ElseIf x = 240 Then '¨
+'            ElseIf x = 240 Then 'Ðˆ
 '                Mid(CWin, i, 1) = Chr(168)
-'            ElseIf x = 241 Then '¸
+'            ElseIf x = 241 Then 'Ð˜
 '                Mid(CWin, i, 1) = Chr(184)
 '            End If
 '        End If
@@ -88,19 +88,17 @@ End Function
 '    For i = 1 To Len(Win)
 '        x = Asc(Mid(Win, i, 1))
 '        If x > 127 Then
-'            If x >= 192 And x <= 239 Then 'À..ßà..ï
+'            If x >= 192 And x <= 239 Then 'Ð ..Ð¿Ñ€..Ñ
 '                Mid(CDos, i, 1) = Chr(x - 64)
-'            ElseIf x >= 240 And x <= 255 Then 'ð..ÿ
+'            ElseIf x >= 240 And x <= 255 Then 'â„–..ÑŸ
 '                Mid(CDos, i, 1) = Chr(x - 16)
-'            ElseIf x = 168 Then '¨
+'            ElseIf x = 168 Then 'Ðˆ
 '                Mid(CDos, i, 1) = Chr(240)
-'            ElseIf x = 184 Then '¸
+'            ElseIf x = 184 Then 'Ð˜
 '                Mid(CDos, i, 1) = Chr(241)
-'            ElseIf x = 185 Then '¹
+'            ElseIf x = 185 Then 'Ð™
 '                Mid(CDos, i, 1) = Chr(78)
 '            End If
 '        End If
 '    Next
 'End Function
-
-

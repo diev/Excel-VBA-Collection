@@ -48,4 +48,3 @@ Public Sub StrToBytes(AString As String, Bytes() As Byte)
         CopyMemory Bytes(1), ByVal AString, Length
     End If
 End Sub
-

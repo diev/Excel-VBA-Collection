@@ -6,7 +6,7 @@ DefLng A-Z
 
 Public Function BnkUtilsInfo() As String
     With ThisWorkbook
-        BnkUtilsInfo = FileVerInfo(.FullName, "Банковские вспомогательные утилиты")
+        BnkUtilsInfo = FileVerInfo(.FullName, "Р‘Р°РЅРєРѕРІСЃРєРёРµ РІСЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Рµ СѓС‚РёР»РёС‚С‹")
     End With
 End Function
 
@@ -22,10 +22,10 @@ Public Function FileVerInfo(FileName As String, Optional FileComment As String =
         If n = 0 Then n = 1
         FileVerInfo = FileVerInfo & BPrintF("(%dk) - %y", n, FileDateTime(FileName))
         If FileUpdated Then
-            FileVerInfo = FileVerInfo & BPrintF("\nот последнего обновления прошло %d дней", _
+            FileVerInfo = FileVerInfo & BPrintF("\nРѕС‚ РїРѕСЃР»РµРґРЅРµРіРѕ РѕР±РЅРѕРІР»РµРЅРёСЏ РїСЂРѕС€Р»Рѕ %d РґРЅРµР№", _
                 DateDiff("d", FileDateTime(FileName), Date))
         End If
     Else
-        FileVerInfo = FileVerInfo & "не найден!"
+        FileVerInfo = FileVerInfo & "РЅРµ РЅР°Р№РґРµРЅ!"
     End If
 End Function

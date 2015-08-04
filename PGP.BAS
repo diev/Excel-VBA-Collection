@@ -14,13 +14,13 @@ Public Sub PGPRun(Cmd As String, FileName1 As String, Optional FileName2 As Stri
     PGPCmd = StrTran(PGPCmd, "%2", FileName2)
     PID = Shell(PGPCmd, vbNormalFocus)
     If PID = 0 Then
-        MsgBox BPrintF("Команда не выполнима!\n~%s~", PGPCmd), vbCritical, AppTitle
+        MsgBox BPrintF("РљРѕРјР°РЅРґР° РЅРµ РІС‹РїРѕР»РЅРёРјР°!\n~%s~", PGPCmd), vbCritical, AppTitle
         Exit Sub
     End If
     'DoEvents
     'On Error GoTo WaitShell
     'AppActivate PID, True
-    'MsgBox "Команда выполнена", vbInformation, AppTitle
+    'MsgBox "РљРѕРјР°РЅРґР° РІС‹РїРѕР»РЅРµРЅР°", vbInformation, AppTitle
     'Exit Sub
 
 'WaitShell:

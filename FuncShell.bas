@@ -78,11 +78,11 @@ End Function
 
 Public Function ShellDialog(RunCmd As String, Optional RunWindow As Long = vbNormalFocus, Optional RunDebug As Boolean = False) As Long
     Dim retVal As Long
-    Application.StatusBar = "Запуск внешней программы и ожидание ее завершения..."
+    Application.StatusBar = "Р—Р°РїСѓСЃРє РІРЅРµС€РЅРµР№ РїСЂРѕРіСЂР°РјРјС‹ Рё РѕР¶РёРґР°РЅРёРµ РµРµ Р·Р°РІРµСЂС€РµРЅРёСЏ..."
     If RunDebug Then
-        WarnBox "Запуск %d симв. из директории %s\n\n%s", Len(RunCmd), CurDir, RunCmd
+        WarnBox "Р—Р°РїСѓСЃРє %d СЃРёРјРІ. РёР· РґРёСЂРµРєС‚РѕСЂРёРё %s\n\n%s", Len(RunCmd), CurDir, RunCmd
         retVal = ShellWait(RunCmd, vbNormalFocus)
-        WarnBox "Код завершения: %d", retVal
+        WarnBox "РљРѕРґ Р·Р°РІРµСЂС€РµРЅРёСЏ: %d", retVal
     Else
         retVal = ShellWait(RunCmd, RunWindow)
     End If

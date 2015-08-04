@@ -80,7 +80,7 @@ End Property
 Public Property Get BankInfo() As String
     With Me
         .LoadFile
-        BankInfo = Bsprintf("%s, %s\nБИК %s, К/С %s", .Name, .Place, .BIC, .KS)
+        BankInfo = Bsprintf("%s, %s\nР‘РРљ %s, Рљ/РЎ %s", .Name, .Place, .BIC, .KS)
     End With
 End Property
 
@@ -88,11 +88,11 @@ Public Sub MsgInfo(Optional BIC As String)
     If IsMissing(BIC) Then BIC = mRecord.BIC
     Me.BIC = BIC
     If mFound Then
-        InfoBox "Справочник БИК для системы Банк-Клиент:\n(состояние на %n)\n\n%s", _
+        InfoBox "РЎРїСЂР°РІРѕС‡РЅРёРє Р‘РРљ РґР»СЏ СЃРёСЃС‚РµРјС‹ Р‘Р°РЅРє-РљР»РёРµРЅС‚:\n(СЃРѕСЃС‚РѕСЏРЅРёРµ РЅР° %n)\n\n%s", _
             mUpdated, BankInfo
     Else
-        If OkCancelBox("Банк c БИК %s в файле\n%s (обновлялся %n) не найден!\n\n" & _
-            "Сейчас будет запрошено обновление справочника.", _
+        If OkCancelBox("Р‘Р°РЅРє c Р‘РРљ %s РІ С„Р°Р№Р»Рµ\n%s (РѕР±РЅРѕРІР»СЏР»СЃСЏ %n) РЅРµ РЅР°Р№РґРµРЅ!\n\n" & _
+            "РЎРµР№С‡Р°СЃ Р±СѓРґРµС‚ Р·Р°РїСЂРѕС€РµРЅРѕ РѕР±РЅРѕРІР»РµРЅРёРµ СЃРїСЂР°РІРѕС‡РЅРёРєР°.", _
             BIC, Me.File, mUpdated) Then
             AskBnkSeek
         End If
@@ -123,7 +123,7 @@ Private Function SearchFile(s As String) As Boolean
     
 ErrFile:
     Application.Cursor = xlDefault
-    WarnBox "Ошибка поиска %s в файле %s", s, Me.File
+    WarnBox "РћС€РёР±РєР° РїРѕРёСЃРєР° %s РІ С„Р°Р№Р»Рµ %s", s, Me.File
     Close nFile
 End Function
 
@@ -142,12 +142,12 @@ Public Function LoadFile() As Boolean
     Close nFile
     LoadFile = mRecSize = ValidRecSize
     If Not LoadFile Then
-        WarnBox "Справочник в файле %s неизвестной версии!", Me.File
+        WarnBox "РЎРїСЂР°РІРѕС‡РЅРёРє РІ С„Р°Р№Р»Рµ %s РЅРµРёР·РІРµСЃС‚РЅРѕР№ РІРµСЂСЃРёРё!", Me.File
     End If
     Exit Function
 
 ErrFile:
-    WarnBox "Ошибка загрузки Справочника из файла %s", Me.File
+    WarnBox "РћС€РёР±РєР° Р·Р°РіСЂСѓР·РєРё РЎРїСЂР°РІРѕС‡РЅРёРєР° РёР· С„Р°Р№Р»Р° %s", Me.File
     Close nFile
 End Function
 
@@ -174,4 +174,3 @@ Private Sub ReInitHeader(nFile As Long)
     mDataOffset = BytesToValue(b, 9, 2) + 1
     mRecSize = BytesToValue(b, 11, 2)
 End Sub
-

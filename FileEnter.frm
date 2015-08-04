@@ -1,6 +1,6 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} FileEnter 
-   Caption         =   "Выбор файла"
+   Caption         =   "Р’С‹Р±РѕСЂ С„Р°Р№Р»Р°"
    ClientHeight    =   3615
    ClientLeft      =   45
    ClientTop       =   330
@@ -33,9 +33,9 @@ Private Sub cmdKill_Click()
         cmdOk.Enabled = False
         cmdKill.Enabled = False
         s = Path & .Text
-        If MsgBox(BPrintF("Действительно удалить?\n~%s~", s), vbExclamation + vbYesNo, "Удаление файла") = vbYes Then
+        If MsgBox(BPrintF("Р”РµР№СЃС‚РІРёС‚РµР»СЊРЅРѕ СѓРґР°Р»РёС‚СЊ?\n~%s~", s), vbExclamation + vbYesNo, "РЈРґР°Р»РµРЅРёРµ С„Р°Р№Р»Р°") = vbYes Then
             .RemoveItem .ListIndex
-            lblFiles.Caption = BPrintF("Найдено:\n%d", .ListCount)
+            lblFiles.Caption = BPrintF("РќР°Р№РґРµРЅРѕ:\n%d", .ListCount)
             Kill s
         End If
     End With
@@ -76,7 +76,7 @@ Public Sub FillList()
             i = i + 1
             FileName = Dir
         Loop
-        lblFiles.Caption = BPrintF("Найдено:\n%d", .ListCount)
+        lblFiles.Caption = BPrintF("РќР°Р№РґРµРЅРѕ:\n%d", .ListCount)
         For i = 0 To .ListCount - 1
             .List(i, 1) = PadL(.List(i, 1), m)
         Next
@@ -100,4 +100,3 @@ Private Sub txtMask_Exit(ByVal Cancel As MSForms.ReturnBoolean)
         FillList
     End If
 End Sub
-

@@ -164,4 +164,3 @@ Function IsArrayEmpty(ab() As Byte) As Boolean
     v = ab(LBound(ab))
     IsArrayEmpty = (Err <> 0)
 End Function
-

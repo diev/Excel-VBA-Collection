@@ -213,7 +213,7 @@ Public Function InStrCount(Where As String, What As String) As Long
 End Function
 
 Public Function NickByName(Name As String) As String
-    'Âûäåëÿåò ïîñëåäíþþ ôðàçó â êàâû÷êàõ, à èíà÷å - ïîñëåäíåå ñëîâî
+    'Ð’Ñ‹Ð´ÐµÐ»ÑÐµÑ‚ Ð¿Ð¾ÑÐ»ÐµÐ´Ð½ÑŽÑŽ Ñ„Ñ€Ð°Ð·Ñƒ Ð² ÐºÐ°Ð²Ñ‹Ñ‡ÐºÐ°Ñ…, Ð° Ð¸Ð½Ð°Ñ‡Ðµ - Ð¿Ð¾ÑÐ»ÐµÐ´Ð½ÐµÐµ ÑÐ»Ð¾Ð²Ð¾
     Dim i, n1, n2
     n1 = 1
     n2 = Len(Name)
@@ -246,7 +246,7 @@ Public Function BoolToStr(b As Boolean) As String
 End Function
 
 Public Function StrToBool(s As String) As Boolean
-    StrToBool = InStr(1, "*1*T*TRUE*Y*YES*ON*Ä*ÄÀ*", _
+    StrToBool = InStr(1, "*1*T*TRUE*Y*YES*ON*Ð”*Ð”Ð*", _
         "*" & UCase(s) & "*") > 0
 End Function
 

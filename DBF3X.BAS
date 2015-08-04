@@ -138,16 +138,16 @@ Public Sub DumpDbfFile()
     Dim db As Range, r, C, p
     Dim nFile As Long, Buffer As String, Buf As String
     
-    Application.StatusBar = "Инициализация..."
+    Application.StatusBar = "РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ..."
     Buf = Cells(1, 1).Text
     If Len(Buf) = 0 Or Buf = "False" Then
         ChDrive "C"
         ChDir "C:\Temp"
-        Buf = Application.GetOpenFilename("Файлы 161п (*.??1;*.dbf),*.??1;*.dbf,Файлы DBF (*.dbf),*.dbf,Все файлы (*.*),*.*", 1, "Открытие файла DBF по 161п")
+        Buf = Application.GetOpenFilename("Р¤Р°Р№Р»С‹ 161Рї (*.??1;*.dbf),*.??1;*.dbf,Р¤Р°Р№Р»С‹ DBF (*.dbf),*.dbf,Р’СЃРµ С„Р°Р№Р»С‹ (*.*),*.*", 1, "РћС‚РєСЂС‹С‚РёРµ С„Р°Р№Р»Р° DBF РїРѕ 161Рї")
     End If
     
     Cells.Clear
-    Application.StatusBar = "Открытие файла..."
+    Application.StatusBar = "РћС‚РєСЂС‹С‚РёРµ С„Р°Р№Р»Р°..."
     
     'On Error GoTo ErrFile
     nFile = FreeFile
@@ -155,7 +155,7 @@ Public Sub DumpDbfFile()
     r = LOF(nFile)
     
     If r < 32 Then
-        MsgBox "Файл не DBF или пуст", vbExclamation, "Ошибка"
+        MsgBox "Р¤Р°Р№Р» РЅРµ DBF РёР»Рё РїСѓСЃС‚", vbExclamation, "РћС€РёР±РєР°"
         GoTo ErrFile
     End If
     
@@ -229,7 +229,7 @@ Public Sub DumpDbfFile()
                     p = p + .Len
                 End With
             Next
-            Application.StatusBar = "Загружено " & r & " из " & .RecCount
+            Application.StatusBar = "Р—Р°РіСЂСѓР¶РµРЅРѕ " & r & " РёР· " & .RecCount
             If r Mod 10 = 0 Then
                 If r = 30 Then Application.ScreenUpdating = False
                 DoEvents
@@ -247,8 +247,8 @@ Public Sub DumpDbfFile()
         Cells(1, 1).Font.Color = QBColor(12)
         Cells(1, 1) = .File
         Cells(2, 1).Font.Color = QBColor(0)
-        Cells(2, 1) = "Последнее изменение " & .UpdateDate & _
-            ", записей " & .RecCount
+        Cells(2, 1) = "РџРѕСЃР»РµРґРЅРµРµ РёР·РјРµРЅРµРЅРёРµ " & .UpdateDate & _
+            ", Р·Р°РїРёСЃРµР№ " & .RecCount
         Rows(3).Font.Color = QBColor(9)
         For C = 1 To .FieldsCount
             With .Fields(C)
@@ -272,10 +272,10 @@ Public Sub DumpDbfFile2()
     Dim db As Range, r, C, p
     Dim nFile As Long, Buffer As String, Buf As String
     
-    Application.StatusBar = "Инициализация..."
-    Buf = Application.GetOpenFilename("Файлы 161п (*.0??;*.dbf),*.0??;*.dbf,Файлы DBF (*.dbf),*.dbf,Все файлы (*.*),*.*", 1, "Открытие файла DBF по 161п")
+    Application.StatusBar = "РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ..."
+    Buf = Application.GetOpenFilename("Р¤Р°Р№Р»С‹ 161Рї (*.0??;*.dbf),*.0??;*.dbf,Р¤Р°Р№Р»С‹ DBF (*.dbf),*.dbf,Р’СЃРµ С„Р°Р№Р»С‹ (*.*),*.*", 1, "РћС‚РєСЂС‹С‚РёРµ С„Р°Р№Р»Р° DBF РїРѕ 161Рї")
     
-    Application.StatusBar = "Открытие файла..."
+    Application.StatusBar = "РћС‚РєСЂС‹С‚РёРµ С„Р°Р№Р»Р°..."
     
     'On Error GoTo ErrFile
     nFile = FreeFile
@@ -283,7 +283,7 @@ Public Sub DumpDbfFile2()
     r = LOF(nFile)
     
     If r < 32 Then
-        MsgBox "Файл не DBF или пуст", vbExclamation, "Ошибка"
+        MsgBox "Р¤Р°Р№Р» РЅРµ DBF РёР»Рё РїСѓСЃС‚", vbExclamation, "РћС€РёР±РєР°"
         GoTo ErrFile
     End If
     
@@ -342,7 +342,7 @@ Public Sub DumpDbfFile2()
                     p = p + .Len
                 End With
             Next
-            Application.StatusBar = "Загружено " & r & " из " & .RecCount
+            Application.StatusBar = "Р—Р°РіСЂСѓР¶РµРЅРѕ " & r & " РёР· " & .RecCount
             If r Mod 10 = 0 Then
                 If r = 30 Then Application.ScreenUpdating = False
                 DoEvents
@@ -360,8 +360,8 @@ Public Sub DumpDbfFile2()
         'Cells(1, 1).Font.Color = QBColor(12)
         'Cells(1, 1) = .File
         'Cells(2, 1).Font.Color = QBColor(0)
-        'Cells(2, 1) = "Последнее изменение " & .UpdateDate & _
-        '    ", записей " & .RecCount
+        'Cells(2, 1) = "РџРѕСЃР»РµРґРЅРµРµ РёР·РјРµРЅРµРЅРёРµ " & .UpdateDate & _
+        '    ", Р·Р°РїРёСЃРµР№ " & .RecCount
         'Rows(3).Font.Color = QBColor(9)
         'For c = 1 To .FieldsCount
         '    With .Fields(c)
@@ -385,11 +385,11 @@ Public Sub WriteDbfFile() 'dbfgen
     Dim r, C, p, EmptyRow As Boolean
     Dim nFile As Long, Buffer As String, Buf As String
     
-    Application.StatusBar = "Инициализация..."
+    Application.StatusBar = "РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ..."
     With Header
         .File = Cells(1, 1)
         If Len(.File) = 0 Or .File = "False" Then
-            .File = Application.GetSaveAsFilename("30702000", "Файлы 161п (*.0??),*.0??,Файлы DBF (*.dbf),*.dbf,Все файлы (*.*),*.*", 1, "Сохранение файла DBF по 161п")
+            .File = Application.GetSaveAsFilename("30702000", "Р¤Р°Р№Р»С‹ 161Рї (*.0??),*.0??,Р¤Р°Р№Р»С‹ DBF (*.dbf),*.dbf,Р’СЃРµ С„Р°Р№Р»С‹ (*.*),*.*", 1, "РЎРѕС…СЂР°РЅРµРЅРёРµ С„Р°Р№Р»Р° DBF РїРѕ 161Рї")
         End If
     
         '.FieldsCount = Cells(3, 1).End(xlToRight).Column
@@ -433,13 +433,13 @@ Public Sub WriteDbfFile() 'dbfgen
                     If EmptyRow And p > 0 Then EmptyRow = False
                     If .Type = DBF_C And p > .Len Then
                         db.Cells(r, C).Select
-                        MsgBox BPrintF("Размер символьного поля %d\nВведено %d", .Len, p), vbExclamation, "Ошибка"
+                        MsgBox BPrintF("Р Р°Р·РјРµСЂ СЃРёРјРІРѕР»СЊРЅРѕРіРѕ РїРѕР»СЏ %d\nР’РІРµРґРµРЅРѕ %d", .Len, p), vbExclamation, "РћС€РёР±РєР°"
                         Application.StatusBar = False
                         Exit Sub
                     End If
                 End With
             Next
-            Application.StatusBar = BPrintF("Проверка строки %d", r)
+            Application.StatusBar = BPrintF("РџСЂРѕРІРµСЂРєР° СЃС‚СЂРѕРєРё %d", r)
             DoEvents
             If EmptyRow Then
                 .RecCount = r - 1
@@ -449,8 +449,8 @@ Public Sub WriteDbfFile() 'dbfgen
         Loop
         
         Cells(1, 1) = .File
-        Cells(2, 1) = "Последнее изменение " & Date & _
-            ", записей " & .RecCount
+        Cells(2, 1) = "РџРѕСЃР»РµРґРЅРµРµ РёР·РјРµРЅРµРЅРёРµ " & Date & _
+            ", Р·Р°РїРёСЃРµР№ " & .RecCount
         
         Buffer = CreateHeader(Header)
         
@@ -496,7 +496,7 @@ Public Sub WriteDbfFile() 'dbfgen
             Next
             Put nFile, , Buffer
             
-            Application.StatusBar = "Записано " & r & " из " & .RecCount
+            Application.StatusBar = "Р—Р°РїРёСЃР°РЅРѕ " & r & " РёР· " & .RecCount
             If r Mod 10 = 0 Then DoEvents
         Next
         
@@ -508,7 +508,7 @@ Public Sub WriteDbfFile() 'dbfgen
     Set db = Nothing
     Application.StatusBar = False
     
-    Application.StatusBar = "Резервная копия..."
+    Application.StatusBar = "Р РµР·РµСЂРІРЅР°СЏ РєРѕРїРёСЏ..."
     FileCopy Buf, RepFile(Buf)
     Application.StatusBar = False
     Exit Sub
@@ -551,7 +551,7 @@ Public Function SeekDbfFile(File As String, Field As String, Value As String) As
     Dim nFile As Long, Buffer As String, Buf As String
     
     SeekDbfFile.RecNo = 0
-    Application.StatusBar = "Поиск в файле..."
+    Application.StatusBar = "РџРѕРёСЃРє РІ С„Р°Р№Р»Рµ..."
     
     On Error GoTo ErrFile
     nFile = FreeFile
@@ -590,7 +590,7 @@ Public Function SeekDbfFile(File As String, Field As String, Value As String) As
         Next
         If nField = 0 Then
             Close nFile
-            MsgBox "Поле не найдено: " & Field, vbExclamation, "Ошибка"
+            MsgBox "РџРѕР»Рµ РЅРµ РЅР°Р№РґРµРЅРѕ: " & Field, vbExclamation, "РћС€РёР±РєР°"
             Exit Function
         End If
         

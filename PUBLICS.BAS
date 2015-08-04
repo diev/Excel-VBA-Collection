@@ -5,16 +5,15 @@ Option Base 1
 DefLng A-Z
 
 Public Const AppName = "Plt2000" 'Registry folder
-Public Const AppTitle = "Банк-Клиент ЗАО ""Сити Инвест Банк"""
-Public Const AppUser = "Банк-Клиент "
-Public Const NoUser = "НЕТ РЕГИСТРАЦИИ!"
+Public Const AppTitle = "Р‘Р°РЅРє-РљР»РёРµРЅС‚ Р—РђРћ ""РЎРёС‚Рё РРЅРІРµСЃС‚ Р‘Р°РЅРє"""
+Public Const AppUser = "Р‘Р°РЅРє-РљР»РёРµРЅС‚ "
+Public Const NoUser = "РќР•Рў Р Р•Р“РРЎРўР РђР¦РР!"
 
 'Add New.../Empty in lists
-Public Const AddNewInList = "< Добавить... >"
-Public Const NoneInList = "< нет >"
+Public Const AddNewInList = "< Р”РѕР±Р°РІРёС‚СЊ... >"
+Public Const NoneInList = "< РЅРµС‚ >"
 Public Const EmptyInList = ""
 
 Public Payment As New CPayment
 Public Archive As New CArchive
 Public Bank As New CBank
-

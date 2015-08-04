@@ -18,7 +18,7 @@ End Sub
 
 Public Sub WorkbookDeactivate()
     On Error Resume Next
-    Application.Caption = Application & " (здесь открыт Банк-Клиент!)"
+    Application.Caption = Application & " (Р·РґРµСЃСЊ РѕС‚РєСЂС‹С‚ Р‘Р°РЅРє-РљР»РёРµРЅС‚!)"
     CloseMenuBars
 End Sub
 
@@ -37,7 +37,7 @@ Public Sub NewUserSheet(Optional Name As String = "000")
     On Error Resume Next
     'For Each ws In Sheets
     '    If ws.Name = Name Then
-    '        WarnBox "Лист с именем %s уже существует!", Name
+    '        WarnBox "Р›РёСЃС‚ СЃ РёРјРµРЅРµРј %s СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚!", Name
     '        ws.Activate
     '        Exit Sub
     '    End If
@@ -45,27 +45,27 @@ Public Sub NewUserSheet(Optional Name As String = "000")
     Sheets.Add
     ActiveSheet.Name = Name
     Range("A1").Select
-    ActiveCell.FormulaR1C1 = "Файл"
+    ActiveCell.FormulaR1C1 = "Р¤Р°Р№Р»"
     Range("B1").Select
-    ActiveCell.FormulaR1C1 = "Отметка"
+    ActiveCell.FormulaR1C1 = "РћС‚РјРµС‚РєР°"
     Range("C1").Select
-    ActiveCell.FormulaR1C1 = "Номер"
+    ActiveCell.FormulaR1C1 = "РќРѕРјРµСЂ"
     Range("D1").Select
-    ActiveCell.FormulaR1C1 = "Дата"
+    ActiveCell.FormulaR1C1 = "Р”Р°С‚Р°"
     Range("E1").Select
-    ActiveCell.FormulaR1C1 = "Сумма"
+    ActiveCell.FormulaR1C1 = "РЎСѓРјРјР°"
     Range("F1").Select
-    ActiveCell.FormulaR1C1 = "Получатель"
+    ActiveCell.FormulaR1C1 = "РџРѕР»СѓС‡Р°С‚РµР»СЊ"
     Range("G1").Select
-    ActiveCell.FormulaR1C1 = "ИНН"
+    ActiveCell.FormulaR1C1 = "РРќРќ"
     Range("H1").Select
-    ActiveCell.FormulaR1C1 = "БИК"
+    ActiveCell.FormulaR1C1 = "Р‘РРљ"
     Range("I1").Select
-    ActiveCell.FormulaR1C1 = "Счет"
+    ActiveCell.FormulaR1C1 = "РЎС‡РµС‚"
     Range("J1").Select
-    ActiveCell.FormulaR1C1 = "Очер"
+    ActiveCell.FormulaR1C1 = "РћС‡РµСЂ"
     Range("K1").Select
-    ActiveCell.FormulaR1C1 = "Назначение"
+    ActiveCell.FormulaR1C1 = "РќР°Р·РЅР°С‡РµРЅРёРµ"
     Range("A1:K1").Select
     With Selection.Interior
         .ColorIndex = 16
@@ -92,4 +92,3 @@ Public Sub NewUserSheet(Optional Name As String = "000")
     Columns("K:K").ColumnWidth = 40
     Range("C2").Select
 End Sub
-

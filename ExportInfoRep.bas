@@ -95,4 +95,3 @@ Private Function FileString(Path As String, File As String) As String
     FileString = Format(FileDateTime(Path & File), "dd.MM.yyyy HH:mm") & _
         PadL(CStr(FileLen(Path & File)), 10) & "  " & File
 End Function
-

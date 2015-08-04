@@ -258,7 +258,7 @@ Public Sub CheckData()
     Set db = ActiveSheet.Range("A4")
     
     If Row > 3 Then
-        Select Case YesNoCancelBox("Начать проверку с начала?")
+        Select Case YesNoCancelBox("РќР°С‡Р°С‚СЊ РїСЂРѕРІРµСЂРєСѓ СЃ РЅР°С‡Р°Р»Р°?")
         Case vbYes
             Row = 1
         Case vbNo
@@ -272,7 +272,7 @@ Public Sub CheckData()
     
     Do
         If Len(db.Cells(Row, 1).Text) = 0 Then
-            InfoBox "Проверка %d строк окончена", Row - 1
+            InfoBox "РџСЂРѕРІРµСЂРєР° %d СЃС‚СЂРѕРє РѕРєРѕРЅС‡РµРЅР°", Row - 1
             Exit Do
         End If
         
@@ -287,116 +287,116 @@ Public Sub CheckData()
         If r.Columns(t).Text <> "0" Then r.Columns(t) = "0"
         
         rule = 3
-        If r.Columns(B_PAYER).Text = "1" And r.Columns(TU0).Text = "1" Then 'Отправитель - Клиент Банка
+        If r.Columns(B_PAYER).Text = "1" And r.Columns(TU0).Text = "1" Then 'РћС‚РїСЂР°РІРёС‚РµР»СЊ - РљР»РёРµРЅС‚ Р‘Р°РЅРєР°
             t = TU1
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = NAMEU1
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = KODCR1
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = KODCN1
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = AMR_S1
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = AMR_G1
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = AMR_U1
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = AMR_D1
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = AMR_O1
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = ADRESS_S1
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = ADRESS_G1
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = ADRESS_U1
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = ADRESS_D1
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = ADRESS_O1
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = KD1
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = SD1
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = ND1
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = VD11
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = VD12
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = VD13
             If r.Columns(t).Text = "01.01.2099" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 01.01.2099", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 01.01.2099", rule) Then Exit Sub
             End If
             t = GR1
             If r.Columns(t).Text = "01.01.2099" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 01.01.2099", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 01.01.2099", rule) Then Exit Sub
             End If
             t = BP_1
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
         End If
         
@@ -405,238 +405,238 @@ Public Sub CheckData()
             t = GR0
             If r.Columns(t).Text = "01.01.2099" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 01.01.2099", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 01.01.2099", rule) Then Exit Sub
             End If
         End If
         
         rule = 5
-        If r.Columns(B_RECIP).Text = "1" Then 'Получатель - Клиент Банка
+        If r.Columns(B_RECIP).Text = "1" Then 'РџРѕР»СѓС‡Р°С‚РµР»СЊ - РљР»РёРµРЅС‚ Р‘Р°РЅРєР°
             t = GR3
             If r.Columns(t).Text = "01.01.2099" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 01.01.2099", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 01.01.2099", rule) Then Exit Sub
             End If
         End If
         
         rule = 6
-        If r.Columns(B_RECIP).Text = "1" And r.Columns(TU3).Text = "1" Then 'Получатель - Клиент Банка
+        If r.Columns(B_RECIP).Text = "1" And r.Columns(TU3).Text = "1" Then 'РџРѕР»СѓС‡Р°С‚РµР»СЊ - РљР»РёРµРЅС‚ Р‘Р°РЅРєР°
             t = TU2
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = NAMEU2
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = KODCR2
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = KODCN2
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = AMR_S2
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = AMR_G2
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = AMR_U2
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = AMR_D2
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = AMR_O2
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = ADRESS_S2
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = ADRESS_G2
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = ADRESS_U2
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = ADRESS_D2
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = ADRESS_O2
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = KD2
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = SD2
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = ND2
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = VD21
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = VD22
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = VD23
             If r.Columns(t).Text = "01.01.2099" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 01.01.2099", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 01.01.2099", rule) Then Exit Sub
             End If
             t = GR2
             If r.Columns(t).Text = "01.01.2099" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 01.01.2099", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 01.01.2099", rule) Then Exit Sub
             End If
             t = BP_2
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
         End If
         
         rule = 7
-        If r.Columns(B_PAYER).Text = "0" Then 'Отправитель - не Клиент Банка
+        If r.Columns(B_PAYER).Text = "0" Then 'РћС‚РїСЂР°РІРёС‚РµР»СЊ - РЅРµ РљР»РёРµРЅС‚ Р‘Р°РЅРєР°
             t = KODCR0
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = KODCN0
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = ND0
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = ACC_COR_B0
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = NAME_B0
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = KODCN_B0
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = BIK_B0
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = NAME_R0
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = KODCN_R0
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = BIK_R0
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
         End If
         
         rule = 8
-        If r.Columns(B_RECIP).Text = "0" Then 'Получатель - не Клиент Банка
+        If r.Columns(B_RECIP).Text = "0" Then 'РџРѕР»СѓС‡Р°С‚РµР»СЊ - РЅРµ РљР»РёРµРЅС‚ Р‘Р°РЅРєР°
             t = KODCR3
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = KODCN3
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = ND3
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = ACC_COR_B3
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = NAME_B3
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = KODCN_B3
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = BIK_B3
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = NAME_R3
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = KODCN_R3
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = BIK_R3
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nРќРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
         End If
         
@@ -645,21 +645,21 @@ Public Sub CheckData()
             t = ACC_COR_B0
             If r.Columns(t).Text <> "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nДолжно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nР”РѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
             t = ACC_COR_B3
             If r.Columns(t).Text <> "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nДолжно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nР”РѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
             End If
         End If
             
 '        rule = 10
-'        If r.Columns(B_PAYER).Text = "1" Then 'Отправитель - Клиент Банка
+'        If r.Columns(B_PAYER).Text = "1" Then 'РћС‚РїСЂР°РІРёС‚РµР»СЊ - РљР»РёРµРЅС‚ Р‘Р°РЅРєР°
 '            t = ACC_COR_B0
 '            If r.Columns(t).Text <> "0" Then
 '                r.Columns(t).Select
-'                If Not OkCancelBox("Правило %d\nДолжно быть 0", rule) Then Exit Sub
+'                If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nР”РѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
 '            End If
 '        End If
             
@@ -683,37 +683,37 @@ Public Sub CheckData()
         End If
                 
 '                t = AMR_G0
-'                If Col = t And r.Columns(t).Text = "СПб" Then
+'                If Col = t And r.Columns(t).Text = "РЎРџР±" Then
 '                    r.Columns(t).Select
-'                    s = "г.Санкт-Петербург"
-'                    If YesNoBox("Меняем СПб на %s?", s) Then r.Columns(t) = s
+'                    s = "Рі.РЎР°РЅРєС‚-РџРµС‚РµСЂР±СѓСЂРі"
+'                    If YesNoBox("РњРµРЅСЏРµРј РЎРџР± РЅР° %s?", s) Then r.Columns(t) = s
 '                End If
 '
 '                t = AMR_K0
-'                If Col = t And r.Columns(t).Text = "А" Then
+'                If Col = t And r.Columns(t).Text = "Рђ" Then
 '                    r.Columns(t).Select
-'                    s = "лит.А"
-'                    If YesNoBox("Меняем А на %s?", s) Then r.Columns(t) = s
+'                    s = "Р»РёС‚.Рђ"
+'                    If YesNoBox("РњРµРЅСЏРµРј Рђ РЅР° %s?", s) Then r.Columns(t) = s
 '                End If
         
         rule = 13
         t = BIK_B0
         If r.Columns(ACC_COR_B0).Text = "0" And r.Columns(BIK_B0).Text <> "0" Then
-            If Not OkCancelBox("Правило %d\nДолжно быть 0?", rule) Then Exit Sub
+            If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nР”РѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0?", rule) Then Exit Sub
         ElseIf r.Columns(ACC_COR_B0).Text = App.DefKS And r.Columns(BIK_B0).Text <> "0" Then
-            If Not OkCancelBox("Правило %d\nДолжно быть 0", rule) Then Exit Sub
+            If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nР”РѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
         ElseIf Right(r.Columns(ACC_COR_B0).Text, 3) <> Right(r.Columns(BIK_B0).Text, 3) Then
-            If Not OkCancelBox("Правило %d\nБИК и к/с должны совпадать", rule) Then Exit Sub
+            If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nР‘РРљ Рё Рє/СЃ РґРѕР»Р¶РЅС‹ СЃРѕРІРїР°РґР°С‚СЊ", rule) Then Exit Sub
         End If
         
         rule = 14
         t = BIK_B3
         If r.Columns(ACC_COR_B3).Text = "0" And r.Columns(BIK_B3).Text <> "0" Then
-            If Not OkCancelBox("Правило %d\nДолжно быть 0?", rule) Then Exit Sub
+            If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nР”РѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0?", rule) Then Exit Sub
         ElseIf r.Columns(ACC_COR_B3).Text = App.DefKS And r.Columns(BIK_B3).Text <> "0" Then
-            If Not OkCancelBox("Правило %d\nДолжно быть 0", rule) Then Exit Sub
+            If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nР”РѕР»Р¶РЅРѕ Р±С‹С‚СЊ 0", rule) Then Exit Sub
         ElseIf Right(r.Columns(ACC_COR_B3).Text, 3) <> Right(r.Columns(BIK_B3).Text, 3) Then
-            If Not OkCancelBox("Правило %d\nБИК и к/с должны совпадать", rule) Then Exit Sub
+            If Not OkCancelBox("РџСЂР°РІРёР»Рѕ %d\nР‘РРљ Рё Рє/СЃ РґРѕР»Р¶РЅС‹ СЃРѕРІРїР°РґР°С‚СЊ", rule) Then Exit Sub
         End If
         
         Set r = Nothing

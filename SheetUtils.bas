@@ -5,7 +5,7 @@ Option Base 1
 DefLng A-Z
 
 Public Sub PrintDBFDigest()
-Attribute PrintDBFDigest.VB_Description = "Макрос записан 20.06.2006 (User)"
+Attribute PrintDBFDigest.VB_Description = "РњР°РєСЂРѕСЃ Р·Р°РїРёСЃР°РЅ 20.06.2006 (User)"
 Attribute PrintDBFDigest.VB_ProcData.VB_Invoke_Func = " \n14"
     Application.ScreenUpdating = False
     Columns("A:B").Select

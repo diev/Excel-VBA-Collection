@@ -4,7 +4,7 @@ Option Compare Text
 Option Base 1
 DefLng A-Z
 
-Const MailSheet = "Почта"
+Const MailSheet = "РџРѕС‡С‚Р°"
 
 Public Sub MailIn()
     Dim s As String
@@ -12,15 +12,15 @@ Public Sub MailIn()
     On Error Resume Next
     Do
         Files = SMail.Recv
-        s = Bsprintf("Свои файлы (*.%s;*.txt),*.%s;*.txt", User.ID4, User.ID4) & _
-            ",Курсы валют (*.dbf),*.dbf" & _
-            ",Документы (*.doc и пр.),*.doc;*.rtf;*.xls;*.htm;*.gif;*.jpg" & _
-            ",Ключи PGP (*.pgp),*.pgp" & _
-            ",Реквизиты (*.id),*.id" & _
-            ",Файлы загрузки (*.plt),*.plt" & _
-            ",Обновления (*.exe),*.exe"
+        s = Bsprintf("РЎРІРѕРё С„Р°Р№Р»С‹ (*.%s;*.txt),*.%s;*.txt", User.ID4, User.ID4) & _
+            ",РљСѓСЂСЃС‹ РІР°Р»СЋС‚ (*.dbf),*.dbf" & _
+            ",Р”РѕРєСѓРјРµРЅС‚С‹ (*.doc Рё РїСЂ.),*.doc;*.rtf;*.xls;*.htm;*.gif;*.jpg" & _
+            ",РљР»СЋС‡Рё PGP (*.pgp),*.pgp" & _
+            ",Р РµРєРІРёР·РёС‚С‹ (*.id),*.id" & _
+            ",Р¤Р°Р№Р»С‹ Р·Р°РіСЂСѓР·РєРё (*.plt),*.plt" & _
+            ",РћР±РЅРѕРІР»РµРЅРёСЏ (*.exe),*.exe"
         If Not BrowseForFiles(Files, s, _
-            "файл(ы) для просмотра") Then Exit Do
+            "С„Р°Р№Р»(С‹) РґР»СЏ РїСЂРѕСЃРјРѕС‚СЂР°") Then Exit Do
         For i = LBound(Files) To UBound(Files)
             MailOpenFile CStr(Files(i))
         Next
@@ -33,8 +33,8 @@ Public Sub MailOut()
     Do
         File1 = SMail.Send
         If Not BrowseForFile(File1, _
-            Bsprintf("Свои файлы (*.%s;*.txt),*.%s;*.txt", User.ID4, User.ID4), _
-            "файл для просмотра") Then Exit Do
+            Bsprintf("РЎРІРѕРё С„Р°Р№Р»С‹ (*.%s;*.txt),*.%s;*.txt", User.ID4, User.ID4), _
+            "С„Р°Р№Р» РґР»СЏ РїСЂРѕСЃРјРѕС‚СЂР°") Then Exit Do
         MailOpenFile File1
     Loop
 End Sub
@@ -45,9 +45,9 @@ Public Sub MailArch()
     On Error Resume Next
     Do
         Files = SMail.Archive
-        s = Bsprintf("Свои файлы (*.%s;*.txt),*.%s;*.txt", User.ID4, User.ID4)
+        s = Bsprintf("РЎРІРѕРё С„Р°Р№Р»С‹ (*.%s;*.txt),*.%s;*.txt", User.ID4, User.ID4)
         If Not BrowseForFiles(Files, s, _
-            "файл(ы) для просмотра") Then Exit Do
+            "С„Р°Р№Р»(С‹) РґР»СЏ РїСЂРѕСЃРјРѕС‚СЂР°") Then Exit Do
         For i = LBound(Files) To UBound(Files)
             MailOpenFile CStr(Files(i))
         Next
@@ -69,7 +69,7 @@ Public Sub MailDump(File As String, Optional KillAfter As Boolean = False)
     On Error Resume Next
     s = InputFile(File)
     If Len(s) = 0 Then
-        WarnBox "Файл пуст или не читается!"
+        WarnBox "Р¤Р°Р№Р» РїСѓСЃС‚ РёР»Рё РЅРµ С‡РёС‚Р°РµС‚СЃСЏ!"
         If IsFile(File) And KillAfter Then Kill File
         Exit Sub
     Else
@@ -99,7 +99,7 @@ Public Sub MailDump(File As String, Optional KillAfter As Boolean = False)
     Exit Sub
     
 ErrSheet:
-    AutoRestart "Лист платежки не найден"
+    AutoRestart "Р›РёСЃС‚ РїР»Р°С‚РµР¶РєРё РЅРµ РЅР°Р№РґРµРЅ"
 End Sub
 
 Public Sub MailDumpDbf(File As String)
@@ -130,7 +130,7 @@ Public Sub MailOpenFile(File As String)
         'If Left(s, Len(FormatPGP)) = FormatPGP Then
         '    File = PGP.DecryptEx(File)
         '    If Not IsFile(File) Then
-        '        WarnBox Bsprintf("Программа PGP не смогла расшифровать файл!\nУ Вас есть ключи '%s'?", s), _
+        '        WarnBox Bsprintf("РџСЂРѕРіСЂР°РјРјР° PGP РЅРµ СЃРјРѕРіР»Р° СЂР°СЃС€РёС„СЂРѕРІР°С‚СЊ С„Р°Р№Р»!\nРЈ Р’Р°СЃ РµСЃС‚СЊ РєР»СЋС‡Рё '%s'?", s), _
         '            vbExclamation, App.Title
         '        Exit Sub
         '    End If
@@ -153,29 +153,29 @@ Public Sub MailOpenFile(File As String)
             Case "dbf"
                 MailDumpDbf File
             Case "pgp"
-                InfoBox "Добавление производится автоматически"
+                InfoBox "Р”РѕР±Р°РІР»РµРЅРёРµ РїСЂРѕРёР·РІРѕРґРёС‚СЃСЏ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё"
             Case "id"
-                InfoBox "Добавление производится автоматически"
+                InfoBox "Р”РѕР±Р°РІР»РµРЅРёРµ РїСЂРѕРёР·РІРѕРґРёС‚СЃСЏ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё"
             Case "plt"
-                InfoBox "Добавление производится автоматически"
+                InfoBox "Р”РѕР±Р°РІР»РµРЅРёРµ РїСЂРѕРёР·РІРѕРґРёС‚СЃСЏ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё"
             Case "htm", "html", "xml", "gif", "jpg", "cer", "der"
-                If OkCancelBox("Передача файла в Microsoft Explorer") Then
+                If OkCancelBox("РџРµСЂРµРґР°С‡Р° С„Р°Р№Р»Р° РІ Microsoft Explorer") Then
                     Shell "explorer.exe " & LFN(File), vbNormalFocus
                 End If
             Case "doc", "rtf"
-                If OkCancelBox("Передача файла в Microsoft Word") Then
+                If OkCancelBox("РџРµСЂРµРґР°С‡Р° С„Р°Р№Р»Р° РІ Microsoft Word") Then
                     Shell "winword.exe " & LFN(File), vbNormalFocus
                 End If
             Case "xls"
-                If OkCancelBox("Передача файла в Microsoft Excel") Then
+                If OkCancelBox("РџРµСЂРµРґР°С‡Р° С„Р°Р№Р»Р° РІ Microsoft Excel") Then
                     Shell "excel.exe " & LFN(File), vbNormalFocus
                 End If
             Case "chm"
-                If OkCancelBox("Передача файла в просмотр") Then
+                If OkCancelBox("РџРµСЂРµРґР°С‡Р° С„Р°Р№Р»Р° РІ РїСЂРѕСЃРјРѕС‚СЂ") Then
                     Shell "hh.exe " & LFN(File), vbNormalFocus
                 End If
             Case Else
-                WarnBox "Неизвестный тип файла '%s'\nВозможно, Вам пора запросить обновление!", s
+                WarnBox "РќРµРёР·РІРµСЃС‚РЅС‹Р№ С‚РёРї С„Р°Р№Р»Р° '%s'\nР’РѕР·РјРѕР¶РЅРѕ, Р’Р°Рј РїРѕСЂР° Р·Р°РїСЂРѕСЃРёС‚СЊ РѕР±РЅРѕРІР»РµРЅРёРµ!", s
         End Select
     End If
 End Sub

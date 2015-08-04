@@ -11,59 +11,58 @@ Const SortMenu = "SortMenu"
 Public Sub WriteMenuINI()
     Dim i As Long, s As String
     With App
-        'Название нашего меню в Excel
-        .Setting(MenuSection, "Caption") = CDos("&Банк-Клиент")
-        .Setting(MenuSection, "Before") = 1 '0 - не вставлять
+        'РќР°Р·РІР°РЅРёРµ РЅР°С€РµРіРѕ РјРµРЅСЋ РІ Excel
+        .Setting(MenuSection, "Caption") = CDos("&Р‘Р°РЅРє-РљР»РёРµРЅС‚")
+        .Setting(MenuSection, "Before") = 1 '0 - РЅРµ РІСЃС‚Р°РІР»СЏС‚СЊ
         
-        'Контекстное меню по правой кнопке мыши
+        'РљРѕРЅС‚РµРєСЃС‚РЅРѕРµ РјРµРЅСЋ РїРѕ РїСЂР°РІРѕР№ РєРЅРѕРїРєРµ РјС‹С€Рё
         '.Setting(MenuSection, "RClick") = 1
         
-        'Линейный тулбар
-        .Setting(MenuSection, "Bar") = CDos("Сити Инвест Банк")
+        'Р›РёРЅРµР№РЅС‹Р№ С‚СѓР»Р±Р°СЂ
+        .Setting(MenuSection, "Bar") = CDos("РЎРёС‚Рё РРЅРІРµСЃС‚ Р‘Р°РЅРє")
         .Setting(MenuSection, "BarAdd") = 1
         .Setting(MenuSection, "BarPosition") = 1 '0=left, 1=top, 2=right, 3=bottom, 4=floating
         .Setting(MenuSection, "BarVisible") = 1
         
-        'Менюобразный тулбар
-        '.Setting(MenuSection, "Bar1") = CDos("Сити Инвест Банк Меню")
-        '.Setting(MenuSection, "Bar1Menu") = CDos("[Пуск] Банк-Клиент")
+        'РњРµРЅСЋРѕР±СЂР°Р·РЅС‹Р№ С‚СѓР»Р±Р°СЂ
+        '.Setting(MenuSection, "Bar1") = CDos("РЎРёС‚Рё РРЅРІРµСЃС‚ Р‘Р°РЅРє РњРµРЅСЋ")
+        '.Setting(MenuSection, "Bar1Menu") = CDos("[РџСѓСЃРє] Р‘Р°РЅРє-РљР»РёРµРЅС‚")
         '.Setting(MenuSection, "Bar1Add") = 1
         '.Setting(MenuSection, "Bar1Position") = 3 '0=left, 1=top, 2=right, 3=bottom, 4=floating
         '.Setting(MenuSection, "Bar1Visible") = 0
         
         i = 0
-        i = i + 1: .Setting(MenuSection, CStr(i)) = CDos("&Вход в систему...") & "\LogonShow\59"
-        i = i + 1: .Setting(MenuSection, CStr(i)) = CDos("-&Найти...") & "\FindText\279"
-        i = i + 1: .Setting(MenuSection, CStr(i)) = CDos("&Создать...") & "\PlatEnterShow\64"
-        i = i + 1: .Setting(MenuSection, CStr(i)) = CDos("&Загрузить с диска...") & "\ImportList\270"
-        i = i + 1: .Setting(MenuSection, CStr(i)) = CDos("-&Просмотр и печать") & "\PreviewPlat\2174"
-        i = i + 1: .Setting(MenuSection, CStr(i)) = CDos("З&аписать на диск...") & "\ExportList\271"
-        i = i + 1: .Setting(MenuSection, CStr(i)) = CDos("За&шифровать к отправке") & "\ExportPlat\277"
-        i = i + 1: .Setting(MenuSection, CStr(i)) = CDos("-&Отправка и прием...") & "\MailBoxShow\275"
-        i = i + 1: .Setting(MenuSection, CStr(i)) = CDos("-С&ервис") & "\\" & ServiceMenu & "\\" & CDos("Сервис")
-        i = i + 1: .Setting(MenuSection, CStr(i)) = CDos("О п&рограмме") & "\Info\1954"
-        i = i + 1: .Setting(MenuSection, CStr(i)) = CDos("-В&ыход со сменой пароля") & "\SavePassShow\276"
+        i = i + 1: .Setting(MenuSection, CStr(i)) = CDos("&Р’С…РѕРґ РІ СЃРёСЃС‚РµРјСѓ...") & "\LogonShow\59"
+        i = i + 1: .Setting(MenuSection, CStr(i)) = CDos("-&РќР°Р№С‚Рё...") & "\FindText\279"
+        i = i + 1: .Setting(MenuSection, CStr(i)) = CDos("&РЎРѕР·РґР°С‚СЊ...") & "\PlatEnterShow\64"
+        i = i + 1: .Setting(MenuSection, CStr(i)) = CDos("&Р—Р°РіСЂСѓР·РёС‚СЊ СЃ РґРёСЃРєР°...") & "\ImportList\270"
+        i = i + 1: .Setting(MenuSection, CStr(i)) = CDos("-&РџСЂРѕСЃРјРѕС‚СЂ Рё РїРµС‡Р°С‚СЊ") & "\PreviewPlat\2174"
+        i = i + 1: .Setting(MenuSection, CStr(i)) = CDos("Р—&Р°РїРёСЃР°С‚СЊ РЅР° РґРёСЃРє...") & "\ExportList\271"
+        i = i + 1: .Setting(MenuSection, CStr(i)) = CDos("Р—Р°&С€РёС„СЂРѕРІР°С‚СЊ Рє РѕС‚РїСЂР°РІРєРµ") & "\ExportPlat\277"
+        i = i + 1: .Setting(MenuSection, CStr(i)) = CDos("-&РћС‚РїСЂР°РІРєР° Рё РїСЂРёРµРј...") & "\MailBoxShow\275"
+        i = i + 1: .Setting(MenuSection, CStr(i)) = CDos("-РЎ&РµСЂРІРёСЃ") & "\\" & ServiceMenu & "\\" & CDos("РЎРµСЂРІРёСЃ")
+        i = i + 1: .Setting(MenuSection, CStr(i)) = CDos("Рћ Рї&СЂРѕРіСЂР°РјРјРµ") & "\Info\1954"
+        i = i + 1: .Setting(MenuSection, CStr(i)) = CDos("-Р’&С‹С…РѕРґ СЃРѕ СЃРјРµРЅРѕР№ РїР°СЂРѕР»СЏ") & "\SavePassShow\276"
         .Setting(MenuSection, "Count") = i
         
         i = 0
-        i = i + 1: .Setting(ServiceMenu, CStr(i)) = CDos("&Справочник БИК...") & "\LSShow\176"
-        i = i + 1: .Setting(ServiceMenu, CStr(i)) = CDos("-С&ортировка строк") & "\\" & SortMenu & "\\" & CDos("Сортировка")
-        i = i + 1: .Setting(ServiceMenu, CStr(i)) = CDos("&Удалить строки") & "\DelRows\67"
-        i = i + 1: .Setting(ServiceMenu, CStr(i)) = CDos("-&Текущий остаток...") & "\AmountChange\52"
-        i = i + 1: .Setting(ServiceMenu, CStr(i)) = CDos("-&Реквизиты клиента...") & "\EditUserShow\2148"
-        'i = i + 1: .Setting(ServiceMenu,CStr(i)) = CDos("Ключи клиента...") & "\UserPrivateShow\2148"
-        i = i + 1: .Setting(ServiceMenu, CStr(i)) = CDos("&Добавить клиента...") & "\NewUserShow\2141"
-        i = i + 1: .Setting(ServiceMenu, CStr(i)) = CDos("Уд&алить клиента") & "\DelUser\2151"
-        i = i + 1: .Setting(ServiceMenu, CStr(i)) = CDos("-&Перезапуск программы") & "\Restart\2144"
+        i = i + 1: .Setting(ServiceMenu, CStr(i)) = CDos("&РЎРїСЂР°РІРѕС‡РЅРёРє Р‘РРљ...") & "\LSShow\176"
+        i = i + 1: .Setting(ServiceMenu, CStr(i)) = CDos("-РЎ&РѕСЂС‚РёСЂРѕРІРєР° СЃС‚СЂРѕРє") & "\\" & SortMenu & "\\" & CDos("РЎРѕСЂС‚РёСЂРѕРІРєР°")
+        i = i + 1: .Setting(ServiceMenu, CStr(i)) = CDos("&РЈРґР°Р»РёС‚СЊ СЃС‚СЂРѕРєРё") & "\DelRows\67"
+        i = i + 1: .Setting(ServiceMenu, CStr(i)) = CDos("-&РўРµРєСѓС‰РёР№ РѕСЃС‚Р°С‚РѕРє...") & "\AmountChange\52"
+        i = i + 1: .Setting(ServiceMenu, CStr(i)) = CDos("-&Р РµРєРІРёР·РёС‚С‹ РєР»РёРµРЅС‚Р°...") & "\EditUserShow\2148"
+        'i = i + 1: .Setting(ServiceMenu,CStr(i)) = CDos("РљР»СЋС‡Рё РєР»РёРµРЅС‚Р°...") & "\UserPrivateShow\2148"
+        i = i + 1: .Setting(ServiceMenu, CStr(i)) = CDos("&Р”РѕР±Р°РІРёС‚СЊ РєР»РёРµРЅС‚Р°...") & "\NewUserShow\2141"
+        i = i + 1: .Setting(ServiceMenu, CStr(i)) = CDos("РЈРґ&Р°Р»РёС‚СЊ РєР»РёРµРЅС‚Р°") & "\DelUser\2151"
+        i = i + 1: .Setting(ServiceMenu, CStr(i)) = CDos("-&РџРµСЂРµР·Р°РїСѓСЃРє РїСЂРѕРіСЂР°РјРјС‹") & "\Restart\2144"
         .Setting(ServiceMenu, "Count") = i
     
         i = 0
-        i = i + 1: .Setting(SortMenu, CStr(i)) = CDos("&Номер") & "\SortByDocNo\29"
-        i = i + 1: .Setting(SortMenu, CStr(i)) = CDos("&Дата") & "\SortByDocDate\29"
-        i = i + 1: .Setting(SortMenu, CStr(i)) = CDos("&Сумма") & "\SortBySum\29"
-        i = i + 1: .Setting(SortMenu, CStr(i)) = CDos("&Получатель") & "\SortByName\29"
-        i = i + 1: .Setting(SortMenu, CStr(i)) = CDos("Н&азначение") & "\SortByDetails\29"
+        i = i + 1: .Setting(SortMenu, CStr(i)) = CDos("&РќРѕРјРµСЂ") & "\SortByDocNo\29"
+        i = i + 1: .Setting(SortMenu, CStr(i)) = CDos("&Р”Р°С‚Р°") & "\SortByDocDate\29"
+        i = i + 1: .Setting(SortMenu, CStr(i)) = CDos("&РЎСѓРјРјР°") & "\SortBySum\29"
+        i = i + 1: .Setting(SortMenu, CStr(i)) = CDos("&РџРѕР»СѓС‡Р°С‚РµР»СЊ") & "\SortByName\29"
+        i = i + 1: .Setting(SortMenu, CStr(i)) = CDos("Рќ&Р°Р·РЅР°С‡РµРЅРёРµ") & "\SortByDetails\29"
         .Setting(SortMenu, "Count") = i
     End With
 End Sub
-

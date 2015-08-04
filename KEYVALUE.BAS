@@ -6,9 +6,9 @@ DefLng A-Z
 
 Public Function CalcLSKey(ByVal BIC As String, ByVal LS As String) As Long
     BIC = PadL(BIC, 9, "0"): Mid(LS, 9, 1) = "0"
-    If Val(Right(BIC, 3)) < 4 Then 'ÐÊÖ?
+    If Val(Right(BIC, 3)) < 4 Then 'Ð ÐšÐ¦?
         CalcLSKey = CalcLSKeyValue("0" + Mid(BIC, 5, 2) + LS)
-    Else 'Êðåäèòíàÿ îðãàíèçàöèÿ
+    Else 'ÐšÑ€ÐµÐ´Ð¸Ñ‚Ð½Ð°Ñ Ð¾Ñ€Ð³Ð°Ð½Ð¸Ð·Ð°Ñ†Ð¸Ñ
         CalcLSKey = CalcLSKeyValue(Right(BIC, 3) + LS)
     End If
 End Function
@@ -17,9 +17,9 @@ Public Function LSKeyValid(ByVal BIC As String, ByVal LS As String) As Boolean
     Dim KeyProbe As Long
     KeyProbe = Mid(LS, 9, 1)
     BIC = PadL(BIC, 9, "0"): Mid(LS, 9, 1) = "0"
-    If Val(Right(BIC, 3)) < 4 Then 'ÐÊÖ?
+    If Val(Right(BIC, 3)) < 4 Then 'Ð ÐšÐ¦?
         LSKeyValid = CalcLSKeyValue("0" + Mid(BIC, 5, 2) + LS) = KeyProbe
-    Else 'Êðåäèòíàÿ îðãàíèçàöèÿ
+    Else 'ÐšÑ€ÐµÐ´Ð¸Ñ‚Ð½Ð°Ñ Ð¾Ñ€Ð³Ð°Ð½Ð¸Ð·Ð°Ñ†Ð¸Ñ
         LSKeyValid = CalcLSKeyValue(Right(BIC, 3) + LS) = KeyProbe
     End If
 End Function

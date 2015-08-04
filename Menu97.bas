@@ -4,8 +4,8 @@ Option Compare Text
 Option Base 1
 DefLng A-Z
 
-Const MenuName = "&Банк-Клиент"
-Const BarName = "Сити Инвест Банк"
+Const MenuName = "&Р‘Р°РЅРє-РљР»РёРµРЅС‚"
+Const BarName = "РЎРёС‚Рё РРЅРІРµСЃС‚ Р‘Р°РЅРє"
 
 Const MenuCount = 6
 
@@ -13,47 +13,47 @@ Dim mMenu(1 To MenuCount) As Variant
 Dim mBar(1 To MenuCount) As Variant
 
 Private Sub MainMenu()
-    AddItem 1, "&Найти...", "FindText", 279
-    AddItem 1, "&Создать...", "PlatEnterShow", 64
-    AddItem 1, "&Загрузить с диска...", "ImportList", 270
-    AddItem 1, "-&Просмотр и печать", "PreviewPlat", 2174
+    AddItem 1, "&РќР°Р№С‚Рё...", "FindText", 279
+    AddItem 1, "&РЎРѕР·РґР°С‚СЊ...", "PlatEnterShow", 64
+    AddItem 1, "&Р—Р°РіСЂСѓР·РёС‚СЊ СЃ РґРёСЃРєР°...", "ImportList", 270
+    AddItem 1, "-&РџСЂРѕСЃРјРѕС‚СЂ Рё РїРµС‡Р°С‚СЊ", "PreviewPlat", 2174
     If IsFile(App.Path & "prnveksl.exe") Then
-        AddItem 1, "&Печать векселя", "PrintVeksel", 2174
+        AddItem 1, "&РџРµС‡Р°С‚СЊ РІРµРєСЃРµР»СЏ", "PrintVeksel", 2174
     End If
-    AddItem 1, "З&аписать на диск...", "ExportList", 271
-    AddItem 1, "За&шифровать к отправке", "ExportPlat", 277
-    AddItem 1, "-&Отправка и прием...", "MailBoxShow", 275
-    AddMenu 1, "-С&ервис", 2
-    AddItem 1, "-О п&рограмме", "Info", 1954
+    AddItem 1, "Р—&Р°РїРёСЃР°С‚СЊ РЅР° РґРёСЃРє...", "ExportList", 271
+    AddItem 1, "Р—Р°&С€РёС„СЂРѕРІР°С‚СЊ Рє РѕС‚РїСЂР°РІРєРµ", "ExportPlat", 277
+    AddItem 1, "-&РћС‚РїСЂР°РІРєР° Рё РїСЂРёРµРј...", "MailBoxShow", 275
+    AddMenu 1, "-РЎ&РµСЂРІРёСЃ", 2
+    AddItem 1, "-Рћ Рї&СЂРѕРіСЂР°РјРјРµ", "Info", 1954
 
-    AddItem 2, "&Удалить строки", "DelRows", 67
-    AddItem 2, "-&Реквизиты клиента...", "EditUserShow", 2148
-    AddItem 2, "&Добавить клиента...", "NewUserShow", 2141
-    AddItem 2, "&Импортировать ключи", "ImportNewKeys", 277
-    AddMenu 2, "-&Настройка", 3
-    AddMenu 2, "&Запросы", 4
-    AddMenu 2, "&Пароли", 5
-    AddMenu 2, "&Файлы", 6
-    AddItem 2, "-&Перезапуск программы", "Restart", 2144
+    AddItem 2, "&РЈРґР°Р»РёС‚СЊ СЃС‚СЂРѕРєРё", "DelRows", 67
+    AddItem 2, "-&Р РµРєРІРёР·РёС‚С‹ РєР»РёРµРЅС‚Р°...", "EditUserShow", 2148
+    AddItem 2, "&Р”РѕР±Р°РІРёС‚СЊ РєР»РёРµРЅС‚Р°...", "NewUserShow", 2141
+    AddItem 2, "&РРјРїРѕСЂС‚РёСЂРѕРІР°С‚СЊ РєР»СЋС‡Рё", "ImportNewKeys", 277
+    AddMenu 2, "-&РќР°СЃС‚СЂРѕР№РєР°", 3
+    AddMenu 2, "&Р—Р°РїСЂРѕСЃС‹", 4
+    AddMenu 2, "&РџР°СЂРѕР»Рё", 5
+    AddMenu 2, "&Р¤Р°Р№Р»С‹", 6
+    AddItem 2, "-&РџРµСЂРµР·Р°РїСѓСЃРє РїСЂРѕРіСЂР°РјРјС‹", "Restart", 2144
     
-    AddItem 3, "&Настройка связи (SAdm)...", "SAdm", 29
-    AddItem 3, "Н&астройка модема (SSetup)...", "SSetup", 29
-    AddItem 3, "-&Параметры линии (SMail.ctl)...", "SMailCtl", 29
-    AddItem 3, "П&ротокол связи (SMail.log)...", "SMailLog", 29
-    AddItem 3, "-Р&учная коррекция ID...", "EditID", 29
+    AddItem 3, "&РќР°СЃС‚СЂРѕР№РєР° СЃРІСЏР·Рё (SAdm)...", "SAdm", 29
+    AddItem 3, "Рќ&Р°СЃС‚СЂРѕР№РєР° РјРѕРґРµРјР° (SSetup)...", "SSetup", 29
+    AddItem 3, "-&РџР°СЂР°РјРµС‚СЂС‹ Р»РёРЅРёРё (SMail.ctl)...", "SMailCtl", 29
+    AddItem 3, "Рџ&СЂРѕС‚РѕРєРѕР» СЃРІСЏР·Рё (SMail.log)...", "SMailLog", 29
+    AddItem 3, "-Р &СѓС‡РЅР°СЏ РєРѕСЂСЂРµРєС†РёСЏ ID...", "EditID", 29
     
-    AddItem 4, "&Повторить выписки и курсы", "AskVypRemart", 29
-    AddItem 4, Bsprintf("&Справочник банков (сейчас %n)", BnkSeek2.Updated), "AskBnkSeek", 29
-    AddItem 4, Bsprintf("&Обновление программы (сейчас %s)", App.Version), "AskBClient", 29
+    AddItem 4, "&РџРѕРІС‚РѕСЂРёС‚СЊ РІС‹РїРёСЃРєРё Рё РєСѓСЂСЃС‹", "AskVypRemart", 29
+    AddItem 4, Bsprintf("&РЎРїСЂР°РІРѕС‡РЅРёРє Р±Р°РЅРєРѕРІ (СЃРµР№С‡Р°СЃ %n)", BnkSeek2.Updated), "AskBnkSeek", 29
+    AddItem 4, Bsprintf("&РћР±РЅРѕРІР»РµРЅРёРµ РїСЂРѕРіСЂР°РјРјС‹ (СЃРµР№С‡Р°СЃ %s)", App.Version), "AskBClient", 29
     
-    AddItem 5, "&Сменить пароль Excel...", "ExcelPassword", 29
-    AddItem 5, "С&менить пароль PGP...", "PGPPassword", 29
-    AddItem 5, "С&менить пароль SMail...", "SAdm", 29
+    AddItem 5, "&РЎРјРµРЅРёС‚СЊ РїР°СЂРѕР»СЊ Excel...", "ExcelPassword", 29
+    AddItem 5, "РЎ&РјРµРЅРёС‚СЊ РїР°СЂРѕР»СЊ PGP...", "PGPPassword", 29
+    AddItem 5, "РЎ&РјРµРЅРёС‚СЊ РїР°СЂРѕР»СЊ SMail...", "SAdm", 29
     
-    AddItem 6, "-&Папка программы...", "OpenFolder", 29
-    AddItem 6, "П&апка принятого...", "OpenFolderR", 29
-    AddItem 6, "-&Отправить файл(ы)...", "SendFiles", 29
-    AddItem 6, "&Написать записку...", "SendNote", 29
+    AddItem 6, "-&РџР°РїРєР° РїСЂРѕРіСЂР°РјРјС‹...", "OpenFolder", 29
+    AddItem 6, "Рџ&Р°РїРєР° РїСЂРёРЅСЏС‚РѕРіРѕ...", "OpenFolderR", 29
+    AddItem 6, "-&РћС‚РїСЂР°РІРёС‚СЊ С„Р°Р№Р»(С‹)...", "SendFiles", 29
+    AddItem 6, "&РќР°РїРёСЃР°С‚СЊ Р·Р°РїРёСЃРєСѓ...", "SendNote", 29
 End Sub
 
 Public Sub InitMenuBars()
@@ -130,4 +130,3 @@ Private Sub AddMenu(Level As Long, Caption As String, SubLevel As Long)
         .Caption = .TooltipText
     End With
 End Sub
-

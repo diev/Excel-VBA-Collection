@@ -1,6 +1,6 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} About 
-   Caption         =   "О программе ""Банк-Клиент"""
+   Caption         =   "Рћ РїСЂРѕРіСЂР°РјРјРµ ""Р‘Р°РЅРє-РљР»РёРµРЅС‚"""
    ClientHeight    =   3810
    ClientLeft      =   45
    ClientTop       =   330
@@ -31,13 +31,12 @@ End Sub
 Private Sub UserForm_Initialize()
     Application.StatusBar = AppTitle
     lblInfo.Caption = _
-        BPrintF("Программа %s\n\n" & _
-        "Автор: %s, %d\n%s\n\n" & _
-        "Проверьте файлы вашей версии\nи запросите обновление!", _
-        AppTitle, "Дмитрий Евдокимов", 1999, "http://members.xoom.com/diev")
-    lblAddress.Caption = BPrintF("Наш адрес:\n\n%s\n%s\n%s", _
-        "Санкт-Петербург, Московский пр-т, 143", _
-        "тел. (812) 324-06-90, факс 324-06-95", _
+        BPrintF("РџСЂРѕРіСЂР°РјРјР° %s\n\n" & _
+        "РђРІС‚РѕСЂ: %s, %d\n%s\n\n" & _
+        "РџСЂРѕРІРµСЂСЊС‚Рµ С„Р°Р№Р»С‹ РІР°С€РµР№ РІРµСЂСЃРёРё\nРё Р·Р°РїСЂРѕСЃРёС‚Рµ РѕР±РЅРѕРІР»РµРЅРёРµ!", _
+        AppTitle, "Р”РјРёС‚СЂРёР№ Р•РІРґРѕРєРёРјРѕРІ", 1999, "http://members.xoom.com/diev")
+    lblAddress.Caption = BPrintF("РќР°С€ Р°РґСЂРµСЃ:\n\n%s\n%s\n%s", _
+        "РЎР°РЅРєС‚-РџРµС‚РµСЂР±СѓСЂРі, РњРѕСЃРєРѕРІСЃРєРёР№ РїСЂ-С‚, 143", _
+        "С‚РµР». (812) 324-06-90, С„Р°РєСЃ 324-06-95", _
         "e-mail bclient@cib.lek.ru, web http://www.cityinvest.sp.ru")
 End Sub
-

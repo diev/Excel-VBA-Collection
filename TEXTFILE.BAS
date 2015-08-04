@@ -7,7 +7,7 @@ DefLng A-Z
 Public Sub ErrorBox(e As ErrObject, Optional Description As Variant, Optional TITLE As Variant)
     If IsMissing(Description) Then Description = e.Description _
         Else Description = BPrintF("%s\n\%s", Description, e.Description)
-    If IsMissing(TITLE) Then TITLE = BPrintF("Ошибка %d в %s", e.Number, e.Source)
+    If IsMissing(TITLE) Then TITLE = BPrintF("РћС€РёР±РєР° %d РІ %s", e.Number, e.Source)
     MsgBox Description, vbExclamation, TITLE
 End Sub
 
@@ -16,7 +16,7 @@ Public Sub DumpFile()
     
     Buf = Cells(1, 1).Text
     If Len(Buf) = 0 Then _
-        Buf = Application.GetOpenFilename("Файлы TXT (*.txt),*.txt,Все файлы (*.*),*.*", 1, "Открытие файла TXT")
+        Buf = Application.GetOpenFilename("Р¤Р°Р№Р»С‹ TXT (*.txt),*.txt,Р’СЃРµ С„Р°Р№Р»С‹ (*.*),*.*", 1, "РћС‚РєСЂС‹С‚РёРµ С„Р°Р№Р»Р° TXT")
     
     s = InputFile(Buf)
     If Len(s) = 0 Then Exit Sub
@@ -62,7 +62,7 @@ Public Function InputFile(FName As String) As String
 ErrHandler:
     Close #FNum
     InputFile = ""
-    ErrorBox Err, BPrintF("Чтение файла ~%s~", FName)
+    ErrorBox Err, BPrintF("Р§С‚РµРЅРёРµ С„Р°Р№Р»Р° ~%s~", FName)
 End Function
 
 Public Sub OutputFile(FName As String, s As String)
@@ -79,7 +79,7 @@ Public Sub OutputFile(FName As String, s As String)
     Exit Sub
 ErrHandler:
     Close #FNum
-    ErrorBox Err, BPrintF("Запись файла ~%s~", FName)
+    ErrorBox Err, BPrintF("Р—Р°РїРёСЃСЊ С„Р°Р№Р»Р° ~%s~", FName)
 End Sub
 
 Public Sub AppendFile(FName As String, s As String)
@@ -95,7 +95,7 @@ Public Sub AppendFile(FName As String, s As String)
     Exit Sub
 ErrHandler:
     Close #FNum
-    ErrorBox Err, BPrintF("Добавление файла ~%s~", FName)
+    ErrorBox Err, BPrintF("Р”РѕР±Р°РІР»РµРЅРёРµ С„Р°Р№Р»Р° ~%s~", FName)
 End Sub
 
 Public Sub WipeFile(FName As String)
@@ -110,7 +110,5 @@ Public Sub WipeFile(FName As String)
     Exit Sub
 ErrHandler:
     Close #FNum
-    ErrorBox Err, BPrintF("Затирание файла ~%s~", FName)
+    ErrorBox Err, BPrintF("Р—Р°С‚РёСЂР°РЅРёРµ С„Р°Р№Р»Р° ~%s~", FName)
 End Sub
-
-

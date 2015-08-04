@@ -19,16 +19,16 @@ End Function
 Public Sub WorkbookBeforeClose(Cancel As Boolean)
     On Error Resume Next
     Workbooks(WorkName).Activate
-    Cancel = MsgBox("Закрыть программу?", vbQuestion + vbOKCancel, AppTitle) = vbCancel
+    Cancel = MsgBox("Р—Р°РєСЂС‹С‚СЊ РїСЂРѕРіСЂР°РјРјСѓ?", vbQuestion + vbOKCancel, AppTitle) = vbCancel
     If Not Cancel Then
         With ActiveWorkbook
             If Not .CreateBackup Then
-                MsgBox BPrintF("Настоятельно рекомендуется делать резерную копию\n" & _
-                    "для предотвращения потери данных"), vbExclamation, AppTitle
+                MsgBox BPrintF("РќР°СЃС‚РѕСЏС‚РµР»СЊРЅРѕ СЂРµРєРѕРјРµРЅРґСѓРµС‚СЃСЏ РґРµР»Р°С‚СЊ СЂРµР·РµСЂРЅСѓСЋ РєРѕРїРёСЋ\n" & _
+                    "РґР»СЏ РїСЂРµРґРѕС‚РІСЂР°С‰РµРЅРёСЏ РїРѕС‚РµСЂРё РґР°РЅРЅС‹С…"), vbExclamation, AppTitle
             End If
             'If Not .HasPassword Then
-            '    MsgBox BPrintF("Настоятельно рекомендуется установить пароль\n" & _
-            '        "для предотвращения несанкционированного доступа!"), vbExclamation, AppTitle
+            '    MsgBox BPrintF("РќР°СЃС‚РѕСЏС‚РµР»СЊРЅРѕ СЂРµРєРѕРјРµРЅРґСѓРµС‚СЃСЏ СѓСЃС‚Р°РЅРѕРІРёС‚СЊ РїР°СЂРѕР»СЊ\n" & _
+            '        "РґР»СЏ РїСЂРµРґРѕС‚РІСЂР°С‰РµРЅРёСЏ РЅРµСЃР°РЅРєС†РёРѕРЅРёСЂРѕРІР°РЅРЅРѕРіРѕ РґРѕСЃС‚СѓРїР°!"), vbExclamation, AppTitle
             'End If
         End With
         AutoClose
@@ -42,4 +42,3 @@ End Sub
 Public Sub WorkbookSheetActivate(ByVal Sh As Object)
     ActiveWindow.Caption = Sh.Name
 End Sub
-

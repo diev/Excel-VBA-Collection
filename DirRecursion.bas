@@ -16,14 +16,14 @@ Public Sub AllTree(Optional StartFolder As String = "C:\")
     
     Application.Goto Range("A1")
     Application.StatusBar = False
-    MsgBox CStr(r - 1) & " загружено", vbInformation
+    MsgBox CStr(r - 1) & " Р·Р°РіСЂСѓР¶РµРЅРѕ", vbInformation
 End Sub
 
 Public Sub AllTreeFiles(fd As Object)
     Dim f1 As Object
     If fd.Path = Environ("windir") Then Exit Sub 'skip C:\WINDOWS
     If r > 65000 Then
-        MsgBox "Превышение листа MS Excel", vbExclamation
+        MsgBox "РџСЂРµРІС‹С€РµРЅРёРµ Р»РёСЃС‚Р° MS Excel", vbExclamation
         Exit Sub
     End If
     With Application

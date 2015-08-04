@@ -55,4 +55,3 @@ Public Function Info() As String
         Info = PGP.Info
     'End If
 End Function
-

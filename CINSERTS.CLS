@@ -13,12 +13,12 @@ Option Compare Text
 Option Base 1
 DefLng A-Z
 
-'Подстановки
-Const mInsertsSheet = "Подстановки"
-Const mInsertsText = 1 'Подстановки
-Const mInsertsNDS = 2 'НДС
-'Итого
-Const mInsertsSize = 2 'Общее число столбцов
+'РџРѕРґСЃС‚Р°РЅРѕРІРєРё
+Const mInsertsSheet = "РџРѕРґСЃС‚Р°РЅРѕРІРєРё"
+Const mInsertsText = 1 'РџРѕРґСЃС‚Р°РЅРѕРІРєРё
+Const mInsertsNDS = 2 'РќР”РЎ
+'РС‚РѕРіРѕ
+Const mInsertsSize = 2 'РћР±С‰РµРµ С‡РёСЃР»Рѕ СЃС‚РѕР»Р±С†РѕРІ
 
 Dim mInserts As New CDataSheet
 

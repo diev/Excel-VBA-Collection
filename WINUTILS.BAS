@@ -31,5 +31,3 @@ Public Function GetWinTempDir() As String
     n = GetTempPath(n, s)
     GetWinTempDir = Left(s, n)
 End Function
-
-

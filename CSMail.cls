@@ -27,7 +27,7 @@ Public Function Valid()
         Valid = True
         Exit Function
     Else
-        If YesNoBox("У Вас нет программы связи с Банком!\nВозможно, Вы не установили файл SML*.EXE с дистрибутивной дискеты.\n\nПоискать сейчас на диске A:?") Then
+        If YesNoBox("РЈ Р’Р°СЃ РЅРµС‚ РїСЂРѕРіСЂР°РјРјС‹ СЃРІСЏР·Рё СЃ Р‘Р°РЅРєРѕРј!\nР’РѕР·РјРѕР¶РЅРѕ, Р’С‹ РЅРµ СѓСЃС‚Р°РЅРѕРІРёР»Рё С„Р°Р№Р» SML*.EXE СЃ РґРёСЃС‚СЂРёР±СѓС‚РёРІРЅРѕР№ РґРёСЃРєРµС‚С‹.\n\nРџРѕРёСЃРєР°С‚СЊ СЃРµР№С‡Р°СЃ РЅР° РґРёСЃРєРµ A:?") Then
             File = Dir("a:\sml*.exe")
             If File <> vbNullString Then
                 ShellDialog File, vbNormalFocus, App.BoolOptions("Debug")
@@ -37,7 +37,7 @@ Public Function Valid()
     Valid = IsFile(App.Path & "SMail\SMail.exe")
     Exit Function
 NoSMail:
-    StopBox "Нет программы связи!\nИщите Вашу дистрибутивную дискету."
+    StopBox "РќРµС‚ РїСЂРѕРіСЂР°РјРјС‹ СЃРІСЏР·Рё!\nРС‰РёС‚Рµ Р’Р°С€Сѓ РґРёСЃС‚СЂРёР±СѓС‚РёРІРЅСѓСЋ РґРёСЃРєРµС‚Сѓ."
     Valid = False
 End Function
 
@@ -63,7 +63,7 @@ End Sub
 Public Property Get DialOrInet() As Long
     DialOrInet = Val(App.Options("DialOrInet"))
     If DialOrInet = 0 Then
-        If YesNoBox("Включить связь с Банком через Интернет?") Then
+        If YesNoBox("Р’РєР»СЋС‡РёС‚СЊ СЃРІСЏР·СЊ СЃ Р‘Р°РЅРєРѕРј С‡РµСЂРµР· РРЅС‚РµСЂРЅРµС‚?") Then
             DialOrInet = 2
         Else
             DialOrInet = 1
@@ -110,7 +110,6 @@ Public Function FlagDate(Ext As String) As String
     If IsFile(s) Then
         FlagDate = Bsprintf("%T", FileDateTime(s))
     Else
-        FlagDate = "нет"
+        FlagDate = "РЅРµС‚"
     End If
 End Function
-

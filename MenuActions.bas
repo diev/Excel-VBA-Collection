@@ -51,7 +51,7 @@ End Sub
 Public Sub ExportPlat()
     On Error Resume Next
     AutoCheck
-    Payment.EachSelected "ExportPlat", "Отправить все?"
+    Payment.EachSelected "ExportPlat", "РћС‚РїСЂР°РІРёС‚СЊ РІСЃРµ?"
 End Sub
 
 Public Sub ExportList()
@@ -69,7 +69,7 @@ End Sub
 Public Sub DelRows()
     On Error Resume Next
     AutoCheck
-    Payment.EachSelected "Delete", "Безвозвратно удалить?"
+    Payment.EachSelected "Delete", "Р‘РµР·РІРѕР·РІСЂР°С‚РЅРѕ СѓРґР°Р»РёС‚СЊ?"
 End Sub
 
 Public Sub AutoCheck()
@@ -78,14 +78,14 @@ Public Sub AutoCheck()
     '    Workbooks(App.BookName).Activate
     'Else
     If Val(User.BIC) = 0 Then
-        WarnBox "Извините, программа перезапустится!"
+        WarnBox "РР·РІРёРЅРёС‚Рµ, РїСЂРѕРіСЂР°РјРјР° РїРµСЂРµР·Р°РїСѓСЃС‚РёС‚СЃСЏ!"
         Restart
     End If
 End Sub
 
 Public Sub AutoRestart(Optional s As String = vbNullString)
     On Error Resume Next
-    WarnBox "Извините, программа перезапустится!\n%s", s
+    WarnBox "РР·РІРёРЅРёС‚Рµ, РїСЂРѕРіСЂР°РјРјР° РїРµСЂРµР·Р°РїСѓСЃС‚РёС‚СЃСЏ!\n%s", s
     Restart
 End Sub
 
@@ -99,7 +99,7 @@ End Sub
 Public Sub PreviewPlat()
     On Error Resume Next
     AutoCheck
-    Payment.EachSelected "Preview", "Показать все?"
+    Payment.EachSelected "Preview", "РџРѕРєР°Р·Р°С‚СЊ РІСЃРµ?"
 End Sub
 
 Public Sub Info()
@@ -120,21 +120,21 @@ Public Sub UpdateReceived(File As String)
     If IsFile(File2) Then
         Kill File2
         If IsFile(File2) Then
-            StopBox "Удалите предыдущий файл обновления\n%s", File2
+            StopBox "РЈРґР°Р»РёС‚Рµ РїСЂРµРґС‹РґСѓС‰РёР№ С„Р°Р№Р» РѕР±РЅРѕРІР»РµРЅРёСЏ\n%s", File2
             Exit Sub
         End If
     End If
     
-    If YesNoBox("ПРОЧТИТЕ ВНИМАТЕЛЬНО ПОРЯДОК ОБНОВЛЕНИЯ:\n\n" & _
-        "1. После нажатия этой кнопки 'Да' программа закроется.\n" & _
-        "2. ЗАКРОЙТЕ EXCEL, ЕСЛИ ОН НЕ ЗАКРОЕТСЯ САМ!!!\n" & _
-        "3. Найдите запущенное обновление и нажмите в нем 'OK'.\n" & _
-        "4. Дождитесь окончания его автоматической работы\n" & _
-        "(оно очень быстро само помелькает и исчезнет).\n" & _
-        "5. Запустите программу Банк-Клиент снова\n" & _
-        "(и продолжайте дальше работу как обычно).\n" & _
-        "6. Удалите выполненное обновление '%s' из принятого.\n\n" & _
-        "Приступить?", File2) Then
+    If YesNoBox("РџР РћР§РўРРўР• Р’РќРРњРђРўР•Р›Р¬РќРћ РџРћР РЇР”РћРљ РћР‘РќРћР’Р›Р•РќРРЇ:\n\n" & _
+        "1. РџРѕСЃР»Рµ РЅР°Р¶Р°С‚РёСЏ СЌС‚РѕР№ РєРЅРѕРїРєРё 'Р”Р°' РїСЂРѕРіСЂР°РјРјР° Р·Р°РєСЂРѕРµС‚СЃСЏ.\n" & _
+        "2. Р—РђРљР РћР™РўР• EXCEL, Р•РЎР›Р РћРќ РќР• Р—РђРљР РћР•РўРЎРЇ РЎРђРњ!!!\n" & _
+        "3. РќР°Р№РґРёС‚Рµ Р·Р°РїСѓС‰РµРЅРЅРѕРµ РѕР±РЅРѕРІР»РµРЅРёРµ Рё РЅР°Р¶РјРёС‚Рµ РІ РЅРµРј 'OK'.\n" & _
+        "4. Р”РѕР¶РґРёС‚РµСЃСЊ РѕРєРѕРЅС‡Р°РЅРёСЏ РµРіРѕ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРѕР№ СЂР°Р±РѕС‚С‹\n" & _
+        "(РѕРЅРѕ РѕС‡РµРЅСЊ Р±С‹СЃС‚СЂРѕ СЃР°РјРѕ РїРѕРјРµР»СЊРєР°РµС‚ Рё РёСЃС‡РµР·РЅРµС‚).\n" & _
+        "5. Р—Р°РїСѓСЃС‚РёС‚Рµ РїСЂРѕРіСЂР°РјРјСѓ Р‘Р°РЅРє-РљР»РёРµРЅС‚ СЃРЅРѕРІР°\n" & _
+        "(Рё РїСЂРѕРґРѕР»Р¶Р°Р№С‚Рµ РґР°Р»СЊС€Рµ СЂР°Р±РѕС‚Сѓ РєР°Рє РѕР±С‹С‡РЅРѕ).\n" & _
+        "6. РЈРґР°Р»РёС‚Рµ РІС‹РїРѕР»РЅРµРЅРЅРѕРµ РѕР±РЅРѕРІР»РµРЅРёРµ '%s' РёР· РїСЂРёРЅСЏС‚РѕРіРѕ.\n\n" & _
+        "РџСЂРёСЃС‚СѓРїРёС‚СЊ?", File2) Then
         
         App.Options("Version") = App.Version
         App.Options("Updated") = vbNullString
@@ -155,14 +155,14 @@ Public Sub ExcelPassword()
     Dim s As String
     On Error Resume Next
     With ActiveWorkbook
-        s = InputBox("Введите новый пароль Excel для" & vbCrLf & .FullName, _
+        s = InputBox("Р’РІРµРґРёС‚Рµ РЅРѕРІС‹Р№ РїР°СЂРѕР»СЊ Excel РґР»СЏ" & vbCrLf & .FullName, _
             App.TITLE)
         If Len(s) > 0 Then
             Kill .FullName
             DoEvents
             .SaveAs .FullName, Password:=s, CreateBackup:=True
         ElseIf .HasPassword Then
-            If YesNoBox("Снять прежний пароль?") Then
+            If YesNoBox("РЎРЅСЏС‚СЊ РїСЂРµР¶РЅРёР№ РїР°СЂРѕР»СЊ?") Then
                 Kill .FullName
                 DoEvents
                 .SaveAs .FullName, Password:=vbNullString, CreateBackup:=True
@@ -175,11 +175,11 @@ Public Sub PrintVeksel()
     Dim OldDate As Date, s As String
     On Error Resume Next
     OldDate = Date
-    If YesNoBox("Печать векселя за " & Format(Now - 1, "dddd dd.MM.yyyy HH:mm")) Then
+    If YesNoBox("РџРµС‡Р°С‚СЊ РІРµРєСЃРµР»СЏ Р·Р° " & Format(Now - 1, "dddd dd.MM.yyyy HH:mm")) Then
         Date = Date - 1
     Else
         s = Format(Date - 1, "dd.MM.yy")
-        s = InputBox("Введите дату для векселя:", App.TITLE, s)
+        s = InputBox("Р’РІРµРґРёС‚Рµ РґР°С‚Сѓ РґР»СЏ РІРµРєСЃРµР»СЏ:", App.TITLE, s)
         If Len(s) = 0 Then Exit Sub
         Date = CDate(s)
     End If
@@ -197,7 +197,7 @@ Public Sub PrintVeksel()
             ShellWait App.Path & "prnveksl.exe " & s & " /1", vbMinimizedNoFocus
             DoEvents
         Else
-            StopBox "Файл для печати НЕ создан!"
+            StopBox "Р¤Р°Р№Р» РґР»СЏ РїРµС‡Р°С‚Рё РќР• СЃРѕР·РґР°РЅ!"
         End If
     End With
     Date = OldDate
@@ -217,7 +217,7 @@ Public Sub SAdm()
         ChDir App.Path & "SMail"  '/////////////////////////////////sadm's bug?
         Shell QFile(File) & " " & QFile(App.Path & "SMail\SMail.cfg"), vbNormalFocus
     Else
-        StopBox "У Вас нет программы\n%s", File
+        StopBox "РЈ Р’Р°СЃ РЅРµС‚ РїСЂРѕРіСЂР°РјРјС‹\n%s", File
     End If
 End Sub
 
@@ -228,7 +228,7 @@ Public Sub SSetup()
     If IsFile(File) Then
         Shell QFile(File) & " " & QFile(App.Path & "SMail\SMail.ctl"), vbNormalFocus
     Else
-        StopBox "У Вас нет программы\n%s", File
+        StopBox "РЈ Р’Р°СЃ РЅРµС‚ РїСЂРѕРіСЂР°РјРјС‹\n%s", File
     End If
 End Sub
 
@@ -239,7 +239,7 @@ Public Sub SMailLog()
     If IsFile(File) Then
         Shell "notepad.exe " & QFile(File), vbNormalFocus
     Else
-        WarnBox "У Вас нет файла\n%s", File
+        WarnBox "РЈ Р’Р°СЃ РЅРµС‚ С„Р°Р№Р»Р°\n%s", File
     End If
 End Sub
 
@@ -250,7 +250,7 @@ Public Sub SMailCtl()
     If IsFile(File) Then
         Shell "notepad.exe " & QFile(File), vbNormalFocus
     Else
-        WarnBox "У Вас нет файла\n%s", File
+        WarnBox "РЈ Р’Р°СЃ РЅРµС‚ С„Р°Р№Р»Р°\n%s", File
     End If
 End Sub
 
@@ -287,7 +287,7 @@ Public Sub ShowHelp()
     On Error Resume Next
     File = Dir(App.Path & "*.chm")
     If File = vbNullString Then
-        WarnBox "Файлов помощи в %s не найдено!", App.Path
+        WarnBox "Р¤Р°Р№Р»РѕРІ РїРѕРјРѕС‰Рё РІ %s РЅРµ РЅР°Р№РґРµРЅРѕ!", App.Path
     Else
         Do While File <> vbNullString
             Shell "hh " & QFile(App.Path & File), vbNormalFocus
@@ -327,16 +327,16 @@ Public Function CheckRecv()
         s = App.Options("Version")
         sOk = App.Version
         If Len(s) = 0 Then 'New Install
-            InfoBox "Версия программы - %s", sOk
+            InfoBox "Р’РµСЂСЃРёСЏ РїСЂРѕРіСЂР°РјРјС‹ - %s", sOk
             App.Options("Version") = sOk
             App.Options("Updated") = sOk
         ElseIf s = sOk Then
-            WarnBox "Было запущено обновление программы,\nно его, кажется, не произошло!\n" & _
-                "Попросите Вашего технического специалиста\nпозвонить в Банк.\n\n" & _
-                "Сейчас у Вас версия - %s", sOk
+            WarnBox "Р‘С‹Р»Рѕ Р·Р°РїСѓС‰РµРЅРѕ РѕР±РЅРѕРІР»РµРЅРёРµ РїСЂРѕРіСЂР°РјРјС‹,\nРЅРѕ РµРіРѕ, РєР°Р¶РµС‚СЃСЏ, РЅРµ РїСЂРѕРёР·РѕС€Р»Рѕ!\n" & _
+                "РџРѕРїСЂРѕСЃРёС‚Рµ Р’Р°С€РµРіРѕ С‚РµС…РЅРёС‡РµСЃРєРѕРіРѕ СЃРїРµС†РёР°Р»РёСЃС‚Р°\nРїРѕР·РІРѕРЅРёС‚СЊ РІ Р‘Р°РЅРє.\n\n" & _
+                "РЎРµР№С‡Р°СЃ Сѓ Р’Р°СЃ РІРµСЂСЃРёСЏ - %s", sOk
             App.Options("Updated") = sOk
         Else
-            InfoBox "Версия программы\nобновлена до %s", sOk
+            InfoBox "Р’РµСЂСЃРёСЏ РїСЂРѕРіСЂР°РјРјС‹\nРѕР±РЅРѕРІР»РµРЅР° РґРѕ %s", sOk
             App.Options("Version") = sOk
             App.Options("Updated") = sOk
         End If
@@ -346,7 +346,7 @@ Public Function CheckRecv()
     
     'Antivirus?
     File = SMail.Recv & "!antivir.txt"
-    s = "Ваш антивирус блокирует работу нашей программы!"
+    s = "Р’Р°С€ Р°РЅС‚РёРІРёСЂСѓСЃ Р±Р»РѕРєРёСЂСѓРµС‚ СЂР°Р±РѕС‚Сѓ РЅР°С€РµР№ РїСЂРѕРіСЂР°РјРјС‹!"
     OutputFile File, CDos(s)
     If IsFile(File) Then
         Kill File
@@ -364,7 +364,7 @@ Public Function CheckRecv()
     'BnkSeek2 Update
     File = SMail.Recv & "BnkSeek2.exe"
     If IsFile(File) Then
-        InfoBox "Получено обновление справочника банков.\nПрограмма установит его и перезапустится."
+        InfoBox "РџРѕР»СѓС‡РµРЅРѕ РѕР±РЅРѕРІР»РµРЅРёРµ СЃРїСЂР°РІРѕС‡РЅРёРєР° Р±Р°РЅРєРѕРІ.\nРџСЂРѕРіСЂР°РјРјР° СѓСЃС‚Р°РЅРѕРІРёС‚ РµРіРѕ Рё РїРµСЂРµР·Р°РїСѓСЃС‚РёС‚СЃСЏ."
         ShellWait File & " /auto " & App.Path, vbNormalNoFocus
         DoEvents
         Kill File
@@ -373,7 +373,7 @@ Public Function CheckRecv()
         DoEvents
         With BnkSeek2
             .LoadFile
-            InfoBox "Установлен справочник БИК от %s, банков: %d", _
+            InfoBox "РЈСЃС‚Р°РЅРѕРІР»РµРЅ СЃРїСЂР°РІРѕС‡РЅРёРє Р‘РРљ РѕС‚ %s, Р±Р°РЅРєРѕРІ: %d", _
                 DtoC(.Updated), .RecCount
         End With
     End If
@@ -388,18 +388,18 @@ Public Function CheckRecv()
                 If FileDateTime(File1) = FileDateTime(File2) Then
                     .Options("Updated") = Now
                 Else
-                    WarnBox "Обновление программы не происходит,\n" & _
-                        "т.к. Excel использует первый файл вместо второго:\n\n%s%s", _
+                    WarnBox "РћР±РЅРѕРІР»РµРЅРёРµ РїСЂРѕРіСЂР°РјРјС‹ РЅРµ РїСЂРѕРёСЃС…РѕРґРёС‚,\n" & _
+                        "С‚.Рє. Excel РёСЃРїРѕР»СЊР·СѓРµС‚ РїРµСЂРІС‹Р№ С„Р°Р№Р» РІРјРµСЃС‚Рѕ РІС‚РѕСЂРѕРіРѕ:\n\n%s%s", _
                         .FileInfo(File2), .FileInfo(File1)
                 End If
             End If
         Else
             .Options("Version") = .Version
             .Options("Updated") = Now
-            InfoBox "Программа успешно обновлена до %s", .Version
+            InfoBox "РџСЂРѕРіСЂР°РјРјР° СѓСЃРїРµС€РЅРѕ РѕР±РЅРѕРІР»РµРЅР° РґРѕ %s", .Version
             File = Dir(SMail.Recv & "OK-*.exe")
             Do While File <> vbNullString
-                'If YesNoBox("Обновление '%s' проведено\nУдалить файл?", Mid(File, 4)) Then
+                'If YesNoBox("РћР±РЅРѕРІР»РµРЅРёРµ '%s' РїСЂРѕРІРµРґРµРЅРѕ\nРЈРґР°Р»РёС‚СЊ С„Р°Р№Р»?", Mid(File, 4)) Then
                     Kill SMail.Recv & File
                 'End If
                 File = Dir
@@ -411,7 +411,7 @@ Public Function CheckRecv()
     File = Dir(SMail.Recv & "*.exe")
     Do While File <> vbNullString
         If LCase(Left(File, 3)) <> "ok-" Then
-            If YesNoBox("Получено новое обновление %s\n(файл от %s)\n\nВыполнить его сейчас?", _
+            If YesNoBox("РџРѕР»СѓС‡РµРЅРѕ РЅРѕРІРѕРµ РѕР±РЅРѕРІР»РµРЅРёРµ %s\n(С„Р°Р№Р» РѕС‚ %s)\n\nР’С‹РїРѕР»РЅРёС‚СЊ РµРіРѕ СЃРµР№С‡Р°СЃ?", _
                 File, FileDateTime(SMail.Recv & File)) Then
                 UpdateReceived SMail.Recv & File
             End If
@@ -430,19 +430,19 @@ Public Function CheckRecv()
         End If
         s4 = User.ID4(s20)
         s = App.DefLS(s4)
-        If YesNoBox("Получены файлы клиента '%s'\nпо счету %s\n\nДобавить его сейчас?", s4, s20) Then
+        If YesNoBox("РџРѕР»СѓС‡РµРЅС‹ С„Р°Р№Р»С‹ РєР»РёРµРЅС‚Р° '%s'\nРїРѕ СЃС‡РµС‚Сѓ %s\n\nР”РѕР±Р°РІРёС‚СЊ РµРіРѕ СЃРµР№С‡Р°СЃ?", s4, s20) Then
             'ID
             For Each sh In Worksheets
                 If App.DefLS(sh.Name) = s Then
-                    If YesNoBox("Такой клиент '%s' уже есть!\nУдалить его из очереди на добавление?", s) Then
+                    If YesNoBox("РўР°РєРѕР№ РєР»РёРµРЅС‚ '%s' СѓР¶Рµ РµСЃС‚СЊ!\nРЈРґР°Р»РёС‚СЊ РµРіРѕ РёР· РѕС‡РµСЂРµРґРё РЅР° РґРѕР±Р°РІР»РµРЅРёРµ?", s) Then
                         Kill SMail.Recv & File
                         Kill SMail.Recv & s4 & ".plt"
                         Kill SMail.Recv & s20 & ".plt"
                         GoTo NextID
-                    'ElseIf YesNoBox("Лист '%s' будет создан заново!", s) Then
+                    'ElseIf YesNoBox("Р›РёСЃС‚ '%s' Р±СѓРґРµС‚ СЃРѕР·РґР°РЅ Р·Р°РЅРѕРІРѕ!", s) Then
                     '    Sheets(s).Delete
                     'Else
-                    '    WarnBox "Хорошо, пропускаем мимо."
+                    '    WarnBox "РҐРѕСЂРѕС€Рѕ, РїСЂРѕРїСѓСЃРєР°РµРј РјРёРјРѕ."
                     '    GoTo NextID
                     End If
                     Exit For
@@ -450,7 +450,7 @@ Public Function CheckRecv()
             Next
             'For Each sh In Worksheets
             '    If sh.Name = User.DemoID & " (2)" Then
-            '        WarnBox "Необходимо удалить лист '000 (2)'"
+            '        WarnBox "РќРµРѕР±С…РѕРґРёРјРѕ СѓРґР°Р»РёС‚СЊ Р»РёСЃС‚ '000 (2)'"
             '        Sheets(User.DemoID & " (2)").Delete
             '    End If
             'Next
@@ -481,13 +481,13 @@ NextID:
     If File <> vbNullString Then
         'If LCase(File) <> "remart.pgp" Then
             Select Case _
-                YesNoCancelBox("Получены новые ключи \'%s\' -\nрекомендуется перенести их на дискету.\n\n" & _
-                "Да - перенести их на дискету в \'%s\'\n" & _
-                "Нет - перенести к программе в \'%s\'\n" & _
-                "Отмена - переспросить позже.", File, "A:\Keys\", App.Path & "Keys\")
+                YesNoCancelBox("РџРѕР»СѓС‡РµРЅС‹ РЅРѕРІС‹Рµ РєР»СЋС‡Рё \'%s\' -\nСЂРµРєРѕРјРµРЅРґСѓРµС‚СЃСЏ РїРµСЂРµРЅРµСЃС‚Рё РёС… РЅР° РґРёСЃРєРµС‚Сѓ.\n\n" & _
+                "Р”Р° - РїРµСЂРµРЅРµСЃС‚Рё РёС… РЅР° РґРёСЃРєРµС‚Сѓ РІ \'%s\'\n" & _
+                "РќРµС‚ - РїРµСЂРµРЅРµСЃС‚Рё Рє РїСЂРѕРіСЂР°РјРјРµ РІ \'%s\'\n" & _
+                "РћС‚РјРµРЅР° - РїРµСЂРµСЃРїСЂРѕСЃРёС‚СЊ РїРѕР·Р¶Рµ.", File, "A:\Keys\", App.Path & "Keys\")
                 Case vbyes:
                     App.Options("KeysPath") = "A:\Keys\"
-                    WarnBox "Убедитесь, что дискета вставлена\nи готова к записи!"
+                    WarnBox "РЈР±РµРґРёС‚РµСЃСЊ, С‡С‚Рѕ РґРёСЃРєРµС‚Р° РІСЃС‚Р°РІР»РµРЅР°\nРё РіРѕС‚РѕРІР° Рє Р·Р°РїРёСЃРё!"
                     ForceDirectories App.Options("KeysPath")
                     Do While File <> vbNullString
                         File1 = SMail.Recv & File
@@ -499,14 +499,14 @@ NextID:
                         If IsFile(File2) Then Name File2 As File2 & Bsprintf(".%d.old", nOk)
                         If IsFile(File2) Then Kill File2
                         If IsFile(File2) Then
-                            WarnBox "Дискета защищена от записи!\nПеренос не выполнен."
+                            WarnBox "Р”РёСЃРєРµС‚Р° Р·Р°С‰РёС‰РµРЅР° РѕС‚ Р·Р°РїРёСЃРё!\nРџРµСЂРµРЅРѕСЃ РЅРµ РІС‹РїРѕР»РЅРµРЅ."
                         Else
                             Name File1 As File2
                             If IsFile(File2) Then
-                                InfoBox "Файл ключа \'%s\' успешно перенесен", File
+                                InfoBox "Р¤Р°Р№Р» РєР»СЋС‡Р° \'%s\' СѓСЃРїРµС€РЅРѕ РїРµСЂРµРЅРµСЃРµРЅ", File
                                 Kill File1
                             Else
-                                WarnBox "Файл ключа \'%s\' НЕ перенесен!", File
+                                WarnBox "Р¤Р°Р№Р» РєР»СЋС‡Р° \'%s\' РќР• РїРµСЂРµРЅРµСЃРµРЅ!", File
                             End If
                         End If
                         File = Dir
@@ -524,14 +524,14 @@ NextID:
                         If IsFile(File2) Then Name File2 As File2 & Bsprintf(".%d.old", nOk)
                         If IsFile(File2) Then Kill File2
                         If IsFile(File2) Then
-                            WarnBox "Директория защищена от записи!\nПеренос не выполнен."
+                            WarnBox "Р”РёСЂРµРєС‚РѕСЂРёСЏ Р·Р°С‰РёС‰РµРЅР° РѕС‚ Р·Р°РїРёСЃРё!\nРџРµСЂРµРЅРѕСЃ РЅРµ РІС‹РїРѕР»РЅРµРЅ."
                         Else
                             Name File1 As File2
                             If IsFile(File2) Then
-                                InfoBox "Файл ключа \'%s\' успешно перенесен", File
+                                InfoBox "Р¤Р°Р№Р» РєР»СЋС‡Р° \'%s\' СѓСЃРїРµС€РЅРѕ РїРµСЂРµРЅРµСЃРµРЅ", File
                                 Kill File1
                             Else
-                                WarnBox "Файл ключа \'%s\' НЕ перенесен!", File
+                                WarnBox "Р¤Р°Р№Р» РєР»СЋС‡Р° \'%s\' РќР• РїРµСЂРµРЅРµСЃРµРЅ!", File
                             End If
                         End If
                         File = Dir
@@ -549,7 +549,7 @@ NextID:
         nOk = 0: sOk = vbNullString
         Do While Len(File) > 0
             If User.IsID4(FileExt(File)) Then
-                'Application.StatusBar = Bsprintf("Файл %s ok", File)
+                'Application.StatusBar = Bsprintf("Р¤Р°Р№Р» %s ok", File)
                 nOk = nOk + 1: sOk = sOk & Bsprintf("  %d. %s\n", nOk, File)
                 File1 = .Recv & File
                 File2 = .Archive & File
@@ -557,8 +557,8 @@ NextID:
                     If IsFile(File2) Then Kill File2
                     Name File1 As File2
                     If Not IsFile(File2) Then
-                        If YesNoBox("Файл '%s'\nне удалось переместить в архив\nв '%s'\n\n" & _
-                            "Удалить его отсюда?", _
+                        If YesNoBox("Р¤Р°Р№Р» '%s'\nРЅРµ СѓРґР°Р»РѕСЃСЊ РїРµСЂРµРјРµСЃС‚РёС‚СЊ РІ Р°СЂС…РёРІ\nРІ '%s'\n\n" & _
+                            "РЈРґР°Р»РёС‚СЊ РµРіРѕ РѕС‚СЃСЋРґР°?", _
                             File1, .Archive) Then
                             Kill File1
                         End If
@@ -569,7 +569,7 @@ NextID:
         Loop
                 
         DoEvents
-        File = Dir(.Recv & "EYP??*.*") 'удаление ошибочного возврата выписок
+        File = Dir(.Recv & "EYP??*.*") 'СѓРґР°Р»РµРЅРёРµ РѕС€РёР±РѕС‡РЅРѕРіРѕ РІРѕР·РІСЂР°С‚Р° РІС‹РїРёСЃРѕРє
         Do While Len(File) > 0
             File1 = .Recv & File
             Kill File1
@@ -577,7 +577,7 @@ NextID:
         Loop
         
         DoEvents
-        File = Dir(.Recv & "ESK.*") 'удаление ошибочного запроса выписок
+        File = Dir(.Recv & "ESK.*") 'СѓРґР°Р»РµРЅРёРµ РѕС€РёР±РѕС‡РЅРѕРіРѕ Р·Р°РїСЂРѕСЃР° РІС‹РїРёСЃРѕРє
         Do While Len(File) > 0
             File1 = .Recv & File
             Kill File1
@@ -588,7 +588,7 @@ NextID:
         nErr = 0: sErr = vbNullString
         Do While Len(File) > 0
             If User.IsID4(FileExt(File)) Then
-                'Application.StatusBar = Bsprintf("Файл %s с ошибкой!", File)
+                'Application.StatusBar = Bsprintf("Р¤Р°Р№Р» %s СЃ РѕС€РёР±РєРѕР№!", File)
                 nErr = nErr + 1: sErr = sErr & Bsprintf("  %d. %s\n", nErr, File)
                 File1 = .Recv & File
                 File2 = .Archive & File
@@ -596,8 +596,8 @@ NextID:
                     If IsFile(File2) Then Kill File2
                     Name File1 As File2
                     If Not IsFile(File2) Then
-                        If YesNoBox("Файл '%s'\nне удалось переместить в архив\nв '%s'\n\n" & _
-                            "Удалить его отсюда?", _
+                        If YesNoBox("Р¤Р°Р№Р» '%s'\nРЅРµ СѓРґР°Р»РѕСЃСЊ РїРµСЂРµРјРµСЃС‚РёС‚СЊ РІ Р°СЂС…РёРІ\nРІ '%s'\n\n" & _
+                            "РЈРґР°Р»РёС‚СЊ РµРіРѕ РѕС‚СЃСЋРґР°?", _
                             File1, .Archive) Then
                             Kill File1
                         End If
@@ -612,7 +612,7 @@ NextID:
         nTest = 0: sTest = vbNullString
         Do While Len(File) > 0
             If User.IsID4(FileExt(File)) Then
-                'Application.StatusBar = Bsprintf("Файл %s тестовый!", File)
+                'Application.StatusBar = Bsprintf("Р¤Р°Р№Р» %s С‚РµСЃС‚РѕРІС‹Р№!", File)
                 nTest = nTest + 1: sTest = sTest & Bsprintf("  %d. %s\n", nTest, File)
                 File1 = .Recv & File
                 File2 = .Archive & File
@@ -620,8 +620,8 @@ NextID:
                     If IsFile(File2) Then Kill File2
                     Name File1 As File2
                     If Not IsFile(File2) Then
-                        If YesNoBox("Файл '%s'\nне удалось переместить в архив\nв '%s'\n\n" & _
-                            "Удалить его отсюда?", _
+                        If YesNoBox("Р¤Р°Р№Р» '%s'\nРЅРµ СѓРґР°Р»РѕСЃСЊ РїРµСЂРµРјРµСЃС‚РёС‚СЊ РІ Р°СЂС…РёРІ\nРІ '%s'\n\n" & _
+                            "РЈРґР°Р»РёС‚СЊ РµРіРѕ РѕС‚СЃСЋРґР°?", _
                             File1, .Archive) Then
                             Kill File1
                         End If
@@ -634,14 +634,14 @@ NextID:
         
         DoEvents
         s = vbNullString
-        If nOk > 0 Then s = s & Bsprintf("Принято %d:\n%s\n", nOk, sOk)
-        If nErr > 0 Then s = s & Bsprintf("Отказано %d:\n%s\n", nErr, sErr)
-        If nTest > 0 Then s = s & Bsprintf("Протестировано %d:\n%s\n", nTest, sTest)
+        If nOk > 0 Then s = s & Bsprintf("РџСЂРёРЅСЏС‚Рѕ %d:\n%s\n", nOk, sOk)
+        If nErr > 0 Then s = s & Bsprintf("РћС‚РєР°Р·Р°РЅРѕ %d:\n%s\n", nErr, sErr)
+        If nTest > 0 Then s = s & Bsprintf("РџСЂРѕС‚РµСЃС‚РёСЂРѕРІР°РЅРѕ %d:\n%s\n", nTest, sTest)
         If Len(s) > 0 Then InfoBox s
     End With
     
     If ActiveWorkbook.Worksheets.Count <= 3 Then
-        If YesNoBox("У Вас нет Вашего рабочего листа!\nДобавить его сейчас?") Then
+        If YesNoBox("РЈ Р’Р°СЃ РЅРµС‚ Р’Р°С€РµРіРѕ СЂР°Р±РѕС‡РµРіРѕ Р»РёСЃС‚Р°!\nР”РѕР±Р°РІРёС‚СЊ РµРіРѕ СЃРµР№С‡Р°СЃ?") Then
             NewUserShow
         End If
     End If
@@ -651,7 +651,7 @@ End Function
 
 Public Sub UrgentMessage(File As String)
     On Error Resume Next
-    If Not YesNoBox("ВАЖНОЕ СООБЩЕНИЕ ИЗ БАНКА:\n\n%s\n\nНапоминать еще?", _
+    If Not YesNoBox("Р’РђР–РќРћР• РЎРћРћР‘Р©Р•РќРР• РР— Р‘РђРќРљРђ:\n\n%s\n\nРќР°РїРѕРјРёРЅР°С‚СЊ РµС‰Рµ?", _
         CWin(InputFile(File))) Then
         Kill File
     End If
@@ -675,7 +675,7 @@ Public Sub ImportNewKeys()
         If App.LocateFile(File) Then
             Floppy = FilePath(File)
         Else
-            InfoBox "Отказ от выполнения импорта."
+            InfoBox "РћС‚РєР°Р· РѕС‚ РІС‹РїРѕР»РЅРµРЅРёСЏ РёРјРїРѕСЂС‚Р°."
             Exit Sub
         End If
     End If
@@ -692,13 +692,13 @@ Public Sub ImportNewKeys()
         If IsFile(File2) Then Name File2 As File2 & Bsprintf(".%d.old", nOk)
         If IsFile(File2) Then Kill File2
         If IsFile(File2) Then
-            WarnBox "Директория защищена от записи!\nИмпорт не выполнен."
+            WarnBox "Р”РёСЂРµРєС‚РѕСЂРёСЏ Р·Р°С‰РёС‰РµРЅР° РѕС‚ Р·Р°РїРёСЃРё!\nРРјРїРѕСЂС‚ РЅРµ РІС‹РїРѕР»РЅРµРЅ."
         Else
             FileCopy Floppy & File, File2
             If IsFile(File2) Then
-                InfoBox "Файл ключа \'%s\' успешно импортирован", File
+                InfoBox "Р¤Р°Р№Р» РєР»СЋС‡Р° \'%s\' СѓСЃРїРµС€РЅРѕ РёРјРїРѕСЂС‚РёСЂРѕРІР°РЅ", File
             Else
-                WarnBox "Файл ключа \'%s\' НЕ импортирован!", File
+                WarnBox "Р¤Р°Р№Р» РєР»СЋС‡Р° \'%s\' РќР• РёРјРїРѕСЂС‚РёСЂРѕРІР°РЅ!", File
             End If
         End If
         File = Dir

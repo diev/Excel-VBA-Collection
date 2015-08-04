@@ -77,8 +77,8 @@ End Function
 
 Public Function PrintDelivery() As String
     Select Case mDelivery
-        Case "C": PrintDelivery = "Электронно"
-        Case Else: PrintDelivery = "Почтой"
+        Case "C": PrintDelivery = "Р­Р»РµРєС‚СЂРѕРЅРЅРѕ"
+        Case Else: PrintDelivery = "РџРѕС‡С‚РѕР№"
     End Select
 End Function
 
@@ -101,30 +101,30 @@ Private Sub BnkSeekBIC()
     Else
         Buf = FieldValue(Rec, "PZN")
         Select Case Buf
-            Case "00": Buf = "ГРКЦ "
-            Case "10": Buf = "РКЦ "
-            Case "20": Buf = "Б "
-            Case "21": Buf = "КБ "
-            Case "22": Buf = "СБ "
-            Case "23": Buf = "АКБ "
-            Case "24": Buf = "ЧКБ "
-            Case "25": Buf = "КОПБ "
-            Case "26": Buf = "АПБ "
-            Case "30": Buf = "ФБ "
-            Case "31": Buf = "ФКБ "
-            Case "32": Buf = "Отд."
-            Case "33": Buf = "ФАКБ "
-            Case "34": Buf = "ФЧКБ "
-            Case "35": Buf = "ФКОБ "
-            Case "36": Buf = "Отд."
-            Case "40": Buf = "ПУ "
-            Case "50": Buf = "ЦХ "
-            Case "70": Buf = "КУ "
-            Case "71": Buf = "КЛ "
-            Case "72": Buf = "ОРЦБ "
-            Case "90": Buf = "ЛИКВ "
-            Case "98": Buf = "ИСКЛ "
-            Case "99": Buf = "ОТЗВ "
+            Case "00": Buf = "Р“Р РљР¦ "
+            Case "10": Buf = "Р РљР¦ "
+            Case "20": Buf = "Р‘ "
+            Case "21": Buf = "РљР‘ "
+            Case "22": Buf = "РЎР‘ "
+            Case "23": Buf = "РђРљР‘ "
+            Case "24": Buf = "Р§РљР‘ "
+            Case "25": Buf = "РљРћРџР‘ "
+            Case "26": Buf = "РђРџР‘ "
+            Case "30": Buf = "Р¤Р‘ "
+            Case "31": Buf = "Р¤РљР‘ "
+            Case "32": Buf = "РћС‚Рґ."
+            Case "33": Buf = "Р¤РђРљР‘ "
+            Case "34": Buf = "Р¤Р§РљР‘ "
+            Case "35": Buf = "Р¤РљРћР‘ "
+            Case "36": Buf = "РћС‚Рґ."
+            Case "40": Buf = "РџРЈ "
+            Case "50": Buf = "Р¦РҐ "
+            Case "70": Buf = "РљРЈ "
+            Case "71": Buf = "РљР› "
+            Case "72": Buf = "РћР Р¦Р‘ "
+            Case "90": Buf = "Р›РРљР’ "
+            Case "98": Buf = "РРЎРљР› "
+            Case "99": Buf = "РћРўР—Р’ "
             Case Else
                 Buf = ""
         End Select
@@ -132,22 +132,22 @@ Private Sub BnkSeekBIC()
     mName = Buf & FieldValue(Rec, "NAMEP")
      
     n = Val(FieldValue(Rec, "TNP"))
-    mPlace = Choose(n, "Г.", "П.", "С.", "ПГТ ", "СТ-ЦА ", "АУЛ ", "РП ") & _
+    mPlace = Choose(n, "Р“.", "Рџ.", "РЎ.", "РџР“Рў ", "РЎРў-Р¦Рђ ", "РђРЈР› ", "Р Рџ ") & _
         FieldValue(Rec, "NNP")
      
-    If Left(mBIC, 4) = "0440" Then 'С-Петербург
+    If Left(mBIC, 4) = "0440" Then 'РЎ-РџРµС‚РµСЂР±СѓСЂРі
         Buf = Mid(mBIC, 5, 2)
-        mDelivery = IIf(Buf = "30", "A", "B") 'внутригор. / внутрирег.
+        mDelivery = IIf(Buf = "30", "A", "B") 'РІРЅСѓС‚СЂРёРіРѕСЂ. / РІРЅСѓС‚СЂРёСЂРµРі.
          
-        'Buf = Right(mBIC, 3) 'Sorry, это в счете клиента...
+        'Buf = Right(mBIC, 3) 'Sorry, СЌС‚Рѕ РІ СЃС‡РµС‚Рµ РєР»РёРµРЅС‚Р°...
         'If Buf = "790" Or Buf = "791" Then
-        '    'Требуется таблица филиалов!
+        '    'РўСЂРµР±СѓРµС‚СЃСЏ С‚Р°Р±Р»РёС†Р° С„РёР»РёР°Р»РѕРІ!
         '    Mid(mKS, 10, 4) = "xxxx"
         'End If
          
-    Else 'иногородние
+    Else 'РёРЅРѕРіРѕСЂРѕРґРЅРёРµ
         n = Val(FieldValue(Rec, "UER"))
-        mDelivery = IIf(n = 1 Or n = 3, "C", "P") 'межрег. / почтовые
+        mDelivery = IIf(n = 1 Or n = 3, "C", "P") 'РјРµР¶СЂРµРі. / РїРѕС‡С‚РѕРІС‹Рµ
     End If
     
     mPostCode = FieldValue(Rec, "IND")
@@ -160,27 +160,27 @@ Private Sub BnkSeekBIC()
 End Sub
 
 Public Function Info() As String
-    Info = BPrintF("%s, %s\nБИК %s, К/С %s", mName, mPlace, mBIC, mKS)
+    Info = BPrintF("%s, %s\nР‘РРљ %s, Рљ/РЎ %s", mName, mPlace, mBIC, mKS)
 End Function
 
 Public Function FullInfo() As String
-    FullInfo = BPrintF("%s\nИнд.: %s, адрес: %s\nтел.: %s, дата изм.: %s", Info, mPostCode, mAddress, mTel, mDateIzm)
+    FullInfo = BPrintF("%s\nРРЅРґ.: %s, Р°РґСЂРµСЃ: %s\nС‚РµР».: %s, РґР°С‚Р° РёР·Рј.: %s", Info, mPostCode, mAddress, mTel, mDateIzm)
 End Function
 
 Public Sub FillForm(Position As Long, BIC As String)
     Me.BIC = BIC
     If Position = 1 Then
-        Range("БИК1") = mBIC
-        Range("Банк1") = mName
-        Range("Место1") = mPlace
-        Range("Корсчет1") = mKS
+        Range("Р‘РРљ1") = mBIC
+        Range("Р‘Р°РЅРє1") = mName
+        Range("РњРµСЃС‚Рѕ1") = mPlace
+        Range("РљРѕСЂСЃС‡РµС‚1") = mKS
     Else
-        Range("БИК2") = mBIC
-        Range("Банк2") = mName
-        Range("Место2") = mPlace
-        Range("Корсчет2") = mKS
-        Range("ВидПлатежа") = PrintDelivery
-        Range("Тип") = Bankier
-        Range("Посылка") = mDelivery
+        Range("Р‘РРљ2") = mBIC
+        Range("Р‘Р°РЅРє2") = mName
+        Range("РњРµСЃС‚Рѕ2") = mPlace
+        Range("РљРѕСЂСЃС‡РµС‚2") = mKS
+        Range("Р’РёРґРџР»Р°С‚РµР¶Р°") = PrintDelivery
+        Range("РўРёРї") = Bankier
+        Range("РџРѕСЃС‹Р»РєР°") = mDelivery
     End If
 End Sub

@@ -1,6 +1,6 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} PlatEnter 
-   Caption         =   "Нет получателя!"
+   Caption         =   "РќРµС‚ РїРѕР»СѓС‡Р°С‚РµР»СЏ!"
    ClientHeight    =   3600
    ClientLeft      =   30
    ClientTop       =   270
@@ -27,14 +27,14 @@ Private Sub CalcTax()
     Dim n As Variant, T As String, x As Variant
     n = RVal(cboTax.Text)
     If n = 0 Then
-        n = "нет"
-        T = "НДС не облагается."
+        n = "РЅРµС‚"
+        T = "РќР”РЎ РЅРµ РѕР±Р»Р°РіР°РµС‚СЃСЏ."
     Else
         If InStr(1, cboTax, "%") = 0 Then
             cboTax.Text = cboTax.Text & "%"
         End If
         n = PlatFormat(Sum2Tax(RVal(txtSum), n))
-        T = Bsprintf("В том числе НДС %s: %s.", cboTax.Text, n)
+        T = Bsprintf("Р’ С‚РѕРј С‡РёСЃР»Рµ РќР”РЎ %s: %s.", cboTax.Text, n)
     End If
     cmdTaxAdd.Caption = n
     cmdTaxAdd.ControlTipText = T
@@ -58,7 +58,7 @@ Private Sub cmdPayee_Click()
     PayUserShow
     With Payment
         If Len(.Name) > 0 Then
-            Caption = "Получатель: " & .Name
+            Caption = "РџРѕР»СѓС‡Р°С‚РµР»СЊ: " & .Name
             cmdPayee.ControlTipText = .Name
             cmdPayee.Font.Bold = False
         End If
@@ -76,25 +76,25 @@ End Sub
 
 Private Sub sbrRows_Change()
     With sbrRows
-        .ControlTipText = Bsprintf("Строка %d", .Value)
+        .ControlTipText = Bsprintf("РЎС‚СЂРѕРєР° %d", .Value)
     End With
     If mLoading Then Exit Sub
     With Payment
         Application.GoTo Worksheets(User.ID).Range("$A$1").Cells(sbrRows.Value), False
         .ReadRow sbrRows.Value
         If Len(.Name) = 0 Then
-            Caption = "Нет получателя!"
+            Caption = "РќРµС‚ РїРѕР»СѓС‡Р°С‚РµР»СЏ!"
             cmdPayee.Font.Bold = True
-            lblNo = "Номер:"
-            lblDate = "Дата:"
+            lblNo = "РќРѕРјРµСЂ:"
+            lblDate = "Р”Р°С‚Р°:"
             txtSum = vbNullString
             txtDetails = vbNullString
         Else
-            Caption = "Получатель: " & .Name
+            Caption = "РџРѕР»СѓС‡Р°С‚РµР»СЊ: " & .Name
             cmdPayee.Font.Bold = False
             cmdPayee.ControlTipText = .Name
-            lblNo = Bsprintf("Номер %d:", .DocNo)
-            lblDate = Bsprintf("Дата %n:", .DocDate)
+            lblNo = Bsprintf("РќРѕРјРµСЂ %d:", .DocNo)
+            lblDate = Bsprintf("Р”Р°С‚Р° %n:", .DocDate)
             cboQueue = CStr(.Queue)
             txtSum = PlatFormat(.Sum)
             txtDetails = .Details
@@ -144,22 +144,22 @@ Private Sub cmdOk_Click()
     If User.Demo Then GoTo SkipCheck
     
     If Val(txtNo) = 0 Then
-        WarnBox "Не введен номер поручения!"
+        WarnBox "РќРµ РІРІРµРґРµРЅ РЅРѕРјРµСЂ РїРѕСЂСѓС‡РµРЅРёСЏ!"
         txtNo.SetFocus
         Exit Sub
     End If
     If Val(txtNo) > User.NoMax Then
-        WarnBox "Номер поручения превышает допустимый предел!"
+        WarnBox "РќРѕРјРµСЂ РїРѕСЂСѓС‡РµРЅРёСЏ РїСЂРµРІС‹С€Р°РµС‚ РґРѕРїСѓСЃС‚РёРјС‹Р№ РїСЂРµРґРµР»!"
         txtNo.SetFocus
         Exit Sub
     End If
     If Val(txtNo) < User.NoMin Then
-        WarnBox "Номер поручения ниже допустимого предела!"
+        WarnBox "РќРѕРјРµСЂ РїРѕСЂСѓС‡РµРЅРёСЏ РЅРёР¶Рµ РґРѕРїСѓСЃС‚РёРјРѕРіРѕ РїСЂРµРґРµР»Р°!"
         txtNo.SetFocus
         Exit Sub
     End If
     If RVal(txtSum) = 0 Then
-        WarnBox "Не введена сумма платежа!"
+        WarnBox "РќРµ РІРІРµРґРµРЅР° СЃСѓРјРјР° РїР»Р°С‚РµР¶Р°!"
         txtSum.SetFocus
         Exit Sub
     End If
@@ -167,41 +167,41 @@ Private Sub cmdOk_Click()
     If InStr(1, "30122|30123|30230|30231|40807|40813|40814|40815|40818|40819|40820", _
         s) > 0 Then
         If Left(txtDetails, 3) <> "{VO" Then
-            WarnBox "Не указан паспорт сделки {VO\nпри рассчетах с нерезидентом!\n\nПозвоните в Отдел валютного контроля."
+            WarnBox "РќРµ СѓРєР°Р·Р°РЅ РїР°СЃРїРѕСЂС‚ СЃРґРµР»РєРё {VO\nРїСЂРё СЂР°СЃСЃС‡РµС‚Р°С… СЃ РЅРµСЂРµР·РёРґРµРЅС‚РѕРј!\n\nРџРѕР·РІРѕРЅРёС‚Рµ РІ РћС‚РґРµР» РІР°Р»СЋС‚РЅРѕРіРѕ РєРѕРЅС‚СЂРѕР»СЏ."
             txtDetails.SetFocus
             Exit Sub
         End If
     End If
     s = txtDetails
     If InStr(1, txtDetails, "^") > 0 Then
-        WarnBox "Нельзя вводить символ \'^\'!"
+        WarnBox "РќРµР»СЊР·СЏ РІРІРѕРґРёС‚СЊ СЃРёРјРІРѕР» \'^\'!"
         txtDetails.SetFocus
         Exit Sub
     End If
     With txtDetails
         If InStr(1, .Text, "  ") > 0 Then
-            WarnBox "Не надо вводить лишние пробелы!"
+            WarnBox "РќРµ РЅР°РґРѕ РІРІРѕРґРёС‚СЊ Р»РёС€РЅРёРµ РїСЂРѕР±РµР»С‹!"
             .Text = StrSpaces1(s)
         End If
         If txtDetails.TextLength = 0 Then
-            WarnBox "Не введено назначение платежа!"
+            WarnBox "РќРµ РІРІРµРґРµРЅРѕ РЅР°Р·РЅР°С‡РµРЅРёРµ РїР»Р°С‚РµР¶Р°!"
             txtDetails.SetFocus
             Exit Sub
         End If
     End With
     With Payment
         If Len(.Name) = 0 Then
-            WarnBox "Не введен получатель платежа!"
+            WarnBox "РќРµ РІРІРµРґРµРЅ РїРѕР»СѓС‡Р°С‚РµР»СЊ РїР»Р°С‚РµР¶Р°!"
             cmdPayee_Click
             Exit Sub
         End If
         If Len(.BIC) = 0 Then
-            WarnBox "Не введен банк получателя платежа!"
+            WarnBox "РќРµ РІРІРµРґРµРЅ Р±Р°РЅРє РїРѕР»СѓС‡Р°С‚РµР»СЏ РїР»Р°С‚РµР¶Р°!"
             cmdPayee_Click
             Exit Sub
         End If
         If Len(.LS) = 0 Then
-            WarnBox "Не введен л/с получателя платежа!"
+            WarnBox "РќРµ РІРІРµРґРµРЅ Р»/СЃ РїРѕР»СѓС‡Р°С‚РµР»СЏ РїР»Р°С‚РµР¶Р°!"
             cmdPayee_Click
             Exit Sub
         End If
@@ -219,7 +219,7 @@ SkipCheck:
         
         s = .ValidationError
         If Len(s) > 0 Then
-            WarnBox "ПРЕДУПРЕЖДЕНИЕ!\nВведенный документ не удовлетворяет\nправилам входного контроля:\n\n%s!", s
+            WarnBox "РџР Р•Р”РЈРџР Р•Р–Р”Р•РќРР•!\nР’РІРµРґРµРЅРЅС‹Р№ РґРѕРєСѓРјРµРЅС‚ РЅРµ СѓРґРѕРІР»РµС‚РІРѕСЂСЏРµС‚\nРїСЂР°РІРёР»Р°Рј РІС…РѕРґРЅРѕРіРѕ РєРѕРЅС‚СЂРѕР»СЏ:\n\n%s!", s
         End If
         
         User.No = .DocNo + 1
@@ -249,10 +249,10 @@ Private Sub UserForm_Initialize()
         If Len(.Name) = 0 Then
             cmdPayee.Font.Bold = True
         Else
-            Caption = "Получатель: " & .Name
+            Caption = "РџРѕР»СѓС‡Р°С‚РµР»СЊ: " & .Name
             cmdPayee.ControlTipText = .Name
-            lblNo = Bsprintf("Номер %d:", .DocNo)
-            lblDate = Bsprintf("Дата %n:", .DocDate)
+            lblNo = Bsprintf("РќРѕРјРµСЂ %d:", .DocNo)
+            lblDate = Bsprintf("Р”Р°С‚Р° %n:", .DocDate)
             cboQueue = CStr(.Queue)
             txtSum = PlatFormat(.Sum)
             txtDetails = .Details
@@ -265,10 +265,10 @@ Private Sub UserForm_Initialize()
         sbrRows.Value = .Row
     End With
     txtDate = PlatDate(Date)
-    txtDate.ControlTipText = "Сегодня " & PlatDate(Date)
+    txtDate.ControlTipText = "РЎРµРіРѕРґРЅСЏ " & PlatDate(Date)
     txtNo = CStr(User.No)
     With cboTax
-        .AddItem "нет"
+        .AddItem "РЅРµС‚"
         .AddItem "18%"
         .AddItem "20%"
         .AddItem "10%"
@@ -283,4 +283,3 @@ Private Sub UserForm_Initialize()
     End With
     mLoading = False
 End Sub
-

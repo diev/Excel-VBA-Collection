@@ -68,4 +68,3 @@ Public Function Ot36(Value As String) As Long
 ErrHandler:
     Ot36 = -1 'Overflow!
 End Function
-

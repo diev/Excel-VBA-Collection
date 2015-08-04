@@ -30,6 +30,3 @@ Public Function YesNoCancelBox(FormatStr As String, ParamArray Args() As Variant
     YesNoCancelBox = MsgBox(Bvsprintf(FormatStr, CVar(Args)), vbQuestion + vbYesNoCancel, _
         App.TITLE)
 End Function
-
-
-

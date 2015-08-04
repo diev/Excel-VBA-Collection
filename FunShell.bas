@@ -19,13 +19,13 @@ Public Sub ShellWait(RunCmd As String, Optional RunWindow As Long = vbMinimizedN
     retVal = WaitForSingleObject(pHandle, INFINITE)
     Exit Sub
 ErrShell:
-    MsgBox "Ошибка запуска!" & vbCrLf & Err.Description, vbCritical, App.Title
+    MsgBox "РћС€РёР±РєР° Р·Р°РїСѓСЃРєР°!" & vbCrLf & Err.Description, vbCritical, App.Title
 End Sub
 
 Public Sub ShellDialog(RunCmd As String, Optional RunWindow As Long = vbNormalFocus, Optional RunDebug As Boolean = False)
-    Application.StatusBar = "Запуск внешней программы и ожидание ее завершения..."
+    Application.StatusBar = "Р—Р°РїСѓСЃРє РІРЅРµС€РЅРµР№ РїСЂРѕРіСЂР°РјРјС‹ Рё РѕР¶РёРґР°РЅРёРµ РµРµ Р·Р°РІРµСЂС€РµРЅРёСЏ..."
     If RunDebug Then
-        MsgBox BPrintF("Запуск %d симв. из директории %s\n\n%s", Len(RunCmd), CurDir, RunCmd), vbExclamation, App.Title
+        MsgBox BPrintF("Р—Р°РїСѓСЃРє %d СЃРёРјРІ. РёР· РґРёСЂРµРєС‚РѕСЂРёРё %s\n\n%s", Len(RunCmd), CurDir, RunCmd), vbExclamation, App.Title
     End If
     ShellWait RunCmd, RunWindow
     Application.StatusBar = False

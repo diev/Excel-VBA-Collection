@@ -19,8 +19,8 @@ Public Sub SetMenu()
         '    If i = LBound(v, 1) Then
         '        m = CStr(v(i, 0))
         '        s = CStr(v(i, 1))
-        '        If Len(m) = 0 Then m = "&Банк-Клиент"
-        '        If Len(s) = 0 Then s = "6" 'before Сервис/Tools
+        '        If Len(m) = 0 Then m = "&Р‘Р°РЅРє-РљР»РёРµРЅС‚"
+        '        If Len(s) = 0 Then s = "6" 'before РЎРµСЂРІРёСЃ/Tools
         '        .Menus.Add m, before:=Val(s)
         '    Else
         '        s = CStr(v(i, 0))
@@ -33,29 +33,29 @@ Public Sub SetMenu()
         '    End If
         'Next
         
-        m = "&Банк-Клиент"
+        m = "&Р‘Р°РЅРє-РљР»РёРµРЅС‚"
         .Menus.Add m, before:=6
         With .Menus(m).MenuItems
-            .Add "&Ввод поручения...", "PlatEnterShow"
+            .Add "&Р’РІРѕРґ РїРѕСЂСѓС‡РµРЅРёСЏ...", "PlatEnterShow"
             .Add "-"
-            .Add "&Просмотр", "PreviewPlat"
-            .Add "П&ечать", "PrintPlat"
-            .Add "О&тправить в Банк", "ExportPlat"
+            .Add "&РџСЂРѕСЃРјРѕС‚СЂ", "PreviewPlat"
+            .Add "Рџ&РµС‡Р°С‚СЊ", "PrintPlat"
+            .Add "Рћ&С‚РїСЂР°РІРёС‚СЊ РІ Р‘Р°РЅРє", "ExportPlat"
             .Add "-"
-            '.Add "&Импорт из файла...", "ImportPlat"
-            '.Add "&Настройки...", "UserOptionsShow"
+            '.Add "&РРјРїРѕСЂС‚ РёР· С„Р°Р№Р»Р°...", "ImportPlat"
+            '.Add "&РќР°СЃС‚СЂРѕР№РєРё...", "UserOptionsShow"
             .Add "-"
-            .Add "Почта в &Банк...", "SMailSend"
-            .Add "Сеанс &связи SMail", "SMailDial"
-            .Add "Почта из Б&анка...", "SMailRecv"
+            .Add "РџРѕС‡С‚Р° РІ &Р‘Р°РЅРє...", "SMailSend"
+            .Add "РЎРµР°РЅСЃ &СЃРІСЏР·Рё SMail", "SMailDial"
+            .Add "РџРѕС‡С‚Р° РёР· Р‘&Р°РЅРєР°...", "SMailRecv"
             .Add "-"
-            .Add "&Добавить реквизиты...", "NewNameShow"
-            .Add "В&зять поручение из архива", "ArchivedPlat"
+            .Add "&Р”РѕР±Р°РІРёС‚СЊ СЂРµРєРІРёР·РёС‚С‹...", "NewNameShow"
+            .Add "Р’&Р·СЏС‚СЊ РїРѕСЂСѓС‡РµРЅРёРµ РёР· Р°СЂС…РёРІР°", "ArchivedPlat"
             .Add "-"
-            .Add "Пе&резапуск", "Reset"
+            .Add "РџРµ&СЂРµР·Р°РїСѓСЃРє", "Reset"
             .Add "-"
-            '.Add "&Справка", "HelpShow"
-            .Add "&О программе", "AboutShow"
+            '.Add "&РЎРїСЂР°РІРєР°", "HelpShow"
+            .Add "&Рћ РїСЂРѕРіСЂР°РјРјРµ", "AboutShow"
         End With
     End With
 End Sub
@@ -65,14 +65,14 @@ Public Sub PlatEnterShow()
 End Sub
 
 Public Sub PreviewPlat()
-    'Application.Goto BnkCliWorkbook & "!Платежка", True
+    'Application.Goto BnkCliWorkbook & "!РџР»Р°С‚РµР¶РєР°", True
     'ActiveWindow.SelectedSheets.PrintPreview
     'Worksheets(Payment.PlatSheet).PrintPreview
     Worksheets(PlatSheet).PrintPreview
 End Sub
 
 Public Sub PrintPlat()
-    'Application.Goto BnkCliWorkbook & "!Платежка", True
+    'Application.Goto BnkCliWorkbook & "!РџР»Р°С‚РµР¶РєР°", True
     'ActiveWindow.SelectedSheets.PrintOut
     'Worksheets(Payment.PlatSheet).PrintOut
     Worksheets(PlatSheet).PrintOut
@@ -86,7 +86,7 @@ Public Sub NewNameShow()
             .Show
         End With
         Unload NewName
-    Loop While MsgBox("Добавить еще?", vbYesNo + vbQuestion, AppTitle) = vbYes
+    Loop While MsgBox("Р”РѕР±Р°РІРёС‚СЊ РµС‰Рµ?", vbYesNo + vbQuestion, AppTitle) = vbYes
 End Sub
 
 'Public Sub UserOptionsShow()
@@ -94,7 +94,7 @@ End Sub
 'End Sub
 
 Public Sub Reset()
-    If MsgBox("Вы действительно хотите перезапустить программу?", vbCritical + vbYesNo, AppTitle) = vbYes Then
+    If MsgBox("Р’С‹ РґРµР№СЃС‚РІРёС‚РµР»СЊРЅРѕ С…РѕС‚РёС‚Рµ РїРµСЂРµР·Р°РїСѓСЃС‚РёС‚СЊ РїСЂРѕРіСЂР°РјРјСѓ?", vbCritical + vbYesNo, AppTitle) = vbYes Then
         AutoOpen
     End If
 End Sub
@@ -108,7 +108,7 @@ Public Sub SMailDial()
     s = Range("Dial").Text
     On Error Resume Next
     If Shell(s, vbNormalFocus) = 0 Then
-        ErrorBox Err, BPrintF("Ошибка запуска\n~%s~", s), AppTitle
+        ErrorBox Err, BPrintF("РћС€РёР±РєР° Р·Р°РїСѓСЃРєР°\n~%s~", s), AppTitle
     End If
 End Sub
 
@@ -123,7 +123,7 @@ Public Sub ArchivedPlat()
 End Sub
 
 Public Sub Reset()
-    If MsgBox("Вы действительно хотите перезапустить программу?", vbCritical + vbYesNo, AppTitle) = vbYes Then
+    If MsgBox("Р’С‹ РґРµР№СЃС‚РІРёС‚РµР»СЊРЅРѕ С…РѕС‚РёС‚Рµ РїРµСЂРµР·Р°РїСѓСЃС‚РёС‚СЊ РїСЂРѕРіСЂР°РјРјСѓ?", vbCritical + vbYesNo, AppTitle) = vbYes Then
         AutoOpen
     End If
 End Sub
@@ -131,4 +131,3 @@ End Sub
 Public Sub Info()
     AboutShow
 End Sub
-

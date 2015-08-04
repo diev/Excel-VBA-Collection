@@ -4,10 +4,10 @@ Option Compare Text
 Option Base 1
 DefLng A-Z
 
-'Читает всю строку с цифрами и возвращает дробное целое число,
-'независимо от наличия пробелов и букв в этой строке,
-'но дробная часть отделяется после последней точки,
-'запятой, знака равенства или минуса (или указанного списка разделителей).
+'Р§РёС‚Р°РµС‚ РІСЃСЋ СЃС‚СЂРѕРєСѓ СЃ С†РёС„СЂР°РјРё Рё РІРѕР·РІСЂР°С‰Р°РµС‚ РґСЂРѕР±РЅРѕРµ С†РµР»РѕРµ С‡РёСЃР»Рѕ,
+'РЅРµР·Р°РІРёСЃРёРјРѕ РѕС‚ РЅР°Р»РёС‡РёСЏ РїСЂРѕР±РµР»РѕРІ Рё Р±СѓРєРІ РІ СЌС‚РѕР№ СЃС‚СЂРѕРєРµ,
+'РЅРѕ РґСЂРѕР±РЅР°СЏ С‡Р°СЃС‚СЊ РѕС‚РґРµР»СЏРµС‚СЃСЏ РїРѕСЃР»Рµ РїРѕСЃР»РµРґРЅРµР№ С‚РѕС‡РєРё,
+'Р·Р°РїСЏС‚РѕР№, Р·РЅР°РєР° СЂР°РІРµРЅСЃС‚РІР° РёР»Рё РјРёРЅСѓСЃР° (РёР»Рё СѓРєР°Р·Р°РЅРЅРѕРіРѕ СЃРїРёСЃРєР° СЂР°Р·РґРµР»РёС‚РµР»РµР№).
 Public Function RVal(Value As String, Optional Delim As String = ".,=-") As Currency
     Dim i, b() As Byte, s As String, n, p
     RVal = 0
@@ -47,7 +47,7 @@ End Function
 '    RVal = Val(ss)
 'End Function
 
-'Возвращает сумму прописью из дроби (например, полученной из RVal()
+'Р’РѕР·РІСЂР°С‰Р°РµС‚ СЃСѓРјРјСѓ РїСЂРѕРїРёСЃСЊСЋ РёР· РґСЂРѕР±Рё (РЅР°РїСЂРёРјРµСЂ, РїРѕР»СѓС‡РµРЅРЅРѕР№ РёР· RVal()
 Public Function RSumStr(Rubles As Currency, Optional Delim As String = " ") As String
 Attribute RSumStr.VB_ProcData.VB_Invoke_Func = " \n14"
     Dim s As String, n, ss As String: n = 0: ss = ""
@@ -55,69 +55,69 @@ Attribute RSumStr.VB_ProcData.VB_Invoke_Func = " \n14"
     s = Format(Rubles, "000000000000000.00")
     
     n = Val(Mid$(s, 1, 3))
-    If n > 0 Then ss = ss & Nums999Str(n, True) & "триллион" & EndStr(n, "", "а", "ов") & Delim
+    If n > 0 Then ss = ss & Nums999Str(n, True) & "С‚СЂРёР»Р»РёРѕРЅ" & EndStr(n, "", "Р°", "РѕРІ") & Delim
     
     n = Val(Mid$(s, 4, 3))
-    If n > 0 Then ss = ss & Nums999Str(n, True) & "миллиард" & EndStr(n, "", "а", "ов") & Delim
+    If n > 0 Then ss = ss & Nums999Str(n, True) & "РјРёР»Р»РёР°СЂРґ" & EndStr(n, "", "Р°", "РѕРІ") & Delim
         
     n = Val(Mid$(s, 7, 3))
-    If n > 0 Then ss = ss & Nums999Str(n, True) & "миллион" & EndStr(n, "", "а", "ов") & Delim
+    If n > 0 Then ss = ss & Nums999Str(n, True) & "РјРёР»Р»РёРѕРЅ" & EndStr(n, "", "Р°", "РѕРІ") & Delim
         
     n = Val(Mid$(s, 10, 3))
-    If n > 0 Then ss = ss & Nums999Str(n, False) & "тысяч" & EndStr(n, "а", "и", "") & Delim
+    If n > 0 Then ss = ss & Nums999Str(n, False) & "С‚С‹СЃСЏС‡" & EndStr(n, "Р°", "Рё", "") & Delim
     
     n = Val(Mid$(s, 13, 3))
     If n > 0 Then ss = ss & Nums999Str(n, True)
     
-    If Len(ss) = 0 Then ss = "ноль "
-    ss = ss & "рубл" & EndStr(n, "ь ", "я ", "ей ")
+    If Len(ss) = 0 Then ss = "РЅРѕР»СЊ "
+    ss = ss & "СЂСѓР±Р»" & EndStr(n, "СЊ ", "СЏ ", "РµР№ ")
             
     n = Val(Right$(s, 2))
-    ss = ss & Right$(s, 2) & " копе" & EndStr(n, "йка.", "йки.", "ек.")
+    ss = ss & Right$(s, 2) & " РєРѕРїРµ" & EndStr(n, "Р№РєР°.", "Р№РєРё.", "РµРє.")
     
     RSumStr = UCase$(Left$(ss, 1)) & Mid$(ss, 2)
 End Function
 
-'Возвращает число из 3 разрядов прописью в зависимости от рода
+'Р’РѕР·РІСЂР°С‰Р°РµС‚ С‡РёСЃР»Рѕ РёР· 3 СЂР°Р·СЂСЏРґРѕРІ РїСЂРѕРїРёСЃСЊСЋ РІ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ СЂРѕРґР°
 Private Function Nums999Str(ByVal n As Long, ByVal male As Boolean) As String
     Dim ss As String: ss = ""
         
     '0..999
     If n > 99 Then
-        ss = ss & Choose(n \ 100, "сто", "двести", "триста", "четыреста", _
-            "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот") _
+        ss = ss & Choose(n \ 100, "СЃС‚Рѕ", "РґРІРµСЃС‚Рё", "С‚СЂРёСЃС‚Р°", "С‡РµС‚С‹СЂРµСЃС‚Р°", _
+            "РїСЏС‚СЊСЃРѕС‚", "С€РµСЃС‚СЊСЃРѕС‚", "СЃРµРјСЊСЃРѕС‚", "РІРѕСЃРµРјСЊСЃРѕС‚", "РґРµРІСЏС‚СЊСЃРѕС‚") _
             & " "
         n = n Mod 100
     End If
     
     '0..99
     If n > 19 Then
-        ss = ss & Choose(n \ 10 - 1, "двадцать", "тридцать", "сорок", _
-            "пятьдесят", "шестьдесят", "семьдесят", "восемьдесят", "девяносто") _
+        ss = ss & Choose(n \ 10 - 1, "РґРІР°РґС†Р°С‚СЊ", "С‚СЂРёРґС†Р°С‚СЊ", "СЃРѕСЂРѕРє", _
+            "РїСЏС‚СЊРґРµСЃСЏС‚", "С€РµСЃС‚СЊРґРµСЃСЏС‚", "СЃРµРјСЊРґРµСЃСЏС‚", "РІРѕСЃРµРјСЊРґРµСЃСЏС‚", "РґРµРІСЏРЅРѕСЃС‚Рѕ") _
             & " "
         n = n Mod 10
     End If
     
     '0..19
     If n > 9 Then
-        ss = ss & Choose(n - 9, "десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать", _
-            "пятнадцать", "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать") _
+        ss = ss & Choose(n - 9, "РґРµСЃСЏС‚СЊ", "РѕРґРёРЅРЅР°РґС†Р°С‚СЊ", "РґРІРµРЅР°РґС†Р°С‚СЊ", "С‚СЂРёРЅР°РґС†Р°С‚СЊ", "С‡РµС‚С‹СЂРЅР°РґС†Р°С‚СЊ", _
+            "РїСЏС‚РЅР°РґС†Р°С‚СЊ", "С€РµСЃС‚РЅР°РґС†Р°С‚СЊ", "СЃРµРјРЅР°РґС†Р°С‚СЊ", "РІРѕСЃРµРјРЅР°РґС†Р°С‚СЊ", "РґРµРІСЏС‚РЅР°РґС†Р°С‚СЊ") _
             & " "
     ElseIf n > 2 Then
-        ss = ss & Choose(n - 2, "три", "четыре", "пять", "шесть", "семь", "восемь", "девять") _
+        ss = ss & Choose(n - 2, "С‚СЂРё", "С‡РµС‚С‹СЂРµ", "РїСЏС‚СЊ", "С€РµСЃС‚СЊ", "СЃРµРјСЊ", "РІРѕСЃРµРјСЊ", "РґРµРІСЏС‚СЊ") _
             & " "
     ElseIf n = 2 Then
-        ss = ss & IIf(male, "два", "две") & " "
+        ss = ss & IIf(male, "РґРІР°", "РґРІРµ") & " "
     ElseIf n = 1 Then
-        ss = ss & IIf(male, "один", "одна") & " "
+        ss = ss & IIf(male, "РѕРґРёРЅ", "РѕРґРЅР°") & " "
     'Else n = 0
     End If
     
     Nums999Str = ss
 End Function
 
-'Возвращает одну из указанных строчек в зависимости от числа
-'Например, "рубл" & EndStr(10, "ь", "я", "ей") вернет "рублей"
+'Р’РѕР·РІСЂР°С‰Р°РµС‚ РѕРґРЅСѓ РёР· СѓРєР°Р·Р°РЅРЅС‹С… СЃС‚СЂРѕС‡РµРє РІ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ С‡РёСЃР»Р°
+'РќР°РїСЂРёРјРµСЂ, "СЂСѓР±Р»" & EndStr(10, "СЊ", "СЏ", "РµР№") РІРµСЂРЅРµС‚ "СЂСѓР±Р»РµР№"
 Public Function EndStr(ByVal n As Long, s1 As String, s2 As String, s5 As String) As String
     If n > 19 Then n = n Mod 10
     Select Case n
@@ -130,7 +130,7 @@ Public Function EndStr(ByVal n As Long, s1 As String, s2 As String, s5 As String
     End Select
 End Function
 
-'Формат со знаком равенства/дефиса вместо десятичной точки
+'Р¤РѕСЂРјР°С‚ СЃРѕ Р·РЅР°РєРѕРј СЂР°РІРµРЅСЃС‚РІР°/РґРµС„РёСЃР° РІРјРµСЃС‚Рѕ РґРµСЃСЏС‚РёС‡РЅРѕР№ С‚РѕС‡РєРё
 Public Function PlatFormat(Rubles As Currency, Optional Delim As Variant = "-") As String
 Attribute PlatFormat.VB_ProcData.VB_Invoke_Func = " \n14"
     Dim ss As String
@@ -139,13 +139,12 @@ Attribute PlatFormat.VB_ProcData.VB_Invoke_Func = " \n14"
     PlatFormat = ss
 End Function
 
-'Формат Y2K
+'Р¤РѕСЂРјР°С‚ Y2K
 Public Function PlatDate(DATA As Variant) As String
     PlatDate = Format(CDate(DATA), "dd.mm.yyyy")
 End Function
 
-'Сумма НДС из итоговой суммы (x + Y% = z)
+'РЎСѓРјРјР° РќР”РЎ РёР· РёС‚РѕРіРѕРІРѕР№ СЃСѓРјРјС‹ (x + Y% = z)
 Public Function Sum2Tax(TotalRubles As Currency, TaxPercent As Double) As Currency
     Sum2Tax = TotalRubles * TaxPercent / (100 + TaxPercent)
 End Function
-

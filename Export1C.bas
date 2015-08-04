@@ -6,11 +6,11 @@ Option Compare Text
 Option Base 1
 DefLng A-Z
 
-Private Const T1 = "Электронная выписка из лицевого счета N "
-Private Const T3 = "за период с "
-Private Const T4 = " по "
-Private Const T6 = "Входящее сальдо "
-Private Const T7 = "Итого оборотов "
+Private Const T1 = "Р­Р»РµРєС‚СЂРѕРЅРЅР°СЏ РІС‹РїРёСЃРєР° РёР· Р»РёС†РµРІРѕРіРѕ СЃС‡РµС‚Р° N "
+Private Const T3 = "Р·Р° РїРµСЂРёРѕРґ СЃ "
+Private Const T4 = " РїРѕ "
+Private Const T6 = "Р’С…РѕРґСЏС‰РµРµ СЃР°Р»СЊРґРѕ "
+Private Const T7 = "РС‚РѕРіРѕ РѕР±РѕСЂРѕС‚РѕРІ "
 
 Public Sub test()
     ExportTo1CFile App.Path & "vyp01-14.1802.txt"
@@ -60,21 +60,21 @@ Public Sub ExportTo1CFile(File As String)
     FileNo2 = FreeFile
     Open App.Path & "kl_to_1c.txt" For Output Access Write As FileNo2
     Print #FileNo2, "1CClientBankExchange"
-    Print #FileNo2, "ВерсияФормата=1.01"
-    Print #FileNo2, "Кодировка=Windows"
-    Print #FileNo2, "ДатаНачала="; StartDate
-    Print #FileNo2, "ДатаКонца="; EndDate
-    Print #FileNo2, "РасчСчет="; CIBLS
+    Print #FileNo2, "Р’РµСЂСЃРёСЏР¤РѕСЂРјР°С‚Р°=1.01"
+    Print #FileNo2, "РљРѕРґРёСЂРѕРІРєР°=Windows"
+    Print #FileNo2, "Р”Р°С‚Р°РќР°С‡Р°Р»Р°="; StartDate
+    Print #FileNo2, "Р”Р°С‚Р°РљРѕРЅС†Р°="; EndDate
+    Print #FileNo2, "Р Р°СЃС‡РЎС‡РµС‚="; CIBLS
         
-    Print #FileNo2, "СекцияРасчСчет"
-    Print #FileNo2, "ДатаНачала="; StartDate
-    Print #FileNo2, "ДатаКонца="; EndDate
-    Print #FileNo2, "РасчСчет="; CIBLS
-    Print #FileNo2, "НачальныйОстаток="; SumFormat(SIN)
-    Print #FileNo2, "ВсегоПоступило="; SumFormat(SKT)
-    Print #FileNo2, "ВсегоСписано="; SumFormat(SDT)
-    Print #FileNo2, "КонечныйОстаток="; SumFormat(SOUT)
-    Print #FileNo2, "КонецРасчСчет"
+    Print #FileNo2, "РЎРµРєС†РёСЏР Р°СЃС‡РЎС‡РµС‚"
+    Print #FileNo2, "Р”Р°С‚Р°РќР°С‡Р°Р»Р°="; StartDate
+    Print #FileNo2, "Р”Р°С‚Р°РљРѕРЅС†Р°="; EndDate
+    Print #FileNo2, "Р Р°СЃС‡РЎС‡РµС‚="; CIBLS
+    Print #FileNo2, "РќР°С‡Р°Р»СЊРЅС‹Р№РћСЃС‚Р°С‚РѕРє="; SumFormat(SIN)
+    Print #FileNo2, "Р’СЃРµРіРѕРџРѕСЃС‚СѓРїРёР»Рѕ="; SumFormat(SKT)
+    Print #FileNo2, "Р’СЃРµРіРѕРЎРїРёСЃР°РЅРѕ="; SumFormat(SDT)
+    Print #FileNo2, "РљРѕРЅРµС‡РЅС‹Р№РћСЃС‚Р°С‚РѕРє="; SumFormat(SOUT)
+    Print #FileNo2, "РљРѕРЅРµС†Р Р°СЃС‡РЎС‡РµС‚"
     
     'Print #FileNo2, ""
 
@@ -107,7 +107,7 @@ Public Sub ExportTo1CFile(File As String)
         End If
     Loop
 
-    Print #FileNo2, "КонецФайла"
+    Print #FileNo2, "РљРѕРЅРµС†Р¤Р°Р№Р»Р°"
     Close FileNo
     Close FileNo2
 End Sub

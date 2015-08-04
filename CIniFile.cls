@@ -189,4 +189,3 @@ End Property
 Public Property Let ReadOnly(ByVal vNewValue As Boolean)
     mReadOnly = vNewValue
 End Property
-

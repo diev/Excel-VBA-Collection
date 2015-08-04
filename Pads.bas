@@ -53,4 +53,3 @@ End Function
 Public Function PadLine3(LText As String, CText As String, RText As String, Length As Long, Optional Delim As String = "|", Optional Char As Variant = 32) As String
     PadLine3 = LText & PadC(CText, Length - Len(LText) - Len(RText), Char) & RText
 End Function
-
