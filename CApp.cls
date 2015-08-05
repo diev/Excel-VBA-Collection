@@ -13,7 +13,7 @@ Option Base 1
 DefLng A-Z
 
 Const AppTitle = "Подготовка файла ФСФМ"
-Const AppVersion = "04.08.2015"
+Const AppVersion = "05.08.2015"
 
 Const CIBLS = "40702810100000000000"
 Const CIBKS = "30101810600000000702"
@@ -49,6 +49,97 @@ Public Property Get DefLS(Optional ID As String = vbNullString) As String
         DefLS = LS
     End If
 End Property
+
+Public Sub Info()
+    'Dim s As String, File As String, ID4 As String
+    'On Error Resume Next
+    'If User.Demo Then
+    '    s = Bsprintf("ДЕМОНСТРАЦИОННАЯ ВЕРСИЯ!\n")
+    'Else
+    '    With User
+    '        s = Bsprintf("Номер клиента: %s\n%s\nЛ/с: %s\n", .ID, .Name, .LS)
+    '    End With
+    'End If
+    '
+    'fmt = "\nПрограмма Банк-Клиент: %s\nДАТА ВЕРСИИ: %s\n"
+    's = s & Bsprintf(fmt, ThisWorkbook.FullName, App.Version)
+    '
+    'fmt = "\nРабочая книга Excel: %s\n"
+    's = s & Bsprintf(fmt, ActiveWorkbook.FullName)
+    '
+    's = s & BnkSeek2.Info
+    's = s & Crypto.Info
+    's = s & SMail.Info
+    '
+    'fmt = "\nЗагрузка: %s\nВыгрузка: %s"
+    's = s & Bsprintf(fmt, User.ImportList, User.ExportList)
+    '
+    'If OkCancelBox("%s\n\nОтчет о конфигурации будет выслан в Банк.\nЕго подготовка займет некоторое время.", s) Then
+    '    SendInfo
+    'End If
+    
+    's = vbNullString
+    'With User
+    '    s = s & Bsprintf("Номер клиента: %s\n\n(%s)\n(счет %s)\n\n", _
+    '        .ID4, .Name, .LS)
+    'End With
+    '
+    'With App
+    '    s = s & Bsprintf("ВЕРСИЯ ПРОГРАММЫ: %s\nОбновлена: %s\nДиректория установки: %s\n\n", _
+    '        .Version, .Options("Updated"), QFile(.Path))
+    '    s = s & Bsprintf("%s%s\n", _
+    '        FileInfo(ActiveWorkbook.FullName), _
+    '        FileInfo(ThisWorkbook.FullName))
+    'End With
+    '
+    's = s & Bsprintf("%s\n", Crypto.Info)
+    '
+    'With BnkSeek2
+    '    File = .File
+    '    If IsFile(File) Then
+    '        .LoadFile
+    '        s = s & Bsprintf("Справочник БИК от %s (банков: %d)\n%s\n", _
+    '            DtoC(.Updated), .RecCount, FileInfo(File))
+    '    Else
+    '        s = s & Bsprintf("Справочник БИК не установлен!\n")
+    '    End If
+    'End With
+    '
+    'With SMail
+    '    File = App.Path & "SMail\Flags\Bank.fin"
+    '    If IsFile(File) Then
+    '       s = s & Bsprintf("Последний сеанс связи: %s (%s)\n", _
+    '           FileDateTime(App.Path & "SMail\Flags\Bank.fin"), _
+    '           IIf(.DialOrInet = 2, "через Интернет", "по модему"))
+    '       s = s & Bsprintf("Файлов в принятом: %d (последний %s)\n\n", _
+    '           CountFiles(.Recv & "*.*"), FileDateTime(App.Path & "SMail\Flags\Bank.rcv"))
+    '    Else
+    '       s = s & Bsprintf("Сеансов связи не было или SMail не установлен!\n\n")
+    '    End If
+    'End With
+    '
+    'If User.Demo Then
+    '    s = Bsprintf("ДЕМОНСТРАЦИОННАЯ ВЕРСИЯ\n\n%s", s)
+    'Else
+    '    s = Bsprintf("ПРИ ЗВОНКЕ В БАНК НАЗОВИТЕ СЛЕДУЮЩЕЕ:\n\n%s", s)
+    'End If
+    'File = Dir(App.Path & "*.chm")
+    'If File <> vbNullString Then
+    '    s = s & Bsprintf("Файлы помощи:\n")
+    '    Do While File <> vbNullString
+    '        s = s & Bsprintf("%s\n", FileInfo(App.Path & File))
+    '        File = Dir
+    '    Loop
+    '    If MsgBox(s & "Показать помощь?", vbInformation + vbOKCancel, App.TITLE) = vbOK Then
+    '        ShowHelp
+    '    End If
+    'Else
+    '    's = s & Bsprintf("Файлов помощи не найдено!")
+    '    s = s & Bsprintf("Помощь на сайте www.cibank.ru в разделе Банк-Клиент")
+    '    InfoBox "%s", s
+    'End If
+    '
+End Sub
 
 Public Function FileInfo(File As String) As String
     Dim s As String

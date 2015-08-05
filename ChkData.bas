@@ -296,7 +296,7 @@ Public Sub CheckData()
             t = NAMEU1
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("Правило %d\nФИО не должно быть 0", rule) Then Exit Sub
             End If
             t = KODCR1
             If r.Columns(t).Text = "0" Then
@@ -316,17 +316,17 @@ Public Sub CheckData()
             t = AMR_G1
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("Правило %d\nГород не должен быть 0", rule) Then Exit Sub
             End If
             t = AMR_U1
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("Правило %d\nУлица не должна быть 0", rule) Then Exit Sub
             End If
             t = AMR_D1
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("Правило %d\nДом не должен быть 0", rule) Then Exit Sub
             End If
             t = AMR_O1
             If r.Columns(t).Text = "0" Then
@@ -341,17 +341,17 @@ Public Sub CheckData()
             t = ADRESS_G1
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("Правило %d\nГород не должен быть 0", rule) Then Exit Sub
             End If
             t = ADRESS_U1
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("Правило %d\nУлица не должна быть 0", rule) Then Exit Sub
             End If
             t = ADRESS_D1
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("Правило %d\nДом не должен быть 0", rule) Then Exit Sub
             End If
             t = ADRESS_O1
             If r.Columns(t).Text = "0" Then
@@ -366,37 +366,37 @@ Public Sub CheckData()
             t = SD1
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("Правило %d\nСерия документа не должна быть 0", rule) Then Exit Sub
             End If
             t = ND1
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("Правило %d\nИНН не должен быть 0", rule) Then Exit Sub
             End If
             t = VD11
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("Правило %d\nНомер документа не должен быть 0", rule) Then Exit Sub
             End If
             t = VD12
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("Правило %d\nКем выдано не должно быть 0", rule) Then Exit Sub
             End If
             t = VD13
             If r.Columns(t).Text = "01.01.2099" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 01.01.2099", rule) Then Exit Sub
+                If Not OkCancelBox("Правило %d\nДата выдачи не должна быть 01.01.2099", rule) Then Exit Sub
             End If
             t = GR1
             If r.Columns(t).Text = "01.01.2099" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 01.01.2099", rule) Then Exit Sub
+                If Not OkCancelBox("Правило %d\nДата рождения не должна быть 01.01.2099", rule) Then Exit Sub
             End If
             t = BP_1
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("Правило %d\nМесто рождения не должно быть 0", rule) Then Exit Sub
             End If
         End If
         
@@ -428,7 +428,7 @@ Public Sub CheckData()
             t = NAMEU2
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("Правило %d\nФИО не должно быть 0", rule) Then Exit Sub
             End If
             t = KODCR2
             If r.Columns(t).Text = "0" Then
@@ -448,17 +448,17 @@ Public Sub CheckData()
             t = AMR_G2
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("Правило %d\nГород не должен быть 0", rule) Then Exit Sub
             End If
             t = AMR_U2
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("Правило %d\nУлица не должна быть 0", rule) Then Exit Sub
             End If
             t = AMR_D2
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("Правило %d\nДом не должен быть 0", rule) Then Exit Sub
             End If
             t = AMR_O2
             If r.Columns(t).Text = "0" Then
@@ -473,17 +473,17 @@ Public Sub CheckData()
             t = ADRESS_G2
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("Правило %d\nГород не должен быть 0", rule) Then Exit Sub
             End If
             t = ADRESS_U2
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("Правило %d\nУлица не должна быть 0", rule) Then Exit Sub
             End If
             t = ADRESS_D2
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("Правило %d\nДом не должен быть 0", rule) Then Exit Sub
             End If
             t = ADRESS_O2
             If r.Columns(t).Text = "0" Then
@@ -498,37 +498,37 @@ Public Sub CheckData()
             t = SD2
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("Правило %d\nСерия документа не должна быть 0", rule) Then Exit Sub
             End If
             t = ND2
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("Правило %d\nИНН не должен быть 0", rule) Then Exit Sub
             End If
             t = VD21
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("Правило %d\nНомер документа не должен быть 0", rule) Then Exit Sub
             End If
             t = VD22
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("Правило %d\nКем выдано не должно быть 0", rule) Then Exit Sub
             End If
             t = VD23
             If r.Columns(t).Text = "01.01.2099" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 01.01.2099", rule) Then Exit Sub
+                If Not OkCancelBox("Правило %d\nДата выдачи не должна быть 01.01.2099", rule) Then Exit Sub
             End If
             t = GR2
             If r.Columns(t).Text = "01.01.2099" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 01.01.2099", rule) Then Exit Sub
+                If Not OkCancelBox("Правило %d\nДата рождения не должна быть 01.01.2099", rule) Then Exit Sub
             End If
             t = BP_2
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("Правило %d\nМесто рождения не должно быть 0", rule) Then Exit Sub
             End If
         End If
         
@@ -552,7 +552,7 @@ Public Sub CheckData()
             t = ACC_COR_B0
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("Правило %d\nК/с не должен быть 0", rule) Then Exit Sub
             End If
             t = NAME_B0
             If r.Columns(t).Text = "0" Then
@@ -567,7 +567,10 @@ Public Sub CheckData()
             t = BIK_B0
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("Правило %d\nБИК не должен быть 0", rule) Then Exit Sub
+            ElseIf Right(r.Columns(ACC_COR_B0).Text, 3) <> Right(r.Columns(t).Text, 3) Then
+                r.Columns(t).Select
+                If Not OkCancelBox("Правило %d\nБИК %s не совпадает с к/с %s", rule, Right(r.Columns(ACC_COR_B0).Text, 3), Right(r.Columns(t).Text, 3)) Then Exit Sub
             End If
             t = NAME_R0
             If r.Columns(t).Text = "0" Then
@@ -601,7 +604,7 @@ Public Sub CheckData()
             t = ND3
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("Правило %d\nИНН не должен быть 0", rule) Then Exit Sub
             End If
             t = ACC_COR_B3
             If r.Columns(t).Text = "0" Then
@@ -621,7 +624,10 @@ Public Sub CheckData()
             t = BIK_B3
             If r.Columns(t).Text = "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nНе должно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("Правило %d\nБИК не должен быть 0", rule) Then Exit Sub
+            ElseIf Right(r.Columns(ACC_COR_B3).Text, 3) <> Right(r.Columns(t).Text, 3) Then
+                r.Columns(t).Select
+                If Not OkCancelBox("Правило %d\nБИК %s не совпадает с к/с %s", rule, Right(r.Columns(ACC_COR_B3).Text, 3), Right(r.Columns(t).Text, 3)) Then Exit Sub
             End If
             t = NAME_R3
             If r.Columns(t).Text = "0" Then
@@ -645,12 +651,12 @@ Public Sub CheckData()
             t = ACC_COR_B0
             If r.Columns(t).Text <> "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nДолжно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("Правило %d\nК/с должен быть 0", rule) Then Exit Sub
             End If
             t = ACC_COR_B3
             If r.Columns(t).Text <> "0" Then
                 r.Columns(t).Select
-                If Not OkCancelBox("Правило %d\nДолжно быть 0", rule) Then Exit Sub
+                If Not OkCancelBox("Правило %d\nК/с должен быть 0", rule) Then Exit Sub
             End If
         End If
             
@@ -695,26 +701,6 @@ Public Sub CheckData()
 '                    s = "лит.А"
 '                    If YesNoBox("Меняем А на %s?", s) Then r.Columns(t) = s
 '                End If
-        
-        rule = 13
-        t = BIK_B0
-        If r.Columns(ACC_COR_B0).Text = "0" And r.Columns(BIK_B0).Text <> "0" Then
-            If Not OkCancelBox("Правило %d\nДолжно быть 0?", rule) Then Exit Sub
-        ElseIf r.Columns(ACC_COR_B0).Text = App.DefKS And r.Columns(BIK_B0).Text <> "0" Then
-            If Not OkCancelBox("Правило %d\nДолжно быть 0", rule) Then Exit Sub
-        ElseIf Right(r.Columns(ACC_COR_B0).Text, 3) <> Right(r.Columns(BIK_B0).Text, 3) Then
-            If Not OkCancelBox("Правило %d\nБИК и к/с должны совпадать", rule) Then Exit Sub
-        End If
-        
-        rule = 14
-        t = BIK_B3
-        If r.Columns(ACC_COR_B3).Text = "0" And r.Columns(BIK_B3).Text <> "0" Then
-            If Not OkCancelBox("Правило %d\nДолжно быть 0?", rule) Then Exit Sub
-        ElseIf r.Columns(ACC_COR_B3).Text = App.DefKS And r.Columns(BIK_B3).Text <> "0" Then
-            If Not OkCancelBox("Правило %d\nДолжно быть 0", rule) Then Exit Sub
-        ElseIf Right(r.Columns(ACC_COR_B3).Text, 3) <> Right(r.Columns(BIK_B3).Text, 3) Then
-            If Not OkCancelBox("Правило %d\nБИК и к/с должны совпадать", rule) Then Exit Sub
-        End If
         
         Set r = Nothing
         DoEvents
