@@ -13,7 +13,7 @@ Option Base 1
 DefLng A-Z
 
 Const AppTitle = "Подготовка файла ФСФМ"
-Const AppVersion = "05.08.2015"
+Const AppVersion = "01.09.2015"
 
 Const CIBLS = "40702810100000000000"
 Const CIBKS = "30101810600000000702"

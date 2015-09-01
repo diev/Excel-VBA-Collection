@@ -32,6 +32,14 @@ Public Sub AddBar()
             End With
             With .Add(Type:=msoControlButton, ID:=1, temporary:=True)
                 i = i + 1
+                .Caption = "&" & CStr(i) & ". Просмотр"
+                .TooltipText = "Просмотреть данные"
+                .OnAction = "ViewForm"
+                .Style = msoButtonCaption
+                .BeginGroup = True
+            End With
+            With .Add(Type:=msoControlButton, ID:=1, temporary:=True)
+                i = i + 1
                 .Caption = "&" & CStr(i) & ". Проверить"
                 .TooltipText = "Проверить данные"
                 .OnAction = "CheckData"

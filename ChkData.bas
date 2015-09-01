@@ -688,6 +688,80 @@ Public Sub CheckData()
             r.Columns(t) = db.Cells(1, NUMB_P) + Row - 1
         End If
                 
+        rule = 13
+        t = ND0
+        If r.Columns(TU0).Text = "1" And Len(r.Columns(t).Text) <> 10 Then
+            r.Columns(t).Select
+            If Not OkCancelBox("Правило %d\nИНН должен быть 10 знаков", rule) Then Exit Sub
+        ElseIf (r.Columns(TU0).Text = "2" Or r.Columns(TU0).Text = "3") And Len(r.Columns(t).Text) <> 12 Then
+            r.Columns(t).Select
+            If Not OkCancelBox("Правило %d\nИНН должен быть 12 знаков", rule) Then Exit Sub
+        End If
+        t = ND1
+        If r.Columns(TU1).Text = "1" And Len(r.Columns(t).Text) <> 10 Then
+            r.Columns(t).Select
+            If Not OkCancelBox("Правило %d\nИНН должен быть 10 знаков", rule) Then Exit Sub
+        ElseIf (r.Columns(TU1).Text = "2" Or r.Columns(TU1).Text = "3") And Len(r.Columns(t).Text) <> 12 Then
+            r.Columns(t).Select
+            If Not OkCancelBox("Правило %d\nИНН должен быть 12 знаков", rule) Then Exit Sub
+        End If
+        t = ND2
+        If r.Columns(TU2).Text = "1" And Len(r.Columns(t).Text) <> 10 Then
+            r.Columns(t).Select
+            If Not OkCancelBox("Правило %d\nИНН должен быть 10 знаков", rule) Then Exit Sub
+        ElseIf (r.Columns(TU2).Text = "2" Or r.Columns(TU2).Text = "3") And Len(r.Columns(t).Text) <> 12 Then
+            r.Columns(t).Select
+            If Not OkCancelBox("Правило %d\nИНН должен быть 12 знаков", rule) Then Exit Sub
+        End If
+        t = ND3
+        If r.Columns(TU3).Text = "1" And Len(r.Columns(t).Text) <> 10 Then
+            r.Columns(t).Select
+            If Not OkCancelBox("Правило %d\nИНН должен быть 10 знаков", rule) Then Exit Sub
+        ElseIf (r.Columns(TU3).Text = "2" Or r.Columns(TU3).Text = "3") And Len(r.Columns(t).Text) <> 12 Then
+            r.Columns(t).Select
+            If Not OkCancelBox("Правило %d\nИНН должен быть 12 знаков", rule) Then Exit Sub
+        End If
+        t = ND4
+        If r.Columns(TU4).Text = "1" And Len(r.Columns(t).Text) <> 10 Then
+            r.Columns(t).Select
+            If Not OkCancelBox("Правило %d\nИНН должен быть 10 знаков", rule) Then Exit Sub
+        ElseIf (r.Columns(TU4).Text = "2" Or r.Columns(TU4).Text = "3") And Len(r.Columns(t).Text) <> 12 Then
+            r.Columns(t).Select
+            If Not OkCancelBox("Правило %d\nИНН должен быть 12 знаков", rule) Then Exit Sub
+        End If
+        
+        rule = 14
+        If r.Columns(CURREN).Text = "643" Then
+            If r.Columns(SUME).Text <> r.Columns(SUM).Text Then
+                t = SUM
+                r.Columns(t).Select
+                If Not OkCancelBox("Правило %d\nСуммы должны быть равны при рублях", rule) Then Exit Sub
+            End If
+        ElseIf r.Columns(CURREN).Text = "840" Or r.Columns(CURREN).Text = "978" Then
+            If r.Columns(SUME).Text = r.Columns(SUM).Text Then
+                t = SUM
+                r.Columns(t).Select
+                If Not OkCancelBox("Правило %d\nСуммы не должны быть равны при валюте", rule) Then Exit Sub
+            End If
+        Else
+            t = CURREN
+            r.Columns(t).Select
+            If Not OkCancelBox("Правило %d\nТакого кода валюты нет", rule) Then Exit Sub
+        End If
+            
+        rule = 15
+        If Len(r.Columns(ACC_B0).Text) <> 20 Then
+            t = ACC_B0
+            r.Columns(t).Select
+            If Not OkCancelBox("Правило %d\nР/с должен быть 20 знаков", rule) Then Exit Sub
+        End If
+        If Len(r.Columns(ACC_B3).Text) <> 20 Then
+            t = ACC_B3
+            r.Columns(t).Select
+            If Not OkCancelBox("Правило %d\nР/с должен быть 20 знаков", rule) Then Exit Sub
+        End If
+            
+           
 '                t = AMR_G0
 '                If Col = t And r.Columns(t).Text = "СПб" Then
 '                    r.Columns(t).Select
@@ -730,4 +804,14 @@ Private Sub Fields()
         Col = Col + 1
         If Col > 100 Then Exit Do
     Loop
+End Sub
+
+Public Sub ViewForm()
+    Dim r As Integer
+    r = ActiveCell.Row
+    If (r <= 3) Or (Len(ActiveSheet.Cells(r, 1).Text) = 0) Then
+        InfoBox "Выберите строку с данными!"
+        Exit Sub
+    End If
+    UserForm1.Show
 End Sub
