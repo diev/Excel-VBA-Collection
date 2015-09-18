@@ -19,6 +19,8 @@ Public Function CWin(Dos As String) As String
                 C(i) = 168
             ElseIf x = 241 Then 'ё
                 C(i) = 184
+            ElseIf x = 252 Then '№
+                c(i) = 185
             
             ElseIf x = 193 Or x = 194 Or x = 196 Then
                 C(i) = 45 '-
@@ -51,7 +53,8 @@ Public Function CDos(Win As String) As String
                 C(i) = 165
             
             ElseIf x = 185 Then '№->N
-                C(i) = 78
+                'C(i) = 78 'N
+                C(i) = 252 '№
             ElseIf x = 150 Or x = 151 Then '--
                 C(i) = 45
             
