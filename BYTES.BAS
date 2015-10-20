@@ -1,4 +1,4 @@
-Attribute VB_Name = "Bytes"
+'Attribute VB_Name = "Bytes"
 Option Explicit
 Option Base 0 'Binary bytes like the C language!!!
 DefLng A-Z
