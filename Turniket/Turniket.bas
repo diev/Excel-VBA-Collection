@@ -149,7 +149,8 @@ Sub TurnOver()
             Sheet2.Cells(Row2, ColRDate).Select
             DoEvents
         End If
-        Sheet2.Cells(Row2, ColRName) = Sheet1.Cells(Row1, ColTName)
+        SName = Sheet1.Cells(Row1, ColTName)
+        Sheet2.Cells(Row2, ColRName) = FIO(SName)
         Sheet2.Cells(Row2, ColRDate) = Sheet1.Cells(Row1, ColTDate)
         Sheet2.Cells(Row2, ColRLogin) = CDate(Sheet1.Cells(Row1, ColTDate)) + CDate(Sheet1.Cells(Row1, ColTTime))
         Sheet2.Cells(Row2, ColRObjin) = Sheet1.Cells(Row1, ColTEvent)
@@ -305,11 +306,14 @@ End Sub
 
 Function FIO(s As String)
     Dim A() As String, items As Integer
+    Do While (InStr(s, "  ") > 0)
+        s = Replace(s, "  ", " ")
+    Loop
     A = Split(s)
     items = UBound(A) + 1
     Select Case items
-        Case 3: FIO = A(0) & "  " & Left(A(1), 1) & "." & Left(A(2), 1) & "."
-        Case 2: FIO = A(0) & "  " & A(1)
+        Case 3: FIO = A(0) & " " & Left(A(1), 1) & "." & Left(A(2), 1) & "."
+        Case 2: FIO = A(0) & " " & A(1)
         Case 1: FIO = s
         Case Else
             'MsgBox ("Ошибка в ФИО с парковки")
