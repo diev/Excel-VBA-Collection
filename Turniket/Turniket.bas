@@ -1,4 +1,5 @@
-'(c) Дмитрий Евдокимов, ред. 09.09.2015
+Attribute VB_Name = "Turniket"
+'(c) Дмитрий Евдокимов, ред. 10.11.2015
 
 ' Исходные данные:
 ' 1) Этот XLSM-файл с модулем Turniket.bas
@@ -302,12 +303,16 @@ Sub TurnOver()
     Application.StatusBar = False
 End Sub
 
-Function FIO(S As String)
-    Dim A() As String
-    A = Split(S)
-    If UBound(A) <> 2 Then
-        MsgBox ("Ошибка в ФИО с парковки")
-        Stop
-    End If
-    FIO = A(0) & "  " & Left(A(1), 1) & "." & Left(A(2), 1) & "."
+Function FIO(s As String)
+    Dim A() As String, items As Integer
+    A = Split(s)
+    items = UBound(A) + 1
+    Select Case items
+        Case 3: FIO = A(0) & "  " & Left(A(1), 1) & "." & Left(A(2), 1) & "."
+        Case 2: FIO = A(0) & "  " & A(1)
+        Case 1: FIO = s
+        Case Else
+            'MsgBox ("Ошибка в ФИО с парковки")
+            'Stop
+    End Select
 End Function
