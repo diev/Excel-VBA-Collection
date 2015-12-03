@@ -1,32 +1,9 @@
-Attribute VB_Name = "Turniket"
-'(c) Дмитрий Евдокимов, ред. 10.11.2015
+'(c) Дмитрий Евдокимов, ред. 03.12.2015
 
 ' Исходные данные:
 ' 1) Этот XLSM-файл с модулем Turniket.bas
-' 2) XLS-файл с турникетов;
+' 2) XLS (или CSV)-файл с турникетов;
 ' 3) TXT-файл с парковки;
-'
-' далее больше ничего не нужно
-'' В Microsoft Excel
-'' "Открыть" XLS-файл с турникетов, соглашаемся, что он нормальный.
-'' "Сохранить как" - "Книга Excel с поддержкой макросов (*.xlsm)" - в файл Турникет.xlsm
-'' ПКМышки "Лист1" - "Переименовать" в "Турникет"
-'' ПКМышки "Лист2" - "Переименовать" в "Отчет"
-''
-'' "Открыть" TXT-файл с парковки - открывается Мастер текстов (импорт)
-'' Шаг 1 из 3 (с разделителями, с 1 строки, формат 1251) - "Далее"
-'' Шаг 2 из 3 (знак табуляции) - "Далее"
-'' Шаг 3 из 3 - "Готово"
-'' ПКМышки "Парковка..." - "Переместить или скопировать" - в книгу Турникет.xlsm
-'' (это окно больше не нужно)
-''
-'' Возвращаемся в открытый Турникет.xlsm
-'' ПКМышки "Парковка..." - "Переименовать" в "Парковка"
-''
-'' Меню "Разработчик" (должно быть включено в настройках) - "Visual Basic" (открывается отдельное окно редактора)
-'' ПКМышки "ЭтаКнига" - "Import File" - указываем файл на диске Turniket.bas - загружаем, закрываем окно редактора
-''
-'' Убеждаемся, что у нас есть листы "Парковка", "Турникет", "Отчет"
 '
 ' Убеждаемся, что есть лист "Отчет" (он будет очищен), а листы "Парковка" и "Турникет" будут удалены и загружены снова
 ' Меню "Разработчик" - "Макросы" - выбираем единственный макрос TurnOver - "Выполнить" - ждем
@@ -78,6 +55,8 @@ Sub TurnOver()
     Dim SDate As String
     Dim nMins As Long
     
+    Dim i As Long
+    
     'Очистка отчета
     Application.DisplayStatusBar = True
     WB = ActiveWorkbook.Name
@@ -88,7 +67,7 @@ Sub TurnOver()
     'Ищем данные с турникета
     Application.StatusBar = "Загрузка данных с турникета..."
     'ChDir CurDir
-    SheetFile = Application.GetOpenFilename("Excel (*.xls), *.xls", , "Данные с турникета (файл Excel)")
+    SheetFile = Application.GetOpenFilename("Excel (*.xls;*.csv), *.xls;*.csv", , "Данные с турникета (файл Excel)")
     If SheetFile = False Then Exit Sub
 
     For Each Sheet1 In Sheets
@@ -96,11 +75,31 @@ Sub TurnOver()
     Next
     
     Workbooks.Open Filename:=SheetFile
+    
+    If LCase(Right(SheetFile, 4)) = ".csv" Then
+        Columns("A:A").Select
+        Selection.TextToColumns Destination:=Range("A1"), DataType:=xlDelimited, _
+            TextQualifier:=xlDoubleQuote, ConsecutiveDelimiter:=False, Tab:=False, _
+            Semicolon:=True, Comma:=False, Space:=False, Other:=False, FieldInfo _
+            :=Array(Array(1, 1), Array(2, 1), Array(3, 1), Array(4, 1), Array(5, 1)), _
+            TrailingMinusNumbers:=True
+    End If
+    
     Sheets(1).Select
     Sheets(1).Copy Before:=Workbooks(WB).Sheets(1)
+    Workbooks(WB).Activate
     Sheets(1).Select
     Sheets(1).Name = TURNIKET
     Set Sheet1 = ActiveWorkbook.Worksheets(TURNIKET)
+    
+    Application.StatusBar = "Выравнивание данных с турникета..."
+    Row1 = 1
+    Do While Len(Sheet1.Cells(Row1, ColTDate).Text) > 0
+        For i = 1 To ColTEvent
+            Sheet1.Cells(Row1, i) = Trim(Sheet1.Cells(Row1, i).Text)
+        Next
+        Row1 = Row1 + 1
+    Loop
     Sheet1.Columns("A:E").AutoFit
     
     Row1 = 1
@@ -149,8 +148,7 @@ Sub TurnOver()
             Sheet2.Cells(Row2, ColRDate).Select
             DoEvents
         End If
-        SName = Sheet1.Cells(Row1, ColTName)
-        Sheet2.Cells(Row2, ColRName) = FIO(SName)
+        Sheet2.Cells(Row2, ColRName) = Sheet1.Cells(Row1, ColTName)
         Sheet2.Cells(Row2, ColRDate) = Sheet1.Cells(Row1, ColTDate)
         Sheet2.Cells(Row2, ColRLogin) = CDate(Sheet1.Cells(Row1, ColTDate)) + CDate(Sheet1.Cells(Row1, ColTTime))
         Sheet2.Cells(Row2, ColRObjin) = Sheet1.Cells(Row1, ColTEvent)
@@ -305,18 +303,11 @@ Sub TurnOver()
 End Sub
 
 Function FIO(s As String)
-    Dim A() As String, items As Integer
-    Do While (InStr(s, "  ") > 0)
-        s = Replace(s, "  ", " ")
-    Loop
+    Dim A() As String
     A = Split(s)
-    items = UBound(A) + 1
-    Select Case items
-        Case 3: FIO = A(0) & " " & Left(A(1), 1) & "." & Left(A(2), 1) & "."
-        Case 2: FIO = A(0) & " " & A(1)
-        Case 1: FIO = s
-        Case Else
-            'MsgBox ("Ошибка в ФИО с парковки")
-            'Stop
-    End Select
+    If UBound(A) <> 2 Then
+        MsgBox ("Ошибка в ФИО с парковки")
+        Stop
+    End If
+    FIO = A(0) & "  " & Left(A(1), 1) & "." & Left(A(2), 1) & "."
 End Function
