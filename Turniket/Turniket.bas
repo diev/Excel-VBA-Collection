@@ -1,4 +1,4 @@
-'(c) Дмитрий Евдокимов, ред. 03.12.2015
+'(c) Дмитрий Евдокимов, ред. 26.01.2016
 
 ' Исходные данные:
 ' 1) Этот XLSM-файл с модулем Turniket.bas
@@ -305,9 +305,11 @@ End Sub
 Function FIO(s As String)
     Dim A() As String
     A = Split(s)
-    If UBound(A) <> 2 Then
-        MsgBox ("Ошибка в ФИО с парковки")
-        Stop
+    If UBound(A) = 2 Then
+        FIO = A(0) & "  " & Left(A(1), 1) & "." & Left(A(2), 1) & "."
+    Else
+        'MsgBox ("Ошибка в ФИО с парковки")
+        'Stop
+        FIO = s
     End If
-    FIO = A(0) & "  " & Left(A(1), 1) & "." & Left(A(2), 1) & "."
 End Function
