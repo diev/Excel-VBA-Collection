@@ -1,9 +1,26 @@
 <!DOCTYPE html>
-<html lang="{{ page.lang | default: site.lang | default: "ru" }}">
+{% if page.url == "/" or page.url == "/index.html" or page.url == "/en.html" %}
+  {% assign home = true %}
+{% endif %}
+{% if page.url contains "/about" %}
+  {% assign about = true %}
+{% endif %}
+{% if page.url contains "/en.html" or page.url contains "-en.html" %}
+  {% assign en = true %}
+  {% assign lang = "en" %}
+  {% assign langx = "-en" %}
+  {% assign author = "Dmitrii Evdokimov" %}
+{% else %}
+  {% assign ru = true %}
+  {% assign lang = "ru" %}
+  {% assign langx = "" %}
+  {% assign author = "Дмитрий Евдокимов" %}
+{% endif %}
+<html lang="{{ lang }}">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>{{ site.title | default: site.github.repository_name }} by {{ site.github.owner_name }}</title>
+    <title>{{ site.title | default: site.github.repository_name }}</title>
     <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
     <!--favicon-->
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
@@ -15,15 +32,15 @@
     <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
     <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="96x96" hrgef="/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/manifest.json">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
-    <!--/favicon-->    
+    <!--/favicon-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="{{ '/assets/js/respond.js' | relative_url }}"></script>
     <!--[if lt IE 9]>
@@ -33,39 +50,113 @@
     <link rel="stylesheet" href="{{ '/assets/css/ie.css' | relative_url }}">
     <![endif]-->
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <style>
+      .wrapper section {margin-top: 20px;}
+      #footer table tbody tr td {border-bottom: none; border-top: 1px solid #434343;}
+    </style>
   </head>
   <body>
     <div class="wrapper">
-      <section style="margin-top: 20px;">
+      <section>
         {% if site.github.is_user_page %}
-          {{ content }}
-        {% endif %}
-        {% if site.github.is_project_page %}
-          <div id="title">
-            <h1>{{ site.title | default: site.github.repository_name }}</h1>
-            <p>{{ site.description | default: site.github.project_tagline }}</p>
-            <hr>
-            <span class="credits left">Project by <a href="/">Dmitrii Evdokimov</a></span>
-            <span class="credits right">Hosted on GitHub:
-              <a href="{{ site.github.repository_url }}">View</a> |
-              <a href="{{ site.github.releases_url }}">Downloads</a>
-            </span>
-          </div>
-          {{ content }}
+
+        {{ content }}
+
+        {% elsif site.github.is_project_page %}
+        <div id="title">
+          <h1>{{ site.title | default: site.github.repository_name }}</h1>
+          <p>{{ site.description | default: site.github.project_tagline }}</p>
+          <hr>
+          <span class="credits left">Project by <a href="/{{ langx }}" title="Home Page">{{ author }}</a></span>
+          <span class="credits right">Hosted on <a href="{{ site.github.repository_url }}" title="Project">GitHub</a></span>
+        </div>
+
+        {{ content }}
+
+        {% if home %}
+        <h2>Downloads</h2>
+        <div><span class="spinning"></span></div>
+        <table class="table-downloads">
+          <thead>
+            {% if en %}
+            <th>Release</th>
+            <th>Download</th>
+            <th>Date</th>
+            {% else %}
+            <th>Релиз</th>
+            <th>Скачать</th>
+            <th>Дата</th>
+            {% endif %}
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+        <script>
+          $.getJSON("http://api.github.com/repos/{{ site.github.owner_name }}/{{ site.github.repository_name }}/releases").done(function(json) {
+            for (var i = 0; i < json.length; i++) {
+              var release = json[i];
+              if (release.assets.length === 0) {
+                continue;
+              }
+              var asset = release.assets[0];
+              var fileSize = Math.round(asset.size / 1024);
+              $(".table-downloads tbody")
+                .append($("<tr>")
+                  .append($("<td>")
+                    .append($("<a>")
+                      .attr("href", release.html_url)
+                      .text(release.name)
+                    )
+                    .append(release.prerelease ? " (Pre)" : "")
+                  )
+                  .append($("<td>")
+                    .append($("<a>")
+                      .attr("href", asset.browser_download_url)
+                      .text(fileSize.toLocaleString() + " KB")
+                    )
+                  )
+                  .append($("<td>")
+                    .text(asset.updated_at.substring(0, 10))
+                  )
+                );
+            }
+            $(".spinning").hide();
+            $(".table.downloads").fadeIn();
+          });
+          </script>
+          <noscript>
+            <p><a href="{{ site.github.releases_url }}" title="Releases">Releases on GitHub</a></p>
+          </noscript>
         {% endif %}
       </section>
+      <div id="footer">
+        <table>
+          <tbody>
+            <tr>
+              <td>&copy; 2017</td>
+              {% if about %}
+              <td> </td>
+              {% elsif en %}
+              <td style="text-align: right;"><a href="/about{{ langx }}">About this site</a></td>
+              {% else %}
+              <td style="text-align: right;"><a href="/about">Об этом сайте</a></td>
+              {% endif %}
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
     {% if site.google_analytics %}
-      <script type="text/javascript">
-        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-      </script>
-      <script type="text/javascript">
-        try {
-          var pageTracker = _gat._getTracker("{{ site.google_analytics }}");
-        pageTracker._trackPageview();
-        } catch(err) {}
-      </script>
+    <script type="text/javascript">
+      var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+      document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+      try {
+        var pageTracker = _gat._getTracker("{{ site.google_analytics }}");
+      pageTracker._trackPageview();
+      } catch(err) {}
+    </script>
     {% endif %}
   </body>
 </html>
