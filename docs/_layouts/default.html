@@ -79,11 +79,11 @@
             <table class="table-downloads">
               <thead>
                 {% if en %}
-                  <th>Release</th>
+                  <th>Release Notes</th>
                   <th>Download</th>
                   <th>Date</th>
                 {% else %}
-                  <th>Релиз</th>
+                  <th>Релизы и инфо</th>
                   <th>Скачать</th>
                   <th>Дата</th>
                 {% endif %}
@@ -98,27 +98,30 @@
                   if (release.assets.length === 0) {
                     continue;
                   }
-                  var asset = release.assets[0];
-                  var fileSize = Math.round(asset.size / 1024);
-                  $(".table-downloads tbody")
-                    .append($("<tr>")
-                      .append($("<td>")
-                        .append($("<a>")
-                          .attr("href", release.html_url)
-                          .text(release.name)
+                  for (var j = 0; j < release.assets.length; j++) {
+                    var asset = release.assets[j];
+                    var fileSize = Math.round(asset.size / 1024);
+                    $(".table-downloads tbody")
+                      .append($("<tr>")
+                        .append($("<td>")
+                          .append($("<a>")
+                            .attr("href", release.html_url)
+                            .text(release.name)
+                          )
+                          .append(release.prerelease ? " (pre)" : "")
                         )
-                        .append(release.prerelease ? " (Pre)" : "")
-                      )
-                      .append($("<td>")
-                        .append($("<a>")
-                          .attr("href", asset.browser_download_url)
-                          .text(fileSize.toLocaleString() + " KB")
+                        .append($("<td>")
+                          .append(asset.name + " ")
+                          .append($("<a>")
+                            .attr("href", asset.browser_download_url)
+                            .text(fileSize.toLocaleString() + "KB")
+                          )
                         )
-                      )
-                      .append($("<td>")
-                        .text(asset.updated_at.substring(0, 10))
-                      )
-                    );
+                        .append($("<td>")
+                          .text(asset.updated_at.substring(0, 10))
+                        )
+                      );
+                  }
                 }
                 $(".spinning").hide();
                 $(".table.downloads").fadeIn();
