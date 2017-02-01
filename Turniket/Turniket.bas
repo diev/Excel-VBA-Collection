@@ -1,9 +1,10 @@
-'(c) Дмитрий Евдокимов, ред. 26.01.2016
+'(c) Дмитрий Евдокимов, ред. 01.02.2017
 
 ' Исходные данные:
-' 1) Этот XLSM-файл с модулем Turniket.bas
-' 2) XLS (или CSV)-файл с турникетов;
+' 1) Этот XLSM-файл с модулем Turniket.bas;
+' 2) XLS или CSV-файл с турникетов;
 ' 3) TXT-файл с парковки;
+' 4) Присвоить нужный период с Date1 по Date2 ниже.
 '
 ' Убеждаемся, что есть лист "Отчет" (он будет очищен), а листы "Парковка" и "Турникет" будут удалены и загружены снова
 ' Меню "Разработчик" - "Макросы" - выбираем единственный макрос TurnOver - "Выполнить" - ждем
@@ -16,6 +17,10 @@
 Option Explicit
 Option Compare Text
 
+'Фильтр с Date1 по Date2
+Const Date1 As Date = #1/1/2017# 'mm/dd/yyyy
+Const Date2 As Date = #1/31/2017# 'mm/dd/yyyy
+
 'Столбцы с турникета
 Const TURNIKET As String = "Турникет"
 Const ColTName As Long = 2
@@ -25,10 +30,10 @@ Const ColTEvent As Long = 5
 
 'Столбцы с парковки
 Const PARKING As String = "Парковка"
-Const ColPName As Long = 4
 Const ColPDate As Long = 1
 Const ColPTime As Long = 2
 Const ColPObject As Long = 3
+Const ColPName As Long = 4
 
 'Столбцы отчета
 Const REPORT As String = "Отчет"
@@ -51,10 +56,14 @@ Sub TurnOver()
     Dim Row1 As Long
     Dim Row2 As Long
     
+    Dim StatusStr As String
+    
     Dim SName As String
     Dim SDate As String
-    Dim nMins As Long
+    Dim TDate As Date
+    Dim S As String
     
+    Dim nMins As Long
     Dim i As Long
     
     'Очистка отчета
@@ -64,9 +73,11 @@ Sub TurnOver()
     Sheet2.Cells.Delete
     Row2 = 1
     
+    'GoTo TurniketLoaded '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    
     'Ищем данные с турникета
     Application.StatusBar = "Загрузка данных с турникета..."
-    'ChDir CurDir
+    ChDir CurDir
     SheetFile = Application.GetOpenFilename("Excel (*.xls;*.csv), *.xls;*.csv", , "Данные с турникета (файл Excel)")
     If SheetFile = False Then Exit Sub
 
@@ -90,72 +101,44 @@ Sub TurnOver()
     Workbooks(WB).Activate
     Sheets(1).Select
     Sheets(1).Name = TURNIKET
+
+TurniketLoaded:
     Set Sheet1 = ActiveWorkbook.Worksheets(TURNIKET)
-    
-    Application.StatusBar = "Выравнивание данных с турникета..."
-    Row1 = 1
-    Do While Len(Sheet1.Cells(Row1, ColTDate).Text) > 0
-        For i = 1 To ColTEvent
-            Sheet1.Cells(Row1, i) = Trim(Sheet1.Cells(Row1, i).Text)
-        Next
-        Row1 = Row1 + 1
-    Loop
-    Sheet1.Columns("A:E").AutoFit
-    
-    Row1 = 1
-    Do While Len(Sheet1.Cells(Row1, ColTDate).Text) = 0
-        Row1 = Row1 + 1
-        If Row1 > 10 Then
-            MsgBox ("Ошибка в исходных данных с турникета")
-            Stop
-        End If
-    Loop
-    
-    Application.StatusBar = "Чистка данных с турникета..."
-    Row1 = Row1 + 1
-    
-    SDate = ""
-    Do While Len(Sheet1.Cells(Row1, ColTDate).Text) > 0
-        If SDate <> Sheet1.Cells(Row1, ColTDate).Text Then
-            SDate = Sheet1.Cells(Row1, ColTDate).Text
-            Application.StatusBar = "Чистка данных с турникета... " & SDate
-            'Sheet1.Cells(Row1, ColTDate).Select
-            DoEvents
-        End If
-        If Len(Sheet1.Cells(Row1, ColTName).Text) = 0 Then
-            Sheet1.Rows(Row1).Delete
-        ElseIf Sheet1.Cells(Row1, ColTEvent).Text <> "Проход" Then
-            Sheet1.Rows(Row1).Delete
-        Else
-            Row1 = Row1 + 1
-        End If
-    Loop
-    
-    Row1 = 1
-    Do While Len(Sheet1.Cells(Row1, ColTDate).Text) = 0
-        Row1 = Row1 + 1
-    Loop
-    Row1 = Row1 + 1
     
     Application.StatusBar = "Отбор данных с турникета..."
     Sheet2.Activate
     
-    SDate = ""
-    Do While Len(Sheet1.Cells(Row1, ColTDate).Text) > 0
-        If SDate <> Sheet1.Cells(Row1, ColTDate).Text Then
-            SDate = Sheet1.Cells(Row1, ColTDate).Text
-            Application.StatusBar = "Отбор данных с турникета... " & SDate
+    Row1 = 2
+    StatusStr = ""
+    Do While Len(Trim(Sheet1.Cells(Row1, ColTDate).Text)) > 0
+        SDate = Trim(Sheet1.Cells(Row1, ColTDate).Text)
+        If StatusStr <> SDate Then
+            StatusStr = SDate
+            Application.StatusBar = "Отбор данных с турникета... " & StatusStr
             Sheet2.Cells(Row2, ColRDate).Select
+            Sheet2.Columns("A:D").AutoFit
             DoEvents
         End If
-        Sheet2.Cells(Row2, ColRName) = Sheet1.Cells(Row1, ColTName)
-        Sheet2.Cells(Row2, ColRDate) = Sheet1.Cells(Row1, ColTDate)
-        Sheet2.Cells(Row2, ColRLogin) = CDate(Sheet1.Cells(Row1, ColTDate)) + CDate(Sheet1.Cells(Row1, ColTTime))
-        Sheet2.Cells(Row2, ColRObjin) = Sheet1.Cells(Row1, ColTEvent)
-        Row2 = Row2 + 1
+        
+        S = Trim(Sheet1.Cells(Row1, ColTEvent).Text)
+        If S = "Проход" Then
+            TDate = CDate(Sheet1.Cells(Row1, ColTDate))
+            If Date1 <= TDate And TDate <= Date2 Then
+                SName = Trim(Sheet1.Cells(Row1, ColTName).Text)
+                If Len(SName) > 0 Then
+                    Sheet2.Cells(Row2, ColRName) = Replace(SName, "  ", " ")
+                    Sheet2.Cells(Row2, ColRDate) = TDate
+                    Sheet2.Cells(Row2, ColRLogin) = TDate + CDate(Sheet1.Cells(Row1, ColTTime))
+                    Sheet2.Cells(Row2, ColRObjin) = S
+                    Row2 = Row2 + 1
+                End If
+            End If
+        End If
         Row1 = Row1 + 1
     Loop
     Set Sheet1 = Nothing
+    
+    'GoTo ParkingLoaded '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     
     'Ищем данные с парковки
     Application.StatusBar = "Загрузка данных с парковки..."
@@ -175,33 +158,36 @@ Sub TurnOver()
     Sheets(1).Copy Before:=Workbooks(WB).Sheets(1)
     Sheets(1).Select
     Sheets(1).Name = PARKING
+    
+ParkingLoaded:
     Set Sheet1 = ActiveWorkbook.Worksheets(PARKING)
     Sheet1.Columns("A:D").AutoFit
-    
-    Row1 = 2
-    If Sheet1.Cells(Row1, 4).Text <> "ФИО" Then
-        MsgBox ("Ошибка в исходных данных с парковки")
-        Stop
-    End If
-    Row1 = Row1 + 1
     
     Application.StatusBar = "Отбор данных с парковки..."
     Sheet2.Activate
     
-    SDate = ""
-    Do While Len(Sheet1.Cells(Row1, ColPDate).Text) > 0
-        If SDate <> Sheet1.Cells(Row1, ColPDate).Text Then
-            SDate = Sheet1.Cells(Row1, ColPDate).Text
-            Application.StatusBar = "Отбор данных с парковки... " & SDate
-            Sheet2.Cells(Row2, ColPDate).Select
+    Row1 = 3
+    StatusStr = ""
+    Do While Len(Sheet1.Cells(Row1, ColPDate).Text) = 10 'dd.mm.yyyy (maybe eof)
+        SDate = Sheet1.Cells(Row1, ColPDate).Text
+        If StatusStr <> SDate Then
+            StatusStr = SDate
+            Application.StatusBar = "Отбор данных с парковки... " & StatusStr
+            Sheet2.Cells(Row2, ColRDate).Select
             DoEvents
         End If
-        SName = Sheet1.Cells(Row1, ColPName)
-        Sheet2.Cells(Row2, ColRName) = FIO(SName)
-        Sheet2.Cells(Row2, ColRDate) = SDate
-        Sheet2.Cells(Row2, ColRLogin) = CDate(Sheet1.Cells(Row1, ColPDate)) + CDate(Sheet1.Cells(Row1, ColPTime))
-        Sheet2.Cells(Row2, ColRObjin) = Sheet1.Cells(Row1, ColPObject)
-        Row2 = Row2 + 1
+        
+        SName = Trim(Sheet1.Cells(Row1, ColPName).Text)
+        If Len(SName) > 0 Then
+            TDate = CDate(Sheet1.Cells(Row1, ColPDate))
+            If Date1 <= TDate And TDate <= Date2 Then
+                Sheet2.Cells(Row2, ColRName) = FIO(SName)
+                Sheet2.Cells(Row2, ColRDate) = TDate
+                Sheet2.Cells(Row2, ColRLogin) = TDate + CDate(Sheet1.Cells(Row1, ColPTime))
+                Sheet2.Cells(Row2, ColRObjin) = Sheet1.Cells(Row1, ColPObject)
+                Row2 = Row2 + 1
+            End If
+        End If
         Row1 = Row1 + 1
     Loop
     Set Sheet1 = Nothing
@@ -226,13 +212,13 @@ Sub TurnOver()
     
     SName = ""
     Do While Len(Sheet2.Cells(Row1, ColRName).Text) > 0
+        SDate = Sheet2.Cells(Row1, ColRDate)
         If SName <> Sheet2.Cells(Row1, ColRName).Text Then
             SName = Sheet2.Cells(Row1, ColRName).Text
-            Application.StatusBar = "Поиск времени ухода... " & SName
+            Application.StatusBar = "Поиск времени ухода... " & SDate & " " & SName
             Sheet2.Cells(Row1, ColRName).Select
             DoEvents
         End If
-        SDate = Sheet2.Cells(Row1, ColRDate)
         'If Left(SName, ColRName) <> "-" Then
             Row2 = Row1 + 1
             Do While Sheet2.Cells(Row2, ColRDate).Text = SDate
@@ -288,8 +274,11 @@ Sub TurnOver()
     Sheet2.Cells(Row2, ColRTotal) = "Дробь" 'I
     
     Sheet2.Rows(Row2).Font.Bold = True
+    Sheet2.Columns(ColRName).NumberFormat = "@"
     Sheet2.Columns(ColRLogin).NumberFormat = "h:mm;@"
+    Sheet2.Cells(Row2, ColRObjin).NumberFormat = "@"
     Sheet2.Columns(ColRLogout).NumberFormat = "h:mm;@"
+    Sheet2.Cells(Row2, ColRObjout).NumberFormat = "@"
     Sheet2.Columns(ColRHours).NumberFormat = "h:mm;@"
     Sheet2.Columns(ColRMins).NumberFormat = "0"
     Sheet2.Columns(ColRTotal).NumberFormat = "0.00"
@@ -302,14 +291,15 @@ Sub TurnOver()
     Application.StatusBar = False
 End Sub
 
-Function FIO(s As String)
+Function FIO(S As String)
     Dim A() As String
-    A = Split(s)
+    S = Replace(S, "  ", " ")
+    A = Split(S)
     If UBound(A) = 2 Then
-        FIO = A(0) & "  " & Left(A(1), 1) & "." & Left(A(2), 1) & "."
+        FIO = A(0) & " " & Left(A(1), 1) & "." & Left(A(2), 1) & "."
     Else
         'MsgBox ("Ошибка в ФИО с парковки")
         'Stop
-        FIO = s
+        FIO = S
     End If
 End Function
