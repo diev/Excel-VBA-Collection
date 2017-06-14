@@ -1,0 +1,25 @@
+---
+---
+
+@import "{{ site.theme }}";
+
+.wrapper section {
+  margin-top: 20px;
+}
+#footer table tbody tr td {
+  border-bottom: none; 
+  border-top: 1px solid #434343;
+}
+.credits.left {
+  float: left;
+}
+.credits.right {
+  float: right;
+}
+.credits {
+  font-size: 11px;
+}
+h1 {
+  clear: both;
+  margin-bottom: 30px;
+}
