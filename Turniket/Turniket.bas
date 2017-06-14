@@ -18,8 +18,8 @@ Option Explicit
 Option Compare Text
 
 'Фильтр с Date1 по Date2
-Const Date1 As Date = #1/1/2017# 'mm/dd/yyyy
-Const Date2 As Date = #1/31/2017# 'mm/dd/yyyy
+Const Date1 As Date = #5/1/2017# 'mm/dd/yyyy
+Const Date2 As Date = #5/31/2017# 'mm/dd/yyyy
 
 'Столбцы с турникета
 Const TURNIKET As String = "Турникет"
@@ -73,13 +73,14 @@ Sub TurnOver()
     Sheet2.Cells.Delete
     Row2 = 1
     
+Step1:
     'GoTo TurniketLoaded '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     
     'Ищем данные с турникета
     Application.StatusBar = "Загрузка данных с турникета..."
     ChDir CurDir
     SheetFile = Application.GetOpenFilename("Excel (*.xls;*.csv), *.xls;*.csv", , "Данные с турникета (файл Excel)")
-    If SheetFile = False Then Exit Sub
+    If SheetFile = False Then GoTo Step2
 
     For Each Sheet1 In Sheets
         If Sheet1.Name = TURNIKET Then Sheet1.Delete
@@ -138,12 +139,13 @@ TurniketLoaded:
     Loop
     Set Sheet1 = Nothing
     
+Step2:
     'GoTo ParkingLoaded '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     
     'Ищем данные с парковки
     Application.StatusBar = "Загрузка данных с парковки..."
     SheetFile = Application.GetOpenFilename("Text (*.txt), *.txt", , "Данные с парковки (текстовый файл)")
-    If SheetFile = False Then Exit Sub
+    If SheetFile = False Then GoTo Step3
     
     For Each Sheet1 In Sheets
         If Sheet1.Name = PARKING Then Sheet1.Delete
@@ -192,6 +194,7 @@ ParkingLoaded:
     Loop
     Set Sheet1 = Nothing
     
+Step3:
     'Сортируем
     Application.StatusBar = "Сортировка по времени... "
     Sheet2.Sort.SortFields.Clear
