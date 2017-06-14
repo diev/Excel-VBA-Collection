@@ -1,0 +1,27 @@
+{% if page.url contains "/about" %}
+  {% assign about = true %}
+{% endif %}
+{% if page.url contains "/en/" %}
+  {% assign en = true %}
+  {% assign lang = "en" %}
+{% endif %}
+<div id="footer">
+  <span class="credits left">&copy; 2016-{{ 'now' | date: "%Y" }}</span>
+  {% if en %}
+  <span class="credits right">{% if about %}About this site{% else %}<a href="/{{ lang }}/about">About this site</a>{% endif %}</span>
+  {% else %}
+  <span class="credits right">{% if about %}Об этом сайте{% else %}<a href="/about">Об этом сайте</a>{% endif %}</span>
+  {% endif %}
+</div>
+{% if site.google_analytics %}
+  <script type="text/javascript">
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+    try {
+      var pageTracker = _gat._getTracker("{{ site.google_analytics }}");
+      pageTracker._trackPageview();
+    } catch(err) {}
+  </script>
+{% endif %}

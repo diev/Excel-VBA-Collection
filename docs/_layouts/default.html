@@ -133,34 +133,7 @@
           {% endif %}
         {% endif %}
       </section>
-      <div id="footer">
-        <table>
-          <tbody>
-            <tr>
-              <td>&copy; 2016-2017</td>
-              {% if about %}
-                <td> </td>
-              {% elsif en %}
-                <td style="text-align: right;"><a href="/about{{ langx }}">About this site</a></td>
-              {% else %}
-                <td style="text-align: right;"><a href="/about">Об этом сайте</a></td>
-              {% endif %}
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      {% include footer.html %}
     </div>
-    {% if site.google_analytics %}
-      <script type="text/javascript">
-        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-      </script>
-      <script type="text/javascript">
-        try {
-          var pageTracker = _gat._getTracker("{{ site.google_analytics }}");
-          pageTracker._trackPageview();
-        } catch(err) {}
-      </script>
-    {% endif %}
   </body>
 </html>
