@@ -1,0 +1,21 @@
+﻿<hgroup>
+{% if site.github.is_user_page %}
+  <div>
+    {% if en %}
+    <span class="credits left"><a href="/en" title="Home Page">{{ author }}</a></span>
+    <span class="credits right">En | <a href="{{ page.url | remove: "/en" }}" title="Russian language (по-русски)">Ru</a></span>
+    {% else %}
+    <span class="credits left"><a href="/" title="Home Page">{{ author }}</a></span>
+    <span class="credits right">Ru | <a href="/en{{ page.url }}" title="English language (по-английски)">En</a></span>
+    {% endif %}
+  </div>
+{% elseif site.github.is_project_page %}
+  <div id="title">
+    <h1>{{ site.title | default: site.github.repository_name }}</h1>
+    <p>{{ site.description | default: site.github.project_tagline }}</p>
+    <hr>
+    <span class="credits left">Project by <a href="/{{ langx }}" title="Home Page">{{ author }}</a></span>
+    <span class="credits right">Hosted on <a href="{{ site.github.repository_url }}" title="Project">GitHub</a></span>
+  </div>
+{% endif %}
+</hgroup>

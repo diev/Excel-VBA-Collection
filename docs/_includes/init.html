@@ -1,0 +1,18 @@
+﻿<!DOCTYPE html>
+{% if page.url == "/" or page.url == "/index.html" or page.url == "/en.html" %}
+  {% assign home = true %}
+{% endif %}
+{% if page.url contains "/about" %}
+  {% assign about = true %}
+{% endif %}
+{% if page.url contains "/en/" or if page.url contains "/en.html" or page.url contains "-en.html" %}
+  {% assign en = true %}
+  {% assign lang = "en" %}
+  {% assign langx = "-en" %}
+  {% assign author = "Dmitrii Evdokimov" %}
+{% else %}
+  {% assign ru = true %}
+  {% assign lang = "ru" %}
+  {% assign langx = "" %}
+  {% assign author = "Дмитрий Евдокимов" %}
+{% endif %}
